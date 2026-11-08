@@ -1,5 +1,12 @@
 # HANDOFF del loop
 
+## Boot 8 nov 2026
+
+- Absorbido `origin/opencode-checkpoints/5` (`3c72949`) por fast-forward; el checkpoint solo actualizaba metadatos de `.omgithub`. Publicado en `main` sin divergencia y eliminada la rama remota absorbida. No había ramas `opencode-resume/*`; no se tocaron ramas `opencode-deployments/*`.
+- Verificación de base: validador del vocabulario, cinco pruebas `unittest`, `node --check app.js`, parseo HTML y `git diff --check` pasaron. Preview en `http://localhost:3002`: interfaz cargada, modo Doble tempo y subdivisión ×2 interactivos, captura `screenshots/linux.png` inspeccionada y consola sin errores/avisos.
+- Se limpiaron los `__pycache__` generados por las pruebas. No se creó otro tag `save-*`: `save-000` ya existe y este checkpoint no cambia código de producto.
+- `gh auth status` continúa sin autenticar; censo de issues y forensis remotos pendientes de acceso humano.
+
 ## Estado heredado
 
 - R3, esquema del vocabulario local, quedó implementado, verificado y publicado en `main` (`4aa6e7d`, tag `save-003`).
