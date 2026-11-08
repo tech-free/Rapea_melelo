@@ -43,7 +43,7 @@
 
   const saved = readProgress();
   const state = {
-    mode: 'esdrujulas', subdivision: 1, tapTimes: [], intervals: [], bpm: null,
+    mode: 'esdrujulas', subdivision: 1, lastTapAt: null, intervals: [], pendingIntervals: [], bpm: null,
     running: false, timer: 0, tickTimerIds: new Set(), generation: 0,
     nextTickAt: 0, tickNumber: 0, roundNumber: 0, currentPrompt: null,
     rhymeRevealed: false, hitThisRound: false, streak: saved.streak,
@@ -100,46 +100,75 @@
     }
   }
 
+  const MIN_TAP_INTERVAL = 250;
+  const MAX_TAP_INTERVAL = 1500;
+  const LONG_PAUSE = 2200;
+  const OUTLIER_TOLERANCE = 0.2;
+
   function handleTap() {
     const now = performance.now();
+    const hadPreviousTap = state.lastTapAt !== null;
     pulseTapButton();
     if (state.soundOn) resumeAudio();
-    if (state.tapTimes.length && now - state.tapTimes[state.tapTimes.length - 1] > 2200) {
-      state.tapTimes = [];
-      state.intervals = [];
-    }
-    if (state.tapTimes.length) {
-      const interval = now - state.tapTimes[state.tapTimes.length - 1];
-      if (interval >= 250 && interval <= 1500) {
-        state.intervals.push(interval);
-        state.intervals = state.intervals.slice(-6);
-        const estimate = estimateBpm(state.intervals);
-        if (estimate) {
-          state.bpm = estimate;
-          ui.bpm.textContent = String(estimate);
-          ui.tempoCaption.textContent = `Pulso estimado · ${effectiveTempo()} BPM de práctica`;
-          setTempoReady(true);
-          startClock();
-        }
-      } else if (interval > 1500) {
+
+    if (state.lastTapAt !== null) {
+      const interval = now - state.lastTapAt;
+      if (interval > LONG_PAUSE) {
         state.intervals = [];
+        state.pendingIntervals = [];
+      } else if (interval >= MIN_TAP_INTERVAL && interval <= MAX_TAP_INTERVAL) {
+        acceptTapInterval(interval);
+      } else {
+        state.pendingIntervals = [];
       }
     }
-    state.tapTimes.push(now);
-    state.tapTimes = state.tapTimes.slice(-7);
+    state.lastTapAt = now;
+
     if (!state.bpm) {
-      ui.tempoCaption.textContent = state.tapTimes.length > 1 ? 'Seguí tocando para fijar el pulso' : 'Tocá al ritmo de tu base';
+      ui.tempoCaption.textContent = hadPreviousTap
+        ? 'Seguí tocando para fijar el pulso'
+        : 'Tocá al ritmo de tu base';
     }
     if (navigator.vibrate) navigator.vibrate(8);
   }
 
-  function estimateBpm(intervals) {
-    if (!intervals.length) return null;
-    const ordered = [...intervals].sort((a, b) => a - b);
+  function acceptTapInterval(interval) {
+    const baseline = median(state.intervals);
+    if (!baseline || Math.abs(interval - baseline) <= baseline * OUTLIER_TOLERANCE) {
+      state.intervals.push(interval);
+      state.intervals = state.intervals.slice(-6);
+      state.pendingIntervals = [];
+    } else {
+      const pendingBaseline = median(state.pendingIntervals);
+      if (!pendingBaseline || Math.abs(interval - pendingBaseline) > pendingBaseline * OUTLIER_TOLERANCE) {
+        state.pendingIntervals = [interval];
+      } else {
+        state.pendingIntervals.push(interval);
+        if (state.pendingIntervals.length >= 2) {
+          state.intervals = state.pendingIntervals.slice(-6);
+          state.pendingIntervals = [];
+        }
+      }
+    }
+
+    if (!state.intervals.length) return;
+    const estimate = estimateBpm(state.intervals);
+    state.bpm = estimate;
+    ui.bpm.textContent = String(estimate);
+    ui.tempoCaption.textContent = `Pulso estimado · ${effectiveTempo()} BPM de práctica`;
+    setTempoReady(true);
+    startClock();
+  }
+
+  function median(values) {
+    if (!values.length) return null;
+    const ordered = [...values].sort((a, b) => a - b);
     const middle = Math.floor(ordered.length / 2);
-    const median = ordered.length % 2 ? ordered[middle] : (ordered[middle - 1] + ordered[middle]) / 2;
-    const reliable = intervals.filter((value) => Math.abs(value - median) <= median * 0.18);
-    const average = reliable.reduce((sum, value) => sum + value, 0) / reliable.length;
+    return ordered.length % 2 ? ordered[middle] : (ordered[middle - 1] + ordered[middle]) / 2;
+  }
+
+  function estimateBpm(intervals) {
+    const average = intervals.reduce((sum, value) => sum + value, 0) / intervals.length;
     return Math.max(40, Math.min(240, Math.round(60000 / average)));
   }
 
@@ -316,8 +345,9 @@
 
   function resetSession() {
     stopClock();
-    state.tapTimes = [];
+    state.lastTapAt = null;
     state.intervals = [];
+    state.pendingIntervals = [];
     state.bpm = null;
     state.roundNumber = 0;
     state.currentPrompt = null;

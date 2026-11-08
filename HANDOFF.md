@@ -2,6 +2,7 @@
 
 ## Estado
 
+- R1 Tap Tempo terminado en esta sesión; código y roadmap actualizados. La verificación determinista confirmó filtro de outliers, adopción de un nuevo pulso, rechazo de taps rápidos, límites de 40–240 BPM y recuperación tras pausas. Captura visual: `screenshots/r1-tap-tempo.png`; consola de Playwright: 0 mensajes. Pendiente checkpoint atómico/push.
 - MVP terminado en la branch `opencode/42458663446`; commit `8cf73b8` (`feat(mvp): crear gimnasio de freestyle argentino`) se publicó fast-forward en `main` correctamente.
 - Se registró la nueva propuesta REA en `roadmap/REA.md`: mapa de 20 capas, backlog incremental y cautelas técnicas/de alcance. No se implementó el código ilustrativo recibido.
 - Se agregó favicon SVG después de reproducir el 404 de `/favicon.ico`.
@@ -24,5 +25,5 @@
 
 ## Próximo
 
-- Próximo loop: primero habilitar autenticación de `gh` para censar issues; luego tomar una casilla de `roadmap/REA.md` (sugerencia: R1, filtro robusto de Tap Tempo) como tarea independiente. La solicitud quedó anotada en `user-requests.md`.
+- Próximo loop: primero habilitar autenticación de `gh` para censar issues; luego tomar R2, reloj cuantizado, de `roadmap/REA.md` como tarea independiente. La solicitud quedó anotada en `user-requests.md`.
 - No asumir sincronización con YouTube, precisión de audio milimétrica ni la veracidad de afirmaciones no verificadas sobre competidores.
