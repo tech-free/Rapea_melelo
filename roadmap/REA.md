@@ -55,7 +55,7 @@ Leyenda: **base** = ya hay una versión inicial; **cola** = posible mejora incre
 ### Fase 2 — rejilla y práctica avanzada
 - [ ] R5. Hacer explícitas las subdivisiones de doble tempo y probar visualmente x2/x4 en móvil y escritorio.
 - [ ] R6. Evaluar accesibilidad/legibilidad de pulso visual, sonido opcional y vibración compatible, sin presentarlos como reloj de precisión.
-- [ ] R7. Añadir patrones de rima o desafíos de remate como modos opcionales, con reglas visibles y vocabulario validado.
+- [x] R7. Guía opcional de patrones Libre/AABB/ABAB/ABBA con cuatro barras, regla descriptiva y resaltado de barra activa; verificado en Playwright. No evalúa voz ni cambia el vocabulario de rimas.
 
 ### Fase 3 — progresión local
 - [ ] R8. Reducir repetición en la sesión y comprobar el comportamiento con conjuntos de vocabulario pequeños.

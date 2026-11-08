@@ -44,7 +44,7 @@
   };
 
   const PATTERNS = {
-    libre: { description: 'Rima libre · sin esquema fijo.', steps: [] },
+    libre: { description: 'Rima libre · sin esquema fijo.', steps: [null, null, null, null] },
     AABB: { description: 'AABB · dos rimas A seguidas y después dos B.', steps: ['A', 'A', 'B', 'B'] },
     ABAB: { description: 'ABAB · alterná las rimas A y B.', steps: ['A', 'B', 'A', 'B'] },
     ABBA: { description: 'ABBA · A, dos rimas B y cierre con A.', steps: ['A', 'B', 'B', 'A'] },
@@ -334,7 +334,7 @@
     ui.patternSteps.replaceChildren(...pattern.steps.map((letter, index) => {
       const step = document.createElement('li');
       step.className = 'pattern-step';
-      step.textContent = `Barra ${index + 1} · ${letter}`;
+      step.textContent = letter ? `Barra ${index + 1} · ${letter}` : `Barra ${index + 1}`;
       if (index === beat) {
         step.classList.add('active');
         step.setAttribute('aria-current', 'step');
