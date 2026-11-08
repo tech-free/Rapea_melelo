@@ -491,7 +491,7 @@
     }
     state.pendingMedia = media;
     ui.playerFrame.hidden = false;
-    ui.playerStatus.textContent = media.type === 'playlist' ? 'Preparando playlist de YouTube…' : 'Preparando video de YouTube…';
+    ui.playerStatus.textContent = media?.type === 'playlist' ? 'Preparando playlist de YouTube…' : 'Preparando video de YouTube…';
     if (state.player) {
       try { state.player.destroy(); } catch (_) { /* Ignore stale player cleanup errors. */ }
       state.player = null;
@@ -574,8 +574,9 @@
         events: {
           onReady(event) {
             if (state.pendingMedia !== media) return;
-            if (media.type === 'video') event.target.cueVideoById(media.id);
-            else event.target.cuePlaylist({ listType: 'playlist', list: media.id, index: 0 });
+            if (media?.type === 'video') event.target.cueVideoById(media.id);
+            else if (media?.type === 'playlist') event.target.cuePlaylist({ listType: 'playlist', list: media.id, index: 0 });
+            else return;
             ui.playerStatus.textContent = 'Reproductor listo. Iniciá el video con sus controles; el TAP sigue independiente.';
           },
           onError(event) {

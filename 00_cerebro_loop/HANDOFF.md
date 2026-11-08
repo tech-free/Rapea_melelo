@@ -1,5 +1,11 @@
 # HANDOFF del loop
 
+## Cierre auditoría Anti-TypeError — 8 nov 2026
+
+- Barrido de `.type` en fuentes JS/TS (excluidos `_assets`, `dist`, dependencias y Git): `oscillator.type` solo se asigna; las dos lecturas del objeto `media` ahora usan optional chaining. El callback de YouTube ignora tipos desconocidos antes de acceder al ID.
+- Verificación: `node --check app.js`, validador del vocabulario, cinco pruebas `unittest` y `git diff --check` pasaron. En `http://localhost:3002` se probaron Doble tempo, subdivisión ×2 y Tap Tempo; consola Playwright: 0 errores y 0 avisos. Captura `screenshots/anti-typeerror-audit.jpg` inspeccionada: interfaz renderizada correctamente.
+- Autocrítica: `media` puede desaparecer entre la selección y el callback; las guardas cubren ese caso y evitan que tipos inesperados lleguen a `media.id`. El árbol es shallow y `git merge-base HEAD origin/main` no devuelve base; no publicar hasta confirmar una relación fast-forward. `gh` sigue sin autenticación para el censo remoto.
+
 ## Cierre R5 — 8 nov 2026
 
 - R5 completada: la cuenta visible y accesible calcula subdivisión × dinámica y declara golpes por pulso base y por compás 4/4; README actualizado sin prometer precisión de audio. R4 sigue bloqueada hasta revisión humana de fonética rioplatense.
