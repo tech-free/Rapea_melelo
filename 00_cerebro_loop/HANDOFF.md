@@ -1,5 +1,12 @@
 # HANDOFF del loop
 
+## Cierre R5 — 8 nov 2026
+
+- R5 completada: la cuenta visible y accesible calcula subdivisión × dinámica y declara golpes por pulso base y por compás 4/4; README actualizado sin prometer precisión de audio. R4 sigue bloqueada hasta revisión humana de fonética rioplatense.
+- Verificación: `node --check app.js`, validador del vocabulario, cinco pruebas `unittest` y `git diff --check`; navegador con Doble tempo ×2/×4 a viewport escritorio y móvil 390×844, capturas `screenshots/r5-desktop.png` y `screenshots/r5-mobile.png` inspeccionadas, consola sin errores/avisos.
+- Autocrítica: los contadores expresan la rejilla lógica, no garantizan exactitud temporal de audio; los textos de README y roadmap conservan ese límite. `gh` sigue sin autenticación; censo/forensis de issues bloqueado.
+- Próxima tarea: R4 requiere revisión humana explícita; mientras no llegue, no completar sílabas, acentos ni familias fonéticas por inferencia. Luego continuar R6.
+
 ## Boot 8 nov 2026
 
 - Absorbido `origin/opencode-checkpoints/5` (`3c72949`) por fast-forward; el checkpoint solo actualizaba metadatos de `.omgithub`. Publicado en `main` sin divergencia y eliminada la rama remota absorbida. No había ramas `opencode-resume/*`; no se tocaron ramas `opencode-deployments/*`.
