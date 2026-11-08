@@ -45,7 +45,8 @@
   const state = {
     mode: 'esdrujulas', subdivision: 1, lastTapAt: null, intervals: [], pendingIntervals: [], bpm: null,
     running: false, timer: 0, tickTimerIds: new Set(), generation: 0,
-    nextTickAt: 0, tickNumber: 0, roundNumber: 0, currentPrompt: null,
+    nextTickAt: 0, tickNumber: 0, lastTickNumber: -1, lastTickAt: null, clockStepMs: 0,
+    roundNumber: 0, currentPrompt: null,
     rhymeRevealed: false, hitThisRound: false, streak: saved.streak,
     hits: saved.hits, best: saved.best, soundOn: false, audio: null,
     player: null, pendingMedia: null, apiState: 'idle', toastTimer: 0,
@@ -152,12 +153,14 @@
     }
 
     if (!state.intervals.length) return;
+    const previousBpm = state.bpm;
     const estimate = estimateBpm(state.intervals);
     state.bpm = estimate;
     ui.bpm.textContent = String(estimate);
     ui.tempoCaption.textContent = `Pulso estimado · ${effectiveTempo()} BPM de práctica`;
     setTempoReady(true);
-    startClock();
+    if (state.running && previousBpm !== estimate) adjustClockTempo();
+    else startClock();
   }
 
   function median(values) {
@@ -181,42 +184,89 @@
     ui.tempoStatus.lastChild.textContent = ready ? (state.running ? 'EN MARCHA' : 'LISTO') : 'ESPERANDO';
   }
 
+  function clockGrid(tick) {
+    const divisions = state.subdivision * (state.mode === 'doble' ? 2 : 1);
+    return {
+      divisions,
+      stepMs: 60000 / state.bpm / divisions,
+      beat: Math.floor(tick / divisions) % 4,
+      isAccent: tick % divisions === 0,
+    };
+  }
+
   function startClock() {
     if (!state.bpm || state.running) return;
     state.running = true;
     state.generation += 1;
     state.tickNumber = 0;
+    state.lastTickNumber = -1;
+    state.lastTickAt = null;
+    state.clockStepMs = clockGrid(0).stepMs;
     state.nextTickAt = performance.now() + 70;
     setTempoReady(true);
     ui.tempoCaption.textContent = `Pulso estimado · ${effectiveTempo()} BPM de práctica`;
     scheduleLoop(state.generation);
   }
 
+  function clearClockTimers() {
+    window.clearTimeout(state.timer);
+    state.tickTimerIds.forEach((id) => window.clearTimeout(id));
+    state.tickTimerIds.clear();
+  }
+
+  function adjustClockTempo() {
+    const now = performance.now();
+    const oldStepMs = state.clockStepMs || clockGrid(0).stepMs;
+    const phase = state.lastTickAt === null
+      ? 0
+      : Math.max(0, Math.min(1, (now - state.lastTickAt) / oldStepMs));
+    state.generation += 1;
+    clearClockTimers();
+    state.clockStepMs = clockGrid(0).stepMs;
+    if (state.lastTickNumber < 0) {
+      state.tickNumber = 0;
+      state.nextTickAt = now + 70;
+    } else {
+      state.tickNumber = state.lastTickNumber + 1;
+      state.nextTickAt = now + Math.max(8, state.clockStepMs * (1 - phase));
+    }
+    scheduleLoop(state.generation);
+  }
+
+  const CLOCK_LOOKAHEAD_MS = 100;
+  const CLOCK_LOOP_MS = 25;
+  const MAX_CLOCK_LATENESS_MS = 50;
+
   function scheduleLoop(generation) {
     if (!state.running || generation !== state.generation) return;
     const now = performance.now();
-    const divisions = state.subdivision * (state.mode === 'doble' ? 2 : 1);
-    const stepMs = 60000 / state.bpm / divisions;
-    while (state.nextTickAt <= now + 100) {
-      if (state.nextTickAt < now - stepMs) state.nextTickAt = now + 8;
+    if (state.nextTickAt < now - MAX_CLOCK_LATENESS_MS) {
+      clearClockTimers();
+      state.tickNumber = Math.max(0, state.lastTickNumber + 1);
+      state.nextTickAt = now + 8;
+    }
+    while (state.nextTickAt <= now + CLOCK_LOOKAHEAD_MS) {
       const scheduledAt = state.nextTickAt;
       const tick = state.tickNumber++;
-      const beat = Math.floor(tick / divisions) % 4;
-      const isAccent = tick % divisions === 0;
-      queueTick(scheduledAt, beat, isAccent, generation);
-      if (state.soundOn) scheduleClick(scheduledAt, isAccent);
-      state.nextTickAt += stepMs;
+      const grid = clockGrid(tick);
+      queueTick(scheduledAt, tick, grid, generation);
+      if (state.soundOn) scheduleClick(scheduledAt, grid.isAccent);
+      state.nextTickAt += grid.stepMs;
     }
-    state.timer = window.setTimeout(() => scheduleLoop(generation), 25);
+    state.timer = window.setTimeout(() => scheduleLoop(generation), CLOCK_LOOP_MS);
   }
 
-  function queueTick(time, beat, isAccent, generation) {
+  function queueTick(time, tick, grid, generation) {
     const delay = Math.max(0, time - performance.now());
     const id = window.setTimeout(() => {
       state.tickTimerIds.delete(id);
       if (!state.running || generation !== state.generation) return;
-      renderBeat(beat, isAccent);
-      if (isAccent) onMainBeat(beat);
+      if (tick <= state.lastTickNumber) return;
+      if (performance.now() - time > Math.min(state.clockStepMs, MAX_CLOCK_LATENESS_MS)) return;
+      state.lastTickNumber = tick;
+      state.lastTickAt = time;
+      renderBeat(grid.beat, grid.isAccent);
+      if (grid.isAccent) onMainBeat(grid.beat);
     }, delay);
     state.tickTimerIds.add(id);
   }
@@ -325,10 +375,11 @@
   function restartClockPhase() {
     if (!state.running) return;
     state.generation += 1;
-    window.clearTimeout(state.timer);
-    state.tickTimerIds.forEach((id) => window.clearTimeout(id));
-    state.tickTimerIds.clear();
+    clearClockTimers();
     state.tickNumber = 0;
+    state.lastTickNumber = -1;
+    state.lastTickAt = null;
+    state.clockStepMs = clockGrid(0).stepMs;
     state.nextTickAt = performance.now() + 70;
     scheduleLoop(state.generation);
   }
@@ -336,9 +387,7 @@
   function stopClock() {
     state.running = false;
     state.generation += 1;
-    window.clearTimeout(state.timer);
-    state.tickTimerIds.forEach((id) => window.clearTimeout(id));
-    state.tickTimerIds.clear();
+    clearClockTimers();
     ui.beatBoxes.forEach((box) => box.classList.remove('active', 'sub-beat'));
     setTempoReady(Boolean(state.bpm));
   }

@@ -48,7 +48,7 @@ Leyenda: **base** = ya hay una versión inicial; **cola** = posible mejora incre
 
 ### Fase 1 — núcleo temporal y datos
 - [x] R1. Tap Tempo resistente: filtrar outliers y taps demasiado separados; cubrir primer tap, pausas, límites BPM y cambios durante una ronda. Implementado con tolerancia del 20%, dos intervalos consistentes para confirmar un cambio de ritmo, rechazo de intervalos menores de 250 ms o mayores de 1500 ms, reinicio de historial tras más de 2200 ms y BPM mostrado entre 40–240. Verificado con interacciones deterministas en Playwright.
-- [ ] R2. Reloj cuantizado: centralizar cálculo de beat/barra/subdivisión, limitar timers acumulados y mantener fase razonable al ajustar el tempo.
+- [x] R2. Reloj cuantizado: centralizar cálculo de beat/barra/subdivisión, limitar timers acumulados y mantener fase razonable al ajustar el tempo. Implementado con rejilla compartida y lookahead acotado; los cambios de BPM conservan el tick y la fase fraccional aproximada, y un atraso superior a 50 ms reancla el reloj en vez de acumular ticks. Verificado en Playwright con cambios de tempo, selección de modo/subdivisión, salto simulado de 5 s, reset y cero errores de página/consola; también pasó `node --check app.js` y parseo HTML.
 - [ ] R3. Esquema de vocabulario local: término, sílabas/acentuación revisadas, familia fonética, etiqueta opcional y metadatos de variante argentina.
 - [ ] R4. Curar un lote pequeño de ejemplos rioplatenses antes de ampliar el vocabulario; revisar rimas, acentos y etiquetas con criterio humano.
 
