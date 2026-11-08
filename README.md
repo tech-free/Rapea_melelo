@@ -7,7 +7,7 @@ Entrená freestyle argentino con un metrónomo manual, desafíos de esdrújulas 
 Abrí `index.html` en un navegador moderno o serví esta carpeta localmente (por ejemplo, `python3 -m http.server 3002`) y entrá a `http://localhost:3002`.
 
 1. Tocá **Marcar pulso** varias veces a ritmo constante para estimar el BPM. Los taps aislados se filtran; para adoptar un cambio de ritmo hacen falta dos intervalos consistentes. Las pausas largas reinician el historial de estimación y el rango mostrado es 40–240 BPM. El Tap Tempo es manual e independiente de cualquier audio.
-2. Elegí la subdivisión y el desafío; seguí el compás visual 4/4 y la palabra disparadora. Podés elegir guía de rima **Libre**, **AABB**, **ABAB** o **ABBA**: muestra cuatro barras, sus letras cuando hay un esquema fijo, y resalta la actual al avanzar el pulso. En **Libre** las cuatro barras son neutrales. Las rimas se revelan durante la ronda; la guía no evalúa tu voz.
+2. Elegí la subdivisión y el desafío; seguí el compás visual 4/4 y la palabra disparadora. La leyenda del pulso aclara cuántas marcas por pulso y por minuto produce cada combinación: el modo **Doble tempo** duplica el pulso y ×2/×4 agregan subdivisiones. Podés elegir guía de rima **Libre**, **AABB**, **ABAB** o **ABBA**: muestra cuatro barras, sus letras cuando hay un esquema fijo, y resalta la actual al avanzar el pulso. En **Libre** las cuatro barras son neutrales. Las rimas se revelan durante la ronda; la guía no evalúa tu voz.
 3. Tocá **La hice** si querés registrar voluntariamente tu ronda. Las rachas y el récord se guardan localmente en este navegador; no se escucha ni puntúa la voz.
 4. Opcionalmente, pegá una URL compatible de video o playlist de YouTube para abrir el reproductor visible de YouTube.
 

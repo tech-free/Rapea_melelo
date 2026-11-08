@@ -5,6 +5,7 @@
   const ui = {
     tap: $('#tap-button'), bpm: $('#bpm-value'), tempoStatus: $('#tempo-status'),
     tempoCaption: $('#tempo-caption'), beatBoxes: [...document.querySelectorAll('.beat')],
+    gridDescription: $('#grid-description'),
     subdivisionButtons: [...document.querySelectorAll('[data-subdivision]')],
     modeButtons: [...document.querySelectorAll('[data-mode]')],
     patternButtons: [...document.querySelectorAll('[data-pattern]')],
@@ -78,6 +79,7 @@
       item.classList.toggle('selected', selected);
       item.setAttribute('aria-pressed', String(selected));
     });
+    updateGridDescription();
     restartClockPhase();
   }));
   ui.hit.addEventListener('click', confirmHit);
@@ -168,7 +170,8 @@
     const estimate = estimateBpm(state.intervals);
     state.bpm = estimate;
     ui.bpm.textContent = String(estimate);
-    ui.tempoCaption.textContent = `Pulso estimado · ${effectiveTempo()} BPM de práctica`;
+    ui.tempoCaption.textContent = `Pulso base estimado · ${state.bpm} BPM`;
+    updateGridDescription();
     setTempoReady(true);
     if (state.running && previousBpm !== estimate) adjustClockTempo();
     else startClock();
@@ -186,8 +189,18 @@
     return Math.max(40, Math.min(240, Math.round(60000 / average)));
   }
 
-  function effectiveTempo() {
-    return state.bpm ? state.bpm * (state.mode === 'doble' ? 2 : 1) : 0;
+  function clockDivisionsPerBeat() {
+    return state.subdivision * (state.mode === 'doble' ? 2 : 1);
+  }
+
+  function updateGridDescription() {
+    const modeMultiplier = state.mode === 'doble' ? 2 : 1;
+    const divisions = clockDivisionsPerBeat();
+    const modeLabel = state.mode === 'doble' ? 'doble tempo' : 'modo base';
+    const tempo = state.bpm ? `${state.bpm} BPM de pulso · ` : 'Pulso sin fijar · ';
+    const rate = state.bpm ? ` (${state.bpm * divisions} marcas/min)` : '';
+    const markLabel = divisions === 1 ? 'marca' : 'marcas';
+    ui.gridDescription.textContent = `${tempo}${modeLabel} ×${modeMultiplier} · subdivisión ×${state.subdivision} = ${divisions} ${markLabel} por pulso${rate}.`;
   }
 
   function setTempoReady(ready) {
@@ -196,7 +209,7 @@
   }
 
   function clockGrid(tick) {
-    const divisions = state.subdivision * (state.mode === 'doble' ? 2 : 1);
+    const divisions = clockDivisionsPerBeat();
     return {
       divisions,
       stepMs: 60000 / state.bpm / divisions,
@@ -215,7 +228,7 @@
     state.clockStepMs = clockGrid(0).stepMs;
     state.nextTickAt = performance.now() + 70;
     setTempoReady(true);
-    ui.tempoCaption.textContent = `Pulso estimado · ${effectiveTempo()} BPM de práctica`;
+    ui.tempoCaption.textContent = `Pulso base estimado · ${state.bpm} BPM`;
     scheduleLoop(state.generation);
   }
 
@@ -407,7 +420,8 @@
       button.classList.toggle('active', active);
       button.setAttribute('aria-pressed', String(active));
     });
-    if (state.bpm) ui.tempoCaption.textContent = `Pulso estimado · ${effectiveTempo()} BPM de práctica`;
+    if (state.bpm) ui.tempoCaption.textContent = `Pulso base estimado · ${state.bpm} BPM`;
+    updateGridDescription();
     restartClockPhase();
   }
 
@@ -447,6 +461,7 @@
     state.hits = 0;
     ui.bpm.textContent = '—';
     ui.tempoCaption.textContent = 'Tocá al ritmo de tu base';
+    updateGridDescription();
     ui.hit.innerHTML = '¡LA EMBOQUÉ! <span>↗</span>';
     renderEmptyPrompt();
     updateStats();

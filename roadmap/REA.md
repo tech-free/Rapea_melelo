@@ -53,7 +53,7 @@ Leyenda: **base** = ya hay una versión inicial; **cola** = posible mejora incre
 - [ ] R4. Curar un lote pequeño de ejemplos rioplatenses antes de ampliar el vocabulario; revisar rimas, acentos y etiquetas con criterio humano. Borrador no integrado en `data/vocabulary-candidates.json` (cuatro estímulos); todo sigue `pending` y falta revisión humana antes de completar la tarea.
 
 ### Fase 2 — rejilla y práctica avanzada
-- [ ] R5. Hacer explícitas las subdivisiones de doble tempo y probar visualmente x2/x4 en móvil y escritorio.
+- [x] R5. Hacer explícitas las subdivisiones de doble tempo: la leyenda indica el pulso base, el multiplicador del modo, las subdivisiones seleccionadas, las marcas por pulso y, tras estimar el BPM, las marcas por minuto. El reloj reutiliza el cálculo compartido `subdivisión × (doble tempo ? 2 : 1)`. Verificado en Playwright para ×1/×2/×4 en ambos modos, con tasas calculadas como BPM × marcas por pulso (incluye pruebas a 109 y 111 BPM), captura visual en escritorio y viewport de 390 px sin desbordamiento horizontal; consola limpia, `node --check app.js` y `git diff --check` pasan.
 - [ ] R6. Evaluar accesibilidad/legibilidad de pulso visual, sonido opcional y vibración compatible, sin presentarlos como reloj de precisión.
 - [x] R7. Guía opcional de patrones Libre/AABB/ABAB/ABBA con cuatro barras, regla descriptiva y resaltado de barra activa; verificado en Playwright. No evalúa voz ni cambia el vocabulario de rimas.
 

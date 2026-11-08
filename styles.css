@@ -13,3 +13,4 @@
 .pattern-step.active{border-color:#d2f36b70;background:#d2f36b12;color:var(--lime);box-shadow:0 0 12px #d2f36b10}
 @media(max-width:760px){.pattern-guide{margin-bottom:12px}}
 @media(max-width:370px){.pattern-button{font-size:8px;padding:7px 2px}.pattern-guide{padding:9px 8px}.pattern-step{font-size:7px;letter-spacing:-.2px}}
+.grid-description{margin:9px 0 0;color:var(--muted);font-size:10px;line-height:1.55;text-align:center;min-height:2.6em}
