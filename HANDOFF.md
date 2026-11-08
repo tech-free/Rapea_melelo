@@ -2,6 +2,7 @@
 
 ## Estado
 
+- R4 iniciado, no completado: `data/vocabulary-candidates.json` contiene cuatro estímulos candidatos con segmentación/acento orientativos, etiquetas provisionales y estados `pending`; no se conecta a la app ni asigna familias de rima. JSON Schema 2020-12, sintaxis de `app.js`, preview HTTP 200 y consola del navegador (cero errores/avisos) verificados. No hay revisión de una persona hablante disponible en esta ejecución, por lo que la revisión fonética/etiquetas sigue bloqueada y no se marcaron datos como aprobados. Próximo paso: revisión humana antes de completar R4 o incorporar estos datos.
 - R3 completado localmente: `data/vocabulary.schema.json` define un esquema JSON Schema 2020-12 versionado para términos, sílabas/acentuación y estado de revisión, familia fonética, etiquetas opcionales y variantes argentinas; `data/README.md` documenta índices desde cero, límites de validación y cautelas fonéticas. No se migraron ni aprobaron rimas existentes. Schema check y fixtures válidos e inválidos pasaron; la app estática sigue cargando sin cambios visuales ni errores de consola. Riesgo pendiente para R4: toda clasificación fonética debe tener revisión humana; el esquema no promete exhaustividad.
 
 - Completado localmente: guía opcional Libre/AABB/ABAB/ABBA. Libre muestra cuatro barras neutrales; los esquemas muestran sus letras y el pulso resalta la barra activa. Supuesto de producto: es solo una guía visual, sin evaluar la voz ni cambiar las rimas de la ronda. README actualizado.

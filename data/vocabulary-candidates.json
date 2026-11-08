@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0.0",
+  "language": "es-AR",
+  "entries": [
+    {
+      "id": "mate",
+      "term": "mate",
+      "phonology": {
+        "syllables": ["ma", "te"],
+        "stressSyllable": 0,
+        "reviewStatus": "pending",
+        "notes": "Borrador ortográfico; confirmar acento y uso en contexto con hablantes argentinos."
+      },
+      "phoneticFamily": null,
+      "labels": ["bebida", "cotidiano"]
+    },
+    {
+      "id": "bondi",
+      "term": "bondi",
+      "phonology": {
+        "syllables": ["bon", "di"],
+        "stressSyllable": 0,
+        "reviewStatus": "pending",
+        "notes": "Candidato léxico rioplatense; confirmar segmentación, acento y registro local."
+      },
+      "phoneticFamily": null,
+      "labels": ["transporte", "ciudad"]
+    },
+    {
+      "id": "vereda",
+      "term": "vereda",
+      "phonology": {
+        "syllables": ["ve", "re", "da"],
+        "stressSyllable": 1,
+        "reviewStatus": "pending",
+        "notes": "Borrador ortográfico; confirmar acento y pertinencia de la etiqueta en contexto local."
+      },
+      "phoneticFamily": null,
+      "labels": ["ciudad", "espacio público"]
+    },
+    {
+      "id": "canchita",
+      "term": "canchita",
+      "phonology": {
+        "syllables": ["can", "chi", "ta"],
+        "stressSyllable": 1,
+        "reviewStatus": "pending",
+        "notes": "Candidato de uso coloquial; confirmar segmentación, acento, registro y etiqueta con hablantes argentinos."
+      },
+      "phoneticFamily": null,
+      "labels": ["fútbol", "barrio"]
+    }
+  ]
+}
