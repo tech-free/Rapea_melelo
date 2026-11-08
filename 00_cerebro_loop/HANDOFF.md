@@ -2,9 +2,9 @@
 
 ## Estado heredado
 
-- La última tarea documentada fue R2, reloj cuantizado. Está implementada y verificada en `roadmap/REA.md`; no hay código pendiente indicado.
-- Build estático sin pipeline. Verificaciones conocidas: `node --check app.js`, parseo HTML y Playwright; consultar `HANDOFF.md` raíz para la evidencia previa.
-- El siguiente trabajo sugerido es R3 (esquema de vocabulario local), después de resolver el censo de issues si se habilita `gh`.
+- R3, esquema del vocabulario local, quedó implementado, verificado y publicado en `main` (`4aa6e7d`, tag `save-003`).
+- Build estático sin pipeline. Verificaciones de R3: validador Python, cinco pruebas `unittest`, `node --check app.js`, parseo JSON y Playwright; ver `HANDOFF.md` raíz.
+- El siguiente trabajo de producto es R4 (curación fonética humana), sin poblar pronunciaciones o rimas hasta revisión.
 - `gh auth status` estaba sin autenticar; no asumir que el censo remoto de issues se completó.
 
 ## Boot v6.0 completado
@@ -13,7 +13,7 @@
 - El checkpoint `opencode-checkpoints/3` entró en conflicto de contenido/add-add con código (`app.js` incluido); se abortó, se preservó en `graveyard-opencode-checkpoints-3` y se documentó en `CEMETERY.md`.
 - `origin/main` quedó sincronizado sin divergencia. `node --check app.js`, parseo HTML y prueba Playwright en `localhost:3002` pasaron; interfaz completa y consola sin errores. Se interactuó con doble tempo y subdivisión ×2.
 - `gh auth status` sigue sin autenticar; censo de issues y forensis de threads quedan bloqueados por esa limitación. No se cerraron issues.
-- Branch actual `opencode/42520509585`; commits del BOOT listos para publicar fast-forward a `main`.
+- Branch actual `opencode/42520509585`; BOOT y R3 están publicados fast-forward en `main`. El checkpoint R3 es `save-003`.
 
 ## Cierre — R3
 
