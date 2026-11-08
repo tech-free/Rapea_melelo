@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:rapea:vocabulary:schema:1",
+  "title": "Rapea local vocabulary",
+  "description": "Schema for a locally curated Spanish (Argentina) vocabulary dataset. Phonetic classifications require human review.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "language", "entries"],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "language": {
+      "const": "es-AR"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "minLength": 1
+    },
+    "syllableSequence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "phonology": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["syllables", "stressSyllable", "reviewStatus"],
+      "properties": {
+        "syllables": {
+          "$ref": "#/$defs/syllableSequence"
+        },
+        "stressSyllable": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Zero-based index into syllables."
+        },
+        "reviewStatus": {
+          "enum": ["pending", "reviewed"]
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "argentineVariant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "form", "region", "reviewStatus"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "form": {
+          "type": "string",
+          "minLength": 1
+        },
+        "region": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-curated area or variety label; not a complete geographic taxonomy."
+        },
+        "register": {
+          "type": "string",
+          "minLength": 1
+        },
+        "phonology": {
+          "$ref": "#/$defs/phonology"
+        },
+        "pronunciationNotes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewStatus": {
+          "enum": ["pending", "reviewed"]
+        }
+      }
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "term", "phonology", "phoneticFamily"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "term": {
+          "type": "string",
+          "minLength": 1
+        },
+        "phonology": {
+          "$ref": "#/$defs/phonology"
+        },
+        "phoneticFamily": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "reviewStatus"],
+              "properties": {
+                "id": {
+                  "$ref": "#/$defs/id"
+                },
+                "reviewStatus": {
+                  "enum": ["pending", "reviewed"]
+                },
+                "notes": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          ]
+        },
+        "labels": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "argentineVariants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/argentineVariant"
+          }
+        }
+      }
+    }
+  }
+}

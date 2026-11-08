@@ -2,6 +2,8 @@
 
 ## Estado
 
+- R3 completado localmente: `data/vocabulary.schema.json` define un esquema JSON Schema 2020-12 versionado para términos, sílabas/acentuación y estado de revisión, familia fonética, etiquetas opcionales y variantes argentinas; `data/README.md` documenta índices desde cero, límites de validación y cautelas fonéticas. No se migraron ni aprobaron rimas existentes. Schema check y fixtures válidos e inválidos pasaron; la app estática sigue cargando sin cambios visuales ni errores de consola. Riesgo pendiente para R4: toda clasificación fonética debe tener revisión humana; el esquema no promete exhaustividad.
+
 - Completado localmente: guía opcional Libre/AABB/ABAB/ABBA. Libre muestra cuatro barras neutrales; los esquemas muestran sus letras y el pulso resalta la barra activa. Supuesto de producto: es solo una guía visual, sin evaluar la voz ni cambiar las rimas de la ronda. README actualizado.
 - Verificación de esta entrega: Playwright comprobó las cuatro secuencias/selecciones, rotación del resaltado al avanzar el metrónomo, viewport móvil de 390 px sin overflow (documento 375 px) y cero errores/avisos de consola; captura JPEG inspeccionada: `screenshots/pattern-guide.jpg` (local/ignorada). También pasaron `node --check app.js`, parseo HTML y `git diff --check`.
 - El checkpoint queda local en un commit atómico. No publicar: la rama de trabajo y `origin/main` siguen divergidas, con conflicto previo en `app.js`/`HANDOFF.md`; preservar ambas líneas y no resolverlo manualmente.
@@ -29,5 +31,5 @@
 
 ## Próximo
 
-- Próximo loop: habilitar autenticación de `gh` para censar issues (bloqueado por falta de sesión autenticada); después tomar R3, esquema de vocabulario local, de `roadmap/REA.md` como tarea independiente.
+- Próximo loop: R4, curar un lote pequeño de ejemplos rioplatenses con revisión humana de rimas, acentos y etiquetas. El censo de issues sigue bloqueado hasta autenticar `gh`; publicación del branch de trabajo sigue bloqueada por la divergencia documentada.
 - No asumir sincronización con YouTube, precisión de audio milimétrica ni la veracidad de afirmaciones no verificadas sobre competidores.
