@@ -2,6 +2,7 @@
 
 ## Estado
 
+- En progreso: desafío de patrones seleccionables AABB/ABAB/ABBA y modo Libre. Plan: (1) mostrar guía de cuatro barras y letra activa por ronda, (2) estilizar selector/guía con adaptación móvil, (3) documentar y marcar roadmap, (4) verificar lógica, navegador y layout antes del checkpoint.
 - R2 reloj cuantizado terminado y verificado; implementación y documentación incluidas en el checkpoint de esta tarea. El scheduler comparte la rejilla para beat/subdivisión/acento, usa lookahead acotado y descarta ticks vencidos tras atrasos; los cambios de BPM preservan el tick y una fase fraccional aproximada. Pruebas deterministas en Playwright cubrieron tempo cambiante, modo/subdivisión, atraso simulado de 5 s, reset y cero errores de página/consola. Pasaron `node --check app.js` y parseo HTML; captura inspeccionada: `screenshots/r2-clock.png` (ignorada por Git).
 - R1 Tap Tempo verificado y checkpointed en `4000a98` (`fix(tempo): filtrar taps erráticos y recuperar pulso [R1]`), publicado fast-forward en `main`. La prueba cubrió filtro de outliers, adopción de un nuevo pulso, rechazo de taps rápidos, límites de 40–240 BPM y recuperación tras pausas. Captura: `screenshots/r1-tap-tempo.png`; consola: 0 mensajes.
 - MVP terminado en la branch `opencode/42458663446`; commit `8cf73b8` (`feat(mvp): crear gimnasio de freestyle argentino`) se publicó fast-forward en `main` correctamente.

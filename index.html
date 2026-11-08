@@ -49,6 +49,16 @@
               <button type="button" class="mode-button active" data-mode="esdrujulas" aria-pressed="true"><span class="mode-icon">Á</span><span><strong>Esdrújulas</strong><small>Acento al frente</small></span></button>
               <button type="button" class="mode-button" data-mode="doble" aria-pressed="false"><span class="mode-icon">×2</span><span><strong>Doble tempo</strong><small>El doble de rebote</small></span></button>
             </div>
+            <div class="pattern-switch segmented" role="group" aria-label="Patrón de rima">
+              <button type="button" class="pattern-button selected" data-pattern="libre" aria-pressed="true">Libre</button>
+              <button type="button" class="pattern-button" data-pattern="AABB" aria-pressed="false">AABB</button>
+              <button type="button" class="pattern-button" data-pattern="ABAB" aria-pressed="false">ABAB</button>
+              <button type="button" class="pattern-button" data-pattern="ABBA" aria-pressed="false">ABBA</button>
+            </div>
+            <div class="pattern-guide" aria-label="Guía del patrón">
+              <p class="pattern-description" id="pattern-description">Rima libre · sin esquema fijo.</p>
+              <ol class="pattern-steps" id="pattern-steps" aria-label="Secuencia de rimas"></ol>
+            </div>
             <div class="prompt-panel" aria-live="polite" aria-atomic="true">
               <div class="prompt-topline"><span id="prompt-label">TU CONCEPTO</span><span class="prompt-index" id="prompt-index">#01</span></div>
               <div class="prompt-word" id="prompt-word">LISTA</div>

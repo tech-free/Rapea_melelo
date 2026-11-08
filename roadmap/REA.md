@@ -35,7 +35,7 @@ Leyenda: **base** = ya hay una versión inicial; **cola** = posible mejora incre
 12. Fatiga/repetición de palabras — **cola**; evitar repeticiones por sesión respetando el tamaño del diccionario.
 
 ### Dinámicas y práctica
-13. Patrones (AABB, ABAB, ABBA) — **cola**; desafíos guiados, seleccionables y sin evaluación automática de voz.
+13. Patrones (AABB, ABAB, ABBA) — **base**; guía opcional seleccionable por ronda, con secuencia de cuatro barras y letra activa por pulso, sin evaluación automática de voz.
 14. Estímulos funcionales (objetos, imágenes, conceptos) — **cola**; priorizar conceptos argentinos curados.
 15. Doble tempo/subdivisiones — **base**; definir claramente pulso, subdivisión x2/x4 y cómo cambia cada dinámica.
 16. Punchline/remate en compás 4 — **exploración**; ofrecer estructura/prompt, no generar ataques dirigidos ni fingir que predice la calidad de una barra.

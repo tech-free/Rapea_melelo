@@ -6,8 +6,10 @@
     tap: $('#tap-button'), bpm: $('#bpm-value'), tempoStatus: $('#tempo-status'),
     tempoCaption: $('#tempo-caption'), beatBoxes: [...document.querySelectorAll('.beat')],
     subdivisionButtons: [...document.querySelectorAll('[data-subdivision]')],
-    modeButtons: [...document.querySelectorAll('[data-mode]')], round: $('#round-count'),
-    promptLabel: $('#prompt-label'), promptIndex: $('#prompt-index'), promptWord: $('#prompt-word'),
+    modeButtons: [...document.querySelectorAll('[data-mode]')],
+    patternButtons: [...document.querySelectorAll('[data-pattern]')],
+    patternDescription: $('#pattern-description'), patternSteps: $('#pattern-steps'),
+    round: $('#round-count'), promptLabel: $('#prompt-label'), promptIndex: $('#prompt-index'), promptWord: $('#prompt-word'),
     promptHint: $('#prompt-hint'), rhymeList: $('#rhyme-list'), revealNote: $('#reveal-note'),
     instruction: $('#instruction'), hit: $('#hit-button'), streak: $('#streak-value'),
     hits: $('#hits-value'), best: $('#best-value'), reset: $('#reset-button'),
@@ -41,9 +43,16 @@
     ],
   };
 
+  const PATTERNS = {
+    libre: { description: 'Rima libre · sin esquema fijo.', steps: [] },
+    AABB: { description: 'AABB · dos rimas A seguidas y después dos B.', steps: ['A', 'A', 'B', 'B'] },
+    ABAB: { description: 'ABAB · alterná las rimas A y B.', steps: ['A', 'B', 'A', 'B'] },
+    ABBA: { description: 'ABBA · A, dos rimas B y cierre con A.', steps: ['A', 'B', 'B', 'A'] },
+  };
+
   const saved = readProgress();
   const state = {
-    mode: 'esdrujulas', subdivision: 1, lastTapAt: null, intervals: [], pendingIntervals: [], bpm: null,
+    mode: 'esdrujulas', pattern: 'libre', activeBeat: null, subdivision: 1, lastTapAt: null, intervals: [], pendingIntervals: [], bpm: null,
     running: false, timer: 0, tickTimerIds: new Set(), generation: 0,
     nextTickAt: 0, tickNumber: 0, lastTickNumber: -1, lastTickAt: null, clockStepMs: 0,
     roundNumber: 0, currentPrompt: null,
@@ -55,11 +64,13 @@
   updateStats();
   setMode('esdrujulas');
   renderEmptyPrompt();
+  renderPatternGuide(null);
   setTempoReady(false);
   updateSoundButton();
 
   ui.tap.addEventListener('click', handleTap);
   ui.modeButtons.forEach((button) => button.addEventListener('click', () => setMode(button.dataset.mode)));
+  ui.patternButtons.forEach((button) => button.addEventListener('click', () => setPattern(button.dataset.pattern)));
   ui.subdivisionButtons.forEach((button) => button.addEventListener('click', () => {
     state.subdivision = Number(button.dataset.subdivision);
     ui.subdivisionButtons.forEach((item) => {
@@ -279,6 +290,8 @@
   }
 
   function onMainBeat(beat) {
+    state.activeBeat = beat;
+    renderPatternGuide(beat);
     if (beat === 0) {
       state.roundNumber += 1;
       state.currentPrompt = choosePrompt(state.mode);
@@ -302,6 +315,32 @@
   function choosePrompt(mode) {
     const choices = PROMPTS[mode].filter((item) => item !== state.currentPrompt);
     return choices[Math.floor(Math.random() * choices.length)] || PROMPTS[mode][0];
+  }
+
+  function setPattern(pattern) {
+    if (!PATTERNS[pattern]) return;
+    state.pattern = pattern;
+    ui.patternButtons.forEach((button) => {
+      const selected = button.dataset.pattern === pattern;
+      button.classList.toggle('selected', selected);
+      button.setAttribute('aria-pressed', String(selected));
+    });
+    renderPatternGuide(state.activeBeat);
+  }
+
+  function renderPatternGuide(beat) {
+    const pattern = PATTERNS[state.pattern];
+    ui.patternDescription.textContent = pattern.description;
+    ui.patternSteps.replaceChildren(...pattern.steps.map((letter, index) => {
+      const step = document.createElement('li');
+      step.className = 'pattern-step';
+      step.textContent = `Barra ${index + 1} · ${letter}`;
+      if (index === beat) {
+        step.classList.add('active');
+        step.setAttribute('aria-current', 'step');
+      }
+      return step;
+    }));
   }
 
   function showEmptyRhymes() {
@@ -388,6 +427,8 @@
     state.running = false;
     state.generation += 1;
     clearClockTimers();
+    state.activeBeat = null;
+    renderPatternGuide(null);
     ui.beatBoxes.forEach((box) => box.classList.remove('active', 'sub-beat'));
     setTempoReady(Boolean(state.bpm));
   }
