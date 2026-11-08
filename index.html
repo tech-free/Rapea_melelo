@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101114">
+  <meta name="description" content="Entrená freestyle argentino con Tap Tempo, desafíos de rima y doble tempo.">
+  <title>Rapea — Gimnasio de freestyle</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Rapea inicio"><span class="brand-mark">R</span><span>RAPEA<span class="brand-dot">.</span></span></a>
+      <div class="top-meta"><span class="live-dot"></span><span>GIMNASIO DE FREESTYLE</span></div>
+      <button id="sound-toggle" class="icon-button" type="button" aria-label="Activar metrónomo sonoro" title="Activar metrónomo sonoro">♫</button>
+    </header>
+
+    <main>
+      <section class="intro">
+        <p class="eyebrow">PRÁCTICA LOCAL · ARGENTINA</p>
+        <h1>Encontrá tu <span>flow.</span></h1>
+        <p class="intro-copy">Una palabra, cuatro tiempos y todo tu ingenio. Poné tu beat donde quieras y marcá el pulso.</p>
+      </section>
+
+      <section class="studio-grid" aria-label="Estudio de entrenamiento">
+        <div class="left-column">
+          <article class="card beat-card">
+            <div class="card-heading"><div><p class="eyebrow">01 / TU BASE</p><h2>Beat externo</h2></div><span class="optional-tag">OPCIONAL</span></div>
+            <form id="youtube-form" class="youtube-form">
+              <label class="sr-only" for="youtube-url">URL de video o playlist de YouTube</label>
+              <input id="youtube-url" type="url" inputmode="url" placeholder="Pegá un link de YouTube" autocomplete="url">
+              <button class="button button-light" type="submit">CARGAR <span aria-hidden="true">↗</span></button>
+            </form>
+            <p id="youtube-status" class="helper-text" role="status">El beat suena por YouTube; el TAP marca un metrónomo independiente.</p>
+            <div class="player-frame" id="player-frame" hidden>
+              <div id="youtube-player"></div>
+              <button type="button" id="close-player" class="player-close" aria-label="Cerrar reproductor">×</button>
+            </div>
+          </article>
+
+          <article class="card challenge-card">
+            <div class="card-heading"><div><p class="eyebrow">02 / EL DESAFÍO</p><h2>Elegí tu dinámica</h2></div><span class="round-count" id="round-count">RONDA 01</span></div>
+            <div class="mode-switch" role="group" aria-label="Dinámica de entrenamiento">
+              <button type="button" class="mode-button active" data-mode="esdrujulas" aria-pressed="true"><span class="mode-icon">Á</span><span><strong>Esdrújulas</strong><small>Acento al frente</small></span></button>
+              <button type="button" class="mode-button" data-mode="doble" aria-pressed="false"><span class="mode-icon">×2</span><span><strong>Doble tempo</strong><small>El doble de rebote</small></span></button>
+            </div>
+            <div class="prompt-panel" aria-live="polite" aria-atomic="true">
+              <div class="prompt-topline"><span id="prompt-label">TU CONCEPTO</span><span class="prompt-index" id="prompt-index">#01</span></div>
+              <div class="prompt-word" id="prompt-word">LISTA</div>
+              <p class="prompt-hint" id="prompt-hint">Marcá cuatro pulsos para empezar</p>
+            </div>
+            <div class="rhyme-area">
+              <div class="rhyme-heading"><span>FAMILIA PARA EL REMATE</span><span class="reveal-note" id="reveal-note">APARECE EN EL TIEMPO 3</span></div>
+              <div class="rhyme-list" id="rhyme-list"><span class="rhyme-chip empty-chip">—</span><span class="rhyme-chip empty-chip">—</span><span class="rhyme-chip empty-chip">—</span><span class="rhyme-chip empty-chip">—</span></div>
+            </div>
+            <div class="round-footer"><span id="instruction">En el 1, agarrá el concepto. En el 3, buscá el remate.</span><button id="hit-button" type="button" class="hit-button" disabled>¡LA EMBOQUÉ! <span>↗</span></button></div>
+          </article>
+        </div>
+
+        <aside class="card tempo-card" aria-label="Control de tempo">
+          <div class="card-heading"><div><p class="eyebrow">03 / EL PULSO</p><h2>Tap tempo</h2></div><span class="tempo-status" id="tempo-status"><span class="status-dot"></span>ESPERANDO</span></div>
+          <div class="bpm-wrap"><span class="bpm-value" id="bpm-value">—</span><span class="bpm-unit">BPM</span></div>
+          <p class="tempo-caption" id="tempo-caption">Tocá al ritmo de tu base</p>
+          <div class="beat-track" id="beat-track" aria-label="Pulso del compás">
+            <div class="beat"><span>1</span></div><div class="beat"><span>2</span></div><div class="beat"><span>3</span></div><div class="beat"><span>4</span></div>
+          </div>
+          <button id="tap-button" type="button" class="tap-button"><span class="tap-rings" aria-hidden="true"><i></i><i></i><i></i></span><span class="tap-label">TAP</span><span class="tap-subtitle">TOCÁ AL RITMO</span></button>
+          <div class="tempo-controls"><label for="subdivision">SUBDIVISIÓN</label><div class="segmented" id="subdivision"><button type="button" data-subdivision="1" class="selected" aria-pressed="true">×1</button><button type="button" data-subdivision="2" aria-pressed="false">×2</button><button type="button" data-subdivision="4" aria-pressed="false">×4</button></div></div>
+          <button id="reset-button" type="button" class="text-button">↻ <span>REINICIAR SESIÓN</span></button>
+          <div class="session-stats"><div><strong id="streak-value">0</strong><span>RACHA</span></div><div><strong id="hits-value">0</strong><span>REMATES</span></div><div><strong id="best-value">0</strong><span>RÉCORD</span></div></div>
+        </aside>
+      </section>
+
+      <section class="tips-row"><div class="tip-icon">✳</div><p><strong>Tip de plaza</strong><span>Soltá el aire, escuchá el bombo y no te enamores de la primera rima. El flow es tuyo.</span></p><span class="local-badge"><i></i>PROGRESO LOCAL</span></section>
+
+      <footer class="page-footer"><span>HECHO PARA IMPROVISAR · SIN PRESIÓN</span><span>EL MICRÓFONO ES TUYO.</span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js" defer></script>
+</body>
+</html>

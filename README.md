@@ -1,4 +1,21 @@
-# Rapea_melelo
+# Rapea — Gimnasio de freestyle
+
+Entrená freestyle argentino con un metrónomo manual, desafíos de esdrújulas y doble tempo, y disparadores de rima rioplatenses. Es una app estática: no necesita cuenta ni servidor propio.
+
+## Usar
+
+Abrí `index.html` en un navegador moderno o serví esta carpeta localmente (por ejemplo, `python3 -m http.server 3002`) y entrá a `http://localhost:3002`.
+
+1. Tocá **Marcar pulso** varias veces a ritmo constante para estimar el BPM. El Tap Tempo es manual e independiente de cualquier audio.
+2. Elegí la subdivisión y el desafío; seguí el compás visual 4/4 y la palabra disparadora. Las rimas se revelan durante la ronda.
+3. Tocá **La hice** si querés registrar voluntariamente tu ronda. Las rachas y el récord se guardan localmente en este navegador; no se escucha ni puntúa la voz.
+4. Opcionalmente, pegá una URL compatible de video o playlist de YouTube para abrir el reproductor visible de YouTube.
+
+El botón de sonido activa el pulso audible y la vibración se usa solo cuando el dispositivo/navegador la admite. **Doble tempo** duplica el tempo de práctica mostrado, sin analizar ni sincronizar la pista externa. La disponibilidad, reproducción y restricciones de YouTube dependen de YouTube y del navegador.
+
+## Implementación y verificación
+
+Vanilla HTML, CSS y JavaScript, sin backend ni dependencias de build. La verificación del MVP incluyó `node --check app.js`, parseo HTML, y pruebas manuales en navegador de Tap Tempo, cambio de modo/subdivisión, revelado de rimas, registro/reset, validación de URL de YouTube y layout móvil. El reproductor aceptó la URL y abrió su marco; la reproducción externa/API no se pudo confirmar. No hubo errores de página/consola en la prueba de interacción.
 
 <!-- omgithub:readme:start -->
 ## 🚀 Build, play, and remix with OMGithub

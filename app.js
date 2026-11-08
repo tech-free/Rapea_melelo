@@ -1,0 +1,522 @@
+(() => {
+  'use strict';
+
+  const $ = (selector) => document.querySelector(selector);
+  const ui = {
+    tap: $('#tap-button'), bpm: $('#bpm-value'), tempoStatus: $('#tempo-status'),
+    tempoCaption: $('#tempo-caption'), beatBoxes: [...document.querySelectorAll('.beat')],
+    subdivisionButtons: [...document.querySelectorAll('[data-subdivision]')],
+    modeButtons: [...document.querySelectorAll('[data-mode]')], round: $('#round-count'),
+    promptLabel: $('#prompt-label'), promptIndex: $('#prompt-index'), promptWord: $('#prompt-word'),
+    promptHint: $('#prompt-hint'), rhymeList: $('#rhyme-list'), revealNote: $('#reveal-note'),
+    instruction: $('#instruction'), hit: $('#hit-button'), streak: $('#streak-value'),
+    hits: $('#hits-value'), best: $('#best-value'), reset: $('#reset-button'),
+    sound: $('#sound-toggle'), form: $('#youtube-form'), url: $('#youtube-url'),
+    playerFrame: $('#player-frame'), player: $('#youtube-player'),
+    playerStatus: $('#youtube-status'), closePlayer: $('#close-player'), toast: $('#toast'),
+  };
+  if (Object.values(ui).some((element) => !element)) return;
+
+  const STORAGE_KEY = 'rapea-session-v1';
+  const PROMPTS = {
+    esdrujulas: [
+      { word: 'MÁGICO', hint: 'Convertí una escena del barrio en algo imposible.', rhymes: ['trágico', 'clásico', 'básico', 'simbólico'] },
+      { word: 'ELÉCTRICO', hint: 'Que se sienta la energía en cada barra.', rhymes: ['métrico', 'simétrico', 'excéntrico', 'geométrico'] },
+      { word: 'RÁPIDO', hint: 'Una respuesta veloz, pero que diga algo.', rhymes: ['válido', 'cálido', 'pálido', 'sólido'] },
+      { word: 'CÁMARA', hint: 'Contá lo que pasa como si filmaras una escena.', rhymes: ['lámpara', 'pájara', 'máscara', 'náufraga'] },
+      { word: 'PÚBLICO', hint: 'Hablale a la plaza como si fuera una sola voz.', rhymes: ['músico', 'único', 'rústico', 'lúdico'] },
+      { word: 'LÓGICA', hint: 'Dale vuelta a una idea con un remate inesperado.', rhymes: ['simbólica', 'metáfora', 'histórica', 'caótica'] },
+      { word: 'BRÚJULA', hint: 'Perdete un segundo y encontrá tu propio norte.', rhymes: ['burbuja', 'aguja', 'dibujan', 'empujan'] },
+      { word: 'ESDRÚJULA', hint: 'Jugá con el acento y caé firme en el compás.', rhymes: ['película', 'partícula', 'ridícula', 'minúscula'] },
+    ],
+    doble: [
+      { word: 'EL BONDI', hint: 'Doble tempo: cada pulso tiene dos espacios.', rhymes: ['escondí', 'seguí', 'compartí', 'por aquí'] },
+      { word: 'LA VEREDA', hint: 'Meté dos sílabas por pulso y pintá la escena.', rhymes: ['moneda', 'rueda', 'queda', 'vereda'] },
+      { word: 'UN MATE', hint: 'Doble tempo: mantené el aire y cambiá el remate.', rhymes: ['debate', 'late', 'rescate', 'combate'] },
+      { word: 'LA PLAZA', hint: 'Hacé que responda el barrio, sin perder el pulso.', rhymes: ['amenaza', 'abraza', 'terraza', 'calabaza'] },
+      { word: 'EL POTRERO', hint: 'Dos golpes por pulso: jugá la barra de primera.', rhymes: ['compañero', 'sincero', 'sendero', 'aguacero'] },
+      { word: 'EL SUBTE', hint: 'Doble velocidad, con las palabras bien claras.', rhymes: ['rebote', 'bigote', 'fuerte', 'norte'] },
+      { word: 'EL BARRIO', hint: 'Contá una historia corta que tenga principio y giro.', rhymes: ['escenario', 'diario', 'horario', 'adversario'] },
+      { word: 'LA ESQUINA', hint: 'Doblá el ritmo y dejá que la imagen se defina.', rhymes: ['neblina', 'rutina', 'vecina', 'gasolina'] },
+    ],
+  };
+
+  const saved = readProgress();
+  const state = {
+    mode: 'esdrujulas', subdivision: 1, tapTimes: [], intervals: [], bpm: null,
+    running: false, timer: 0, tickTimerIds: new Set(), generation: 0,
+    nextTickAt: 0, tickNumber: 0, roundNumber: 0, currentPrompt: null,
+    rhymeRevealed: false, hitThisRound: false, streak: saved.streak,
+    hits: saved.hits, best: saved.best, soundOn: false, audio: null,
+    player: null, pendingMedia: null, apiState: 'idle', toastTimer: 0,
+  };
+
+  updateStats();
+  setMode('esdrujulas');
+  renderEmptyPrompt();
+  setTempoReady(false);
+  updateSoundButton();
+
+  ui.tap.addEventListener('click', handleTap);
+  ui.modeButtons.forEach((button) => button.addEventListener('click', () => setMode(button.dataset.mode)));
+  ui.subdivisionButtons.forEach((button) => button.addEventListener('click', () => {
+    state.subdivision = Number(button.dataset.subdivision);
+    ui.subdivisionButtons.forEach((item) => {
+      const selected = item === button;
+      item.classList.toggle('selected', selected);
+      item.setAttribute('aria-pressed', String(selected));
+    });
+    restartClockPhase();
+  }));
+  ui.hit.addEventListener('click', confirmHit);
+  ui.reset.addEventListener('click', resetSession);
+  ui.sound.addEventListener('click', toggleSound);
+  ui.form.addEventListener('submit', handleYouTubeSubmit);
+  ui.closePlayer.addEventListener('click', closeYouTubePlayer);
+
+  function readProgress() {
+    try {
+      const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      return {
+        streak: safeCount(value.streak), hits: safeCount(value.hits),
+        best: safeCount(value.best),
+      };
+    } catch (_) {
+      return { streak: 0, hits: 0, best: 0 };
+    }
+  }
+
+  function safeCount(value) {
+    return Number.isSafeInteger(value) && value >= 0 ? Math.min(value, 999999) : 0;
+  }
+
+  function saveProgress() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        streak: state.streak, hits: state.hits, best: state.best,
+      }));
+    } catch (_) {
+      // Private browsing or a full storage quota must not interrupt practice.
+    }
+  }
+
+  function handleTap() {
+    const now = performance.now();
+    pulseTapButton();
+    if (state.soundOn) resumeAudio();
+    if (state.tapTimes.length && now - state.tapTimes[state.tapTimes.length - 1] > 2200) {
+      state.tapTimes = [];
+      state.intervals = [];
+    }
+    if (state.tapTimes.length) {
+      const interval = now - state.tapTimes[state.tapTimes.length - 1];
+      if (interval >= 250 && interval <= 1500) {
+        state.intervals.push(interval);
+        state.intervals = state.intervals.slice(-6);
+        const estimate = estimateBpm(state.intervals);
+        if (estimate) {
+          state.bpm = estimate;
+          ui.bpm.textContent = String(estimate);
+          ui.tempoCaption.textContent = `Pulso estimado · ${effectiveTempo()} BPM de práctica`;
+          setTempoReady(true);
+          startClock();
+        }
+      } else if (interval > 1500) {
+        state.intervals = [];
+      }
+    }
+    state.tapTimes.push(now);
+    state.tapTimes = state.tapTimes.slice(-7);
+    if (!state.bpm) {
+      ui.tempoCaption.textContent = state.tapTimes.length > 1 ? 'Seguí tocando para fijar el pulso' : 'Tocá al ritmo de tu base';
+    }
+    if (navigator.vibrate) navigator.vibrate(8);
+  }
+
+  function estimateBpm(intervals) {
+    if (!intervals.length) return null;
+    const ordered = [...intervals].sort((a, b) => a - b);
+    const middle = Math.floor(ordered.length / 2);
+    const median = ordered.length % 2 ? ordered[middle] : (ordered[middle - 1] + ordered[middle]) / 2;
+    const reliable = intervals.filter((value) => Math.abs(value - median) <= median * 0.18);
+    const average = reliable.reduce((sum, value) => sum + value, 0) / reliable.length;
+    return Math.max(40, Math.min(240, Math.round(60000 / average)));
+  }
+
+  function effectiveTempo() {
+    return state.bpm ? state.bpm * (state.mode === 'doble' ? 2 : 1) : 0;
+  }
+
+  function setTempoReady(ready) {
+    ui.tempoStatus.classList.toggle('running', ready && state.running);
+    ui.tempoStatus.lastChild.textContent = ready ? (state.running ? 'EN MARCHA' : 'LISTO') : 'ESPERANDO';
+  }
+
+  function startClock() {
+    if (!state.bpm || state.running) return;
+    state.running = true;
+    state.generation += 1;
+    state.tickNumber = 0;
+    state.nextTickAt = performance.now() + 70;
+    setTempoReady(true);
+    ui.tempoCaption.textContent = `Pulso estimado · ${effectiveTempo()} BPM de práctica`;
+    scheduleLoop(state.generation);
+  }
+
+  function scheduleLoop(generation) {
+    if (!state.running || generation !== state.generation) return;
+    const now = performance.now();
+    const divisions = state.subdivision * (state.mode === 'doble' ? 2 : 1);
+    const stepMs = 60000 / state.bpm / divisions;
+    while (state.nextTickAt <= now + 100) {
+      if (state.nextTickAt < now - stepMs) state.nextTickAt = now + 8;
+      const scheduledAt = state.nextTickAt;
+      const tick = state.tickNumber++;
+      const beat = Math.floor(tick / divisions) % 4;
+      const isAccent = tick % divisions === 0;
+      queueTick(scheduledAt, beat, isAccent, generation);
+      if (state.soundOn) scheduleClick(scheduledAt, isAccent);
+      state.nextTickAt += stepMs;
+    }
+    state.timer = window.setTimeout(() => scheduleLoop(generation), 25);
+  }
+
+  function queueTick(time, beat, isAccent, generation) {
+    const delay = Math.max(0, time - performance.now());
+    const id = window.setTimeout(() => {
+      state.tickTimerIds.delete(id);
+      if (!state.running || generation !== state.generation) return;
+      renderBeat(beat, isAccent);
+      if (isAccent) onMainBeat(beat);
+    }, delay);
+    state.tickTimerIds.add(id);
+  }
+
+  function renderBeat(beat, isAccent) {
+    ui.beatBoxes.forEach((box, index) => {
+      box.classList.toggle('active', index === beat && isAccent);
+      box.classList.toggle('sub-beat', index === beat && !isAccent);
+    });
+  }
+
+  function onMainBeat(beat) {
+    if (beat === 0) {
+      state.roundNumber += 1;
+      state.currentPrompt = choosePrompt(state.mode);
+      state.rhymeRevealed = false;
+      state.hitThisRound = false;
+      ui.hit.disabled = true;
+      ui.round.textContent = `RONDA ${String(state.roundNumber).padStart(2, '0')}`;
+      ui.promptLabel.textContent = state.mode === 'esdrujulas' ? 'CONCEPTO · ACENTO EN LA ANTEPENÚLTIMA' : 'CONCEPTO · DOBLE TEMPO';
+      ui.promptIndex.textContent = `#${String(state.roundNumber).padStart(2, '0')}`;
+      ui.promptWord.textContent = state.currentPrompt.word;
+      ui.promptWord.classList.remove('pop');
+      void ui.promptWord.offsetWidth;
+      ui.promptWord.classList.add('pop');
+      ui.promptHint.textContent = state.currentPrompt.hint;
+      ui.instruction.textContent = state.mode === 'doble' ? 'Doblá las sílabas; el remate llega en el pulso 3.' : 'En el 1, agarrá el concepto. En el 3, buscá el remate.';
+      showEmptyRhymes();
+    }
+    if (beat === 2 && state.currentPrompt && !state.rhymeRevealed) revealRhymes();
+  }
+
+  function choosePrompt(mode) {
+    const choices = PROMPTS[mode].filter((item) => item !== state.currentPrompt);
+    return choices[Math.floor(Math.random() * choices.length)] || PROMPTS[mode][0];
+  }
+
+  function showEmptyRhymes() {
+    ui.rhymeList.replaceChildren(...Array.from({ length: 4 }, () => {
+      const chip = document.createElement('span');
+      chip.className = 'rhyme-chip empty-chip';
+      chip.textContent = '—';
+      return chip;
+    }));
+    ui.revealNote.textContent = 'APARECE EN EL TIEMPO 3';
+  }
+
+  function revealRhymes() {
+    state.rhymeRevealed = true;
+    ui.rhymeList.replaceChildren(...state.currentPrompt.rhymes.map((word, index) => {
+      const chip = document.createElement('span');
+      chip.className = 'rhyme-chip';
+      chip.textContent = word;
+      chip.style.transitionDelay = `${index * 45}ms`;
+      requestAnimationFrame(() => chip.classList.add('visible'));
+      return chip;
+    }));
+    ui.revealNote.textContent = '¡REMATE A TU MANERA!';
+    ui.hit.disabled = false;
+  }
+
+  function renderEmptyPrompt() {
+    ui.round.textContent = 'RONDA 01';
+    ui.promptLabel.textContent = 'TU CONCEPTO';
+    ui.promptIndex.textContent = '#01';
+    ui.promptWord.textContent = 'LISTA';
+    ui.promptHint.textContent = 'Marcá cuatro pulsos para empezar';
+    ui.instruction.textContent = 'En el 1, agarrá el concepto. En el 3, buscá el remate.';
+    ui.hit.disabled = true;
+    showEmptyRhymes();
+  }
+
+  function confirmHit() {
+    if (!state.rhymeRevealed || state.hitThisRound) return;
+    state.hitThisRound = true;
+    state.streak += 1;
+    state.hits += 1;
+    state.best = Math.max(state.best, state.streak);
+    updateStats();
+    saveProgress();
+    ui.hit.disabled = true;
+    ui.hit.innerHTML = 'REMATE GUARDADO <span>✓</span>';
+    window.setTimeout(() => { ui.hit.innerHTML = '¡LA EMBOQUÉ! <span>↗</span>'; }, 1100);
+    showToast('Una más para la racha. ¡Buen remate!');
+  }
+
+  function updateStats() {
+    ui.streak.textContent = String(state.streak);
+    ui.hits.textContent = String(state.hits);
+    ui.best.textContent = String(state.best);
+  }
+
+  function setMode(mode) {
+    if (!PROMPTS[mode]) return;
+    state.mode = mode;
+    document.body.classList.toggle('mode-double', mode === 'doble');
+    ui.modeButtons.forEach((button) => {
+      const active = button.dataset.mode === mode;
+      button.classList.toggle('active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+    if (state.bpm) ui.tempoCaption.textContent = `Pulso estimado · ${effectiveTempo()} BPM de práctica`;
+    restartClockPhase();
+  }
+
+  function restartClockPhase() {
+    if (!state.running) return;
+    state.generation += 1;
+    window.clearTimeout(state.timer);
+    state.tickTimerIds.forEach((id) => window.clearTimeout(id));
+    state.tickTimerIds.clear();
+    state.tickNumber = 0;
+    state.nextTickAt = performance.now() + 70;
+    scheduleLoop(state.generation);
+  }
+
+  function stopClock() {
+    state.running = false;
+    state.generation += 1;
+    window.clearTimeout(state.timer);
+    state.tickTimerIds.forEach((id) => window.clearTimeout(id));
+    state.tickTimerIds.clear();
+    ui.beatBoxes.forEach((box) => box.classList.remove('active', 'sub-beat'));
+    setTempoReady(Boolean(state.bpm));
+  }
+
+  function resetSession() {
+    stopClock();
+    state.tapTimes = [];
+    state.intervals = [];
+    state.bpm = null;
+    state.roundNumber = 0;
+    state.currentPrompt = null;
+    state.rhymeRevealed = false;
+    state.hitThisRound = false;
+    state.streak = 0;
+    state.hits = 0;
+    ui.bpm.textContent = '—';
+    ui.tempoCaption.textContent = 'Tocá al ritmo de tu base';
+    ui.hit.innerHTML = '¡LA EMBOQUÉ! <span>↗</span>';
+    renderEmptyPrompt();
+    updateStats();
+    saveProgress();
+    showToast('Sesión reiniciada. El récord queda guardado.');
+  }
+
+  function pulseTapButton() {
+    ui.tap.classList.add('pulse');
+    window.setTimeout(() => ui.tap.classList.remove('pulse'), 110);
+  }
+
+  function toggleSound() {
+    state.soundOn = !state.soundOn;
+    if (state.soundOn) resumeAudio();
+    updateSoundButton();
+    showToast(state.soundOn ? 'Metrónomo sonoro activado.' : 'Metrónomo sonoro silenciado.');
+  }
+
+  function updateSoundButton() {
+    ui.sound.classList.toggle('active', state.soundOn);
+    ui.sound.setAttribute('aria-pressed', String(state.soundOn));
+    ui.sound.setAttribute('aria-label', state.soundOn ? 'Silenciar metrónomo' : 'Activar metrónomo sonoro');
+    ui.sound.title = state.soundOn ? 'Silenciar metrónomo' : 'Activar metrónomo sonoro';
+  }
+
+  function resumeAudio() {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return;
+    try {
+      if (!state.audio) state.audio = new AudioContextClass();
+      if (state.audio.state === 'suspended') state.audio.resume();
+    } catch (_) {
+      // Visual timing remains available if Web Audio is unavailable.
+    }
+  }
+
+  function scheduleClick(time, accented) {
+    if (!state.audio || state.audio.state !== 'running') return;
+    try {
+      const oscillator = state.audio.createOscillator();
+      const gain = state.audio.createGain();
+      const start = state.audio.currentTime + Math.max(0, time - performance.now()) / 1000;
+      oscillator.type = 'sine';
+      oscillator.frequency.value = accented ? 880 : 590;
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(accented ? 0.11 : 0.055, start + 0.004);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.045);
+      oscillator.connect(gain);
+      gain.connect(state.audio.destination);
+      oscillator.start(start);
+      oscillator.stop(start + 0.05);
+      oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); };
+    } catch (_) {
+      // A missed sound must not stop the visual beat scheduler.
+    }
+  }
+
+  function showToast(message) {
+    ui.toast.textContent = message;
+    ui.toast.classList.add('show');
+    window.clearTimeout(state.toastTimer);
+    state.toastTimer = window.setTimeout(() => ui.toast.classList.remove('show'), 1900);
+  }
+
+  function handleYouTubeSubmit(event) {
+    event.preventDefault();
+    const media = parseYouTubeUrl(ui.url.value);
+    if (!media) {
+      ui.playerStatus.textContent = 'Ese link no parece un video o playlist compatible de YouTube.';
+      ui.url.focus();
+      return;
+    }
+    state.pendingMedia = media;
+    ui.playerFrame.hidden = false;
+    ui.playerStatus.textContent = media.type === 'playlist' ? 'Preparando playlist de YouTube…' : 'Preparando video de YouTube…';
+    if (state.player) {
+      try { state.player.destroy(); } catch (_) { /* Ignore stale player cleanup errors. */ }
+      state.player = null;
+    }
+    ui.player.replaceChildren();
+    loadYouTubeApi();
+  }
+
+  function parseYouTubeUrl(value) {
+    const raw = String(value || '').trim();
+    if (!raw || raw.length > 2048) return null;
+    let url;
+    try {
+      url = new URL(/^[a-z][a-z\d+.-]*:/i.test(raw) ? raw : `https://${raw}`);
+    } catch (_) {
+      return null;
+    }
+    if (!['https:', 'http:'].includes(url.protocol) || url.username || url.password) return null;
+    const host = url.hostname.toLowerCase().replace(/\.$/, '');
+    const isYoutube = host === 'youtube.com' || host.endsWith('.youtube.com');
+    const isShort = host === 'youtu.be';
+    if (!isYoutube && !isShort) return null;
+    const playlistId = url.searchParams.get('list');
+    const validPlaylist = playlistId && /^[A-Za-z0-9_-]{10,120}$/.test(playlistId);
+    let videoId = '';
+    if (isShort) videoId = url.pathname.split('/').filter(Boolean)[0] || '';
+    else if (url.pathname === '/watch') videoId = url.searchParams.get('v') || '';
+    else {
+      const match = url.pathname.match(/^\/(?:embed|shorts|live)\/([A-Za-z0-9_-]{11})(?:\/|$)/);
+      if (match) videoId = match[1];
+    }
+    if (/^[A-Za-z0-9_-]{11}$/.test(videoId)) return { type: 'video', id: videoId };
+    if (validPlaylist) return { type: 'playlist', id: playlistId };
+    return null;
+  }
+
+  function loadYouTubeApi() {
+    if (window.YT && window.YT.Player) {
+      createYouTubePlayer();
+      return;
+    }
+    if (state.apiState === 'loading') return;
+    state.apiState = 'loading';
+    const previousCallback = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => {
+      if (typeof previousCallback === 'function') {
+        try { previousCallback(); } catch (_) { /* Do not block this player. */ }
+      }
+      state.apiState = 'ready';
+      createYouTubePlayer();
+    };
+    let script = document.querySelector('script[data-rapea-youtube-api]');
+    if (!script) {
+      script = document.createElement('script');
+      script.src = 'https://www.youtube.com/iframe_api';
+      script.async = true;
+      script.dataset.rapeaYoutubeApi = 'true';
+      script.onerror = () => {
+        state.apiState = 'idle';
+        ui.playerStatus.textContent = 'No se pudo conectar con YouTube. Podés seguir practicando sin el reproductor.';
+      };
+      document.head.append(script);
+    }
+    window.setTimeout(() => {
+      if (state.apiState === 'loading') {
+        state.apiState = 'idle';
+        ui.playerStatus.textContent = 'YouTube tarda en responder o está bloqueado. Volvé a cargar el link para reintentar.';
+      }
+    }, 12000);
+  }
+
+  function createYouTubePlayer() {
+    if (!state.pendingMedia || !window.YT || !window.YT.Player) return;
+    state.apiState = 'ready';
+    const media = state.pendingMedia;
+    try {
+      state.player = new window.YT.Player(ui.player, {
+        width: '100%', height: '100%',
+        playerVars: { autoplay: 0, controls: 1, playsinline: 1, rel: 0 },
+        events: {
+          onReady(event) {
+            if (state.pendingMedia !== media) return;
+            if (media.type === 'video') event.target.cueVideoById(media.id);
+            else event.target.cuePlaylist({ listType: 'playlist', list: media.id, index: 0 });
+            ui.playerStatus.textContent = 'Reproductor listo. Iniciá el video con sus controles; el TAP sigue independiente.';
+          },
+          onError(event) {
+            const messages = {
+              2: 'YouTube rechazó el identificador del video o playlist.',
+              5: 'Este video no se puede reproducir en el reproductor HTML5.',
+              100: 'El video no existe o no está disponible.',
+              101: 'El dueño del video no permite reproducirlo en este reproductor.',
+              150: 'El dueño del video no permite reproducirlo en este reproductor.',
+              153: 'YouTube no pudo validar esta solicitud. Probá desde un sitio publicado.',
+            };
+            ui.playerStatus.textContent = messages[event.data] || 'YouTube no pudo cargar ese contenido; probá otro link.';
+          },
+        },
+      });
+      ui.playerStatus.textContent = 'Conectando con el reproductor oficial de YouTube…';
+    } catch (_) {
+      state.player = null;
+      ui.playerStatus.textContent = 'No se pudo iniciar YouTube en este navegador. El entrenamiento sigue disponible.';
+    }
+  }
+
+  function closeYouTubePlayer() {
+    if (state.player) {
+      try { state.player.destroy(); } catch (_) { /* Ignore stale player cleanup errors. */ }
+    }
+    state.player = null;
+    state.pendingMedia = null;
+    ui.player.replaceChildren();
+    ui.playerFrame.hidden = true;
+    ui.playerStatus.textContent = 'El beat suena por YouTube; el TAP marca un metrónomo independiente.';
+  }
+})();
