@@ -15,7 +15,9 @@ El botón de sonido activa el pulso audible y la vibración se usa solo cuando e
 
 ## Implementación y verificación
 
-Vanilla HTML, CSS y JavaScript, sin backend ni dependencias de build. La verificación del MVP incluyó `node --check app.js`, parseo HTML, y pruebas manuales en navegador de Tap Tempo, cambio de modo/subdivisión, revelado de rimas, registro/reset, validación de URL de YouTube y layout móvil. El reproductor aceptó la URL y abrió su marco; la reproducción externa/API no se pudo confirmar. No hubo errores de página/consola en la prueba de interacción.
+Vanilla HTML, CSS y JavaScript, sin backend ni dependencias de build. El vocabulario local y su contrato están en `data/vocabulary.json` y `data/vocabulary.schema.json`; los metadatos de pronunciación/rima permanecen pendientes (`null`) hasta revisión humana. Para validar el dataset y correr sus pruebas, instalá la dependencia opcional de desarrollo `python3 -m pip install jsonschema` y ejecutá `python3 scripts/validate-vocabulary.py` y `python3 -m unittest discover -s tests -v`. Esto no agrega dependencias a la app estática.
+
+La verificación del MVP también incluyó `node --check app.js`, parseo HTML, y pruebas manuales en navegador de Tap Tempo, cambio de modo/subdivisión, revelado de rimas, registro/reset, validación de URL de YouTube y layout móvil. El reproductor aceptó la URL y abrió su marco; la reproducción externa/API no se pudo confirmar. No hubo errores de página/consola en la prueba de interacción.
 
 <!-- omgithub:readme:start -->
 ## 🚀 Build, play, and remix with OMGithub

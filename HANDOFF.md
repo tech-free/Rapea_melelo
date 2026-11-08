@@ -2,7 +2,8 @@
 
 ## Estado
 
-- R2 reloj cuantizado terminado y verificado; implementación y documentación incluidas en el checkpoint de esta tarea. El scheduler comparte la rejilla para beat/subdivisión/acento, usa lookahead acotado y descarta ticks vencidos tras atrasos; los cambios de BPM preservan el tick y una fase fraccional aproximada. Pruebas deterministas en Playwright cubrieron tempo cambiante, modo/subdivisión, atraso simulado de 5 s, reset y cero errores de página/consola. Pasaron `node --check app.js` y parseo HTML; captura inspeccionada: `screenshots/r2-clock.png` (ignorada por Git).
+- R3 esquema de vocabulario local terminado: Draft 2020-12, 16 estímulos iniciales, metadatos fonéticos pendientes (`null`) y validador para estructura/IDs/índice de acento. Pasaron `python3 scripts/validate-vocabulary.py`, cinco pruebas `unittest`, `node --check app.js`, parseo JSON y `git diff --check`. Preview Playwright en `http://localhost:3002` cargó con cero errores/avisos; captura inspeccionada: `screenshots/r3-vocabulary.png` (ignorada por Git). La app no incorpora dependencia; `jsonschema` solo se necesita para validar.
+- R2 reloj cuantizado terminado y verificado; implementación y documentación incluidas en el checkpoint de esa tarea. El scheduler comparte la rejilla para beat/subdivisión/acento, usa lookahead acotado y descarta ticks vencidos tras atrasos; los cambios de BPM preservan el tick y una fase fraccional aproximada. Pruebas deterministas en Playwright cubrieron tempo cambiante, modo/subdivisión, atraso simulado de 5 s, reset y cero errores de página/consola. Pasaron `node --check app.js` y parseo HTML; captura inspeccionada: `screenshots/r2-clock.png` (ignorada por Git).
 - R1 Tap Tempo verificado y checkpointed en `4000a98` (`fix(tempo): filtrar taps erráticos y recuperar pulso [R1]`), publicado fast-forward en `main`. La prueba cubrió filtro de outliers, adopción de un nuevo pulso, rechazo de taps rápidos, límites de 40–240 BPM y recuperación tras pausas. Captura: `screenshots/r1-tap-tempo.png`; consola: 0 mensajes.
 - MVP terminado en la branch `opencode/42458663446`; commit `8cf73b8` (`feat(mvp): crear gimnasio de freestyle argentino`) se publicó fast-forward en `main` correctamente.
 - Se registró la nueva propuesta REA en `roadmap/REA.md`: mapa de 20 capas, backlog incremental y cautelas técnicas/de alcance. No se implementó el código ilustrativo recibido.
@@ -26,5 +27,7 @@
 
 ## Próximo
 
-- Próximo loop: habilitar autenticación de `gh` para censar issues (bloqueado por falta de sesión autenticada); después tomar R3, esquema de vocabulario local, de `roadmap/REA.md` como tarea independiente.
+- Censo de issues y forensis siguen bloqueados hasta autenticar `gh`; no se cerraron issues.
+- R3 queda completado y checkpointed. R4 requiere revisión humana de ejemplos rioplatenses antes de completar fonética o ampliar datos; mantener los campos revisados como `null` mientras no haya esa revisión.
+- `jsonschema` se usa solo para validar datos, no para ejecutar la app. Comandos y alcance en `README.md`.
 - No asumir sincronización con YouTube, precisión de audio milimétrica ni la veracidad de afirmaciones no verificadas sobre competidores.

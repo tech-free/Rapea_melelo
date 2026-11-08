@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "id": "magico",
+      "term": "MÁGICO",
+      "syllables": null,
+      "stressSyllable": null,
+      "phoneticFamily": null,
+      "label": "esdrújula",
+      "variant": { "locale": "es-AR" },
+      "reviewStatus": "pending"
+    },
+    {
+      "id": "electrico",
+      "term": "ELÉCTRICO",
+      "syllables": null,
+      "stressSyllable": null,
+      "phoneticFamily": null,
+      "label": "esdrújula",
+      "variant": { "locale": "es-AR" },
+      "reviewStatus": "pending"
+    },
+    {
+      "id": "rapido",
+      "term": "RÁPIDO",
+      "syllables": null,
+      "stressSyllable": null,
+      "phoneticFamily": null,
+      "label": "esdrújula",
+      "variant": { "locale": "es-AR" },
+      "reviewStatus": "pending"
+    },
+    {
+      "id": "camara",
+      "term": "CÁMARA",
+      "syllables": null,
+      "stressSyllable": null,
+      "phoneticFamily": null,
+      "label": "esdrújula",
+      "variant": { "locale": "es-AR" },
+      "reviewStatus": "pending"
+    },
+    {
+      "id": "publico",
+      "term": "PÚBLICO",
+      "syllables": null,
+      "stressSyllable": null,
+      "phoneticFamily": null,
+      "label": "esdrújula",
+      "variant": { "locale": "es-AR" },
+      "reviewStatus": "pending"
+    },
+    {
+      "id": "logica",
+      "term": "LÓGICA",
+      "syllables": null,
+      "stressSyllable": null,
+      "phoneticFamily": null,
+      "label": "esdrújula",
+      "variant": { "locale": "es-AR" },
+      "reviewStatus": "pending"
+    },
+    {
+      "id": "brujula",
+      "term": "BRÚJULA",
+      "syllables": null,
+      "stressSyllable": null,
+      "phoneticFamily": null,
+      "label": "esdrújula",
+      "variant": { "locale": "es-AR" },
+      "reviewStatus": "pending"
+    },
+    {
+      "id": "esdrujula",
+      "term": "ESDRÚJULA",
+      "syllables": null,
+      "stressSyllable": null,
+      "phoneticFamily": null,
+      "label": "esdrújula",
+      "variant": { "locale": "es-AR" },
+      "reviewStatus": "pending"
+    },
+    {
+      "id": "el-bondi",
+      "term": "EL BONDI",
+      "syllables": null,
+      "stressSyllable": null,
+      "phoneticFamily": null,
+      "label": "doble-tempo",
+      "variant": { "locale": "es-AR", "region": "Argentina" },
+      "reviewStatus": "pending"
+    },
+    {
+      "id": "la-vereda",
+      "term": "LA VEREDA",
+      "syllables": null,
+      "stressSyllable": null,
+      "phoneticFamily": null,
+      "label": "doble-tempo",
+      "variant": { "locale": "es-AR" },
+      "reviewStatus": "pending"
+    },
+    {
+      "id": "un-mate",
+      "term": "UN MATE",
+      "syllables": null,
+      "stressSyllable": null,
+      "phoneticFamily": null,
+      "label": "doble-tempo",
+      "variant": { "locale": "es-AR", "region": "Argentina" },
+      "reviewStatus": "pending"
+    },
+    {
+      "id": "la-plaza",
+      "term": "LA PLAZA",
+      "syllables": null,
+      "stressSyllable": null,
+      "phoneticFamily": null,
+      "variant": { "locale": "es-AR" },
+      "reviewStatus": "pending"
+    },
+    {
+      "id": "el-potrero",
+      "term": "EL POTRERO",
+      "syllables": null,
+      "stressSyllable": null,
+      "phoneticFamily": null,
+      "label": "doble-tempo",
+      "variant": { "locale": "es-AR", "region": "Argentina" },
+      "reviewStatus": "pending"
+    },
+    {
+      "id": "el-subte",
+      "term": "EL SUBTE",
+      "syllables": null,
+      "stressSyllable": null,
+      "phoneticFamily": null,
+      "label": "doble-tempo",
+      "variant": { "locale": "es-AR", "region": "Argentina" },
+      "reviewStatus": "pending"
+    },
+    {
+      "id": "el-barrio",
+      "term": "EL BARRIO",
+      "syllables": null,
+      "stressSyllable": null,
+      "phoneticFamily": null,
+      "label": "doble-tempo",
+      "variant": { "locale": "es-AR" },
+      "reviewStatus": "pending"
+    },
+    {
+      "id": "la-esquina",
+      "term": "LA ESQUINA",
+      "syllables": null,
+      "stressSyllable": null,
+      "phoneticFamily": null,
+      "variant": { "locale": "es-AR" },
+      "reviewStatus": "pending"
+    }
+  ]
+}

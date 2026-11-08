@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rapea.local/schema/vocabulary.schema.json",
+  "title": "Rapea local vocabulary",
+  "description": "Versioned, locally stored vocabulary records for Argentine freestyle practice. Phonetic fields remain null until reviewed by a person.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "entries"],
+  "properties": {
+    "schemaVersion": {
+      "const": 1,
+      "description": "Increment when the dataset contract changes."
+    },
+    "entries": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/entry" },
+      "description": "Entry IDs must be unique. JSON Schema cannot enforce uniqueness of one property across records."
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "term",
+        "syllables",
+        "stressSyllable",
+        "phoneticFamily",
+        "variant",
+        "reviewStatus"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "description": "Stable, lowercase kebab-case identifier."
+        },
+        "term": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*",
+          "description": "Display form; preserve accents and capitalization as curated."
+        },
+        "syllables": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string", "minLength": 1 }
+            }
+          ],
+          "description": "Reviewed syllable segmentation, or null until reviewed."
+        },
+        "stressSyllable": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "integer", "minimum": 1 }
+          ],
+          "description": "One-based index into syllables, or null until reviewed. Must not exceed the syllable count."
+        },
+        "phoneticFamily": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "string", "minLength": 1 }
+          ],
+          "description": "Human-curated rhyme-family key, or null until reviewed. Not an automatic phonetic claim."
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional editorial category, such as a topic or challenge type."
+        },
+        "variant": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["locale"],
+          "properties": {
+            "locale": {
+              "const": "es-AR",
+              "description": "Argentine Spanish locale."
+            },
+            "region": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional, human-reviewed regional note; omit when not established."
+            },
+            "notes": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional editorial note about the Argentine usage or pronunciation."
+            }
+          }
+        },
+        "reviewStatus": {
+          "enum": ["pending", "reviewed"],
+          "description": "Reviewed records require syllables, stress, and a phonetic-family key."
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "reviewStatus": { "const": "reviewed" } } },
+          "then": {
+            "properties": {
+              "syllables": { "type": "array", "minItems": 1 },
+              "stressSyllable": { "type": "integer", "minimum": 1 },
+              "phoneticFamily": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "syllables": { "type": "array" } } },
+          "then": { "properties": { "stressSyllable": { "type": "integer", "minimum": 1 } } }
+        },
+        {
+          "if": { "properties": { "syllables": { "type": "null" } } },
+          "then": { "properties": { "stressSyllable": { "type": "null" } } }
+        }
+      ],
+      "$comment": "Additional semantic checks: IDs are unique within entries; a non-null stressSyllable must be <= syllables.length. Review pronunciation and rhyme-family membership with Argentine speakers before marking reviewed."
+    }
+  }
+}

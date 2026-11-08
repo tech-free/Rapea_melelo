@@ -15,9 +15,14 @@
 - `gh auth status` sigue sin autenticar; censo de issues y forensis de threads quedan bloqueados por esa limitación. No se cerraron issues.
 - Branch actual `opencode/42520509585`; commits del BOOT listos para publicar fast-forward a `main`.
 
-## En progreso — R3
+## Cierre — R3
 
-- Definir un esquema pequeño y validable para vocabulario local, sin incorporar ejemplos fonéticos no revisados.
-- Inspeccionar cómo `app.js` consume el vocabulario actual y elegir estructura compatible con la app estática.
-- Añadir datos/metadatos mínimos y validaciones o pruebas deterministas del esquema.
-- Verificar sintaxis, interfaz en Playwright y consola; actualizar `roadmap/REA.md`, documentación de uso si cambia y este handoff al cerrar.
+- Contrato `data/vocabulary.schema.json` con JSON Schema Draft 2020-12 y registros iniciales en `data/vocabulary.json`; conserva `syllables`, `stressSyllable` y `phoneticFamily` como `null` con `reviewStatus: pending` hasta revisión humana.
+- `scripts/validate-vocabulary.py` verifica el contrato y las invariantes no expresables en JSON Schema: IDs únicos/formato kebab-case y acento dentro del recuento silábico. `tests/test_vocabulary.py` cubre el dataset válido, duplicados, IDs malformados, acento fuera de rango y entradas/campos incompletos.
+- Documentados dependencia opcional/comandos en `README.md`; R3 marcado en `roadmap/REA.md`. No se conectó el JSON a `app.js` ni se agregaron datos de rimas.
+- Verificación: validator, cinco pruebas unittest, sintaxis JS, parseo JSON, `git diff --check`; navegador local visible y consola sin errores/avisos. Captura inspeccionada en `screenshots/r3-vocabulary.png` (ignorada).
+- Censo de issues continúa bloqueado: `gh auth status` no encuentra sesión autenticada.
+
+## Siguiente
+
+- R4 exige revisión humana de ejemplos rioplatenses; no marcar fonética como revisada ni agregar rimas antes de esa revisión. Resolver el censo de issues cuando haya autenticación de `gh`.
