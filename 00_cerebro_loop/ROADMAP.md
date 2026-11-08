@@ -7,4 +7,5 @@ Fuente de verdad detallada: `roadmap/REA.md` y `roadmap/MVP.md`.
 - [x] R2: reloj cuantizado con cambios de tempo y atraso acotado.
 - [x] R3: esquema de vocabulario local.
 - [ ] R4: curar ejemplos rioplatenses con revisión humana.
-- [ ] R5–R10: subdivisiones, accesibilidad, patrones, repetición, métricas locales y verificación acumulada; ver `roadmap/REA.md`.
+- [x] R5: golpes por pulso base y compás según modo/subdivisión, documentados y verificados en escritorio/móvil.
+- [ ] R6–R10: accesibilidad, patrones, repetición, métricas locales y verificación acumulada; ver `roadmap/REA.md`.

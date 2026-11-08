@@ -4,7 +4,8 @@
   const $ = (selector) => document.querySelector(selector);
   const ui = {
     tap: $('#tap-button'), bpm: $('#bpm-value'), tempoStatus: $('#tempo-status'),
-    tempoCaption: $('#tempo-caption'), beatBoxes: [...document.querySelectorAll('.beat')],
+    tempoCaption: $('#tempo-caption'), clockExplanation: $('#clock-explanation'),
+    beatBoxes: [...document.querySelectorAll('.beat')],
     subdivisionButtons: [...document.querySelectorAll('[data-subdivision]')],
     modeButtons: [...document.querySelectorAll('[data-mode]')], round: $('#round-count'),
     promptLabel: $('#prompt-label'), promptIndex: $('#prompt-index'), promptWord: $('#prompt-word'),
@@ -67,6 +68,7 @@
       item.classList.toggle('selected', selected);
       item.setAttribute('aria-pressed', String(selected));
     });
+    updateClockExplanation();
     restartClockPhase();
   }));
   ui.hit.addEventListener('click', confirmHit);
@@ -182,6 +184,13 @@
   function setTempoReady(ready) {
     ui.tempoStatus.classList.toggle('running', ready && state.running);
     ui.tempoStatus.lastChild.textContent = ready ? (state.running ? 'EN MARCHA' : 'LISTO') : 'ESPERANDO';
+  }
+
+  function updateClockExplanation() {
+    const modeFactor = state.mode === 'doble' ? 2 : 1;
+    const hitsPerBeat = state.subdivision * modeFactor;
+    const hitLabel = hitsPerBeat === 1 ? 'golpe' : 'golpes';
+    ui.clockExplanation.textContent = `Cuenta: subdivisión ×${state.subdivision} × dinámica ×${modeFactor} = ${hitsPerBeat} ${hitLabel} por pulso base; ${hitsPerBeat * 4} por compás 4/4.`;
   }
 
   function clockGrid(tick) {
@@ -368,6 +377,7 @@
       button.classList.toggle('active', active);
       button.setAttribute('aria-pressed', String(active));
     });
+    updateClockExplanation();
     if (state.bpm) ui.tempoCaption.textContent = `Pulso estimado · ${effectiveTempo()} BPM de práctica`;
     restartClockPhase();
   }
