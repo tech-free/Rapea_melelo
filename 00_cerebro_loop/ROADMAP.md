@@ -1,11 +1,20 @@
-# Roadmap del loop
+# ROADMAP DEL PROYECTO
+*Marcar con [x] lo completado, [~] en progreso, [ ] pendiente.*
 
-Fuente de verdad detallada: `roadmap/REA.md` y `roadmap/MVP.md`.
+## 🚀 Funcionalidades Principales
+- [x] MVP: Gimnasio web local-first de freestyle argentino con Tap Tempo, compás/subdivisiones, desafíos, rimas y reproductor oficial de YouTube; uso y límites documentados en `README.md` y `roadmap/MVP.md`.
+- [x] R1–R3: Tap Tempo resistente, reloj cuantizado y esquema/validador de vocabulario local; detalles y pruebas en `roadmap/REA.md`.
+- [ ] R4: Curar y revisar humanamente un lote pequeño de ejemplos rioplatenses antes de completar sílabas, acentos o familias fonéticas.
+- [x] R5–R6: Explicar golpes por pulso/compás y añadir mejoras de accesibilidad, foco visible y vibración manual opcional; verificación móvil y evidencia en `screenshots/r6-mobile.jpg`.
+- [ ] R7: Añadir patrones de rima o desafíos de remate opcionales con reglas claras y vocabulario validado.
+- [ ] R8–R10: Reducir repeticiones, revisar métricas locales voluntarias y verificar el conjunto acumulado en navegador, teclado y móvil; sin audio grabado ni telemetría remota.
 
-- [x] MVP jugable de entrenamiento de freestyle argentino, verificado y documentado.
-- [x] R1: Tap Tempo resistente a outliers y pausas.
-- [x] R2: reloj cuantizado con cambios de tempo y atraso acotado.
-- [x] R3: esquema de vocabulario local.
-- [ ] R4: curar ejemplos rioplatenses con revisión humana.
-- [x] R5: golpes por pulso base y compás según modo/subdivisión, documentados y verificados en escritorio/móvil.
-- [ ] R6–R10: accesibilidad, patrones, repetición, métricas locales y verificación acumulada; ver `roadmap/REA.md`.
+## 🛠️ Deuda Técnica y Mantenimiento (Tareas [C])
+- [ ] Mantener coherentes código, documentación y pruebas en cada cambio; no asumir que existen artefactos `dist/`.
+- [ ] Revisar accesos a datos externos o anulables y aplicar guardas/optional chaining donde corresponda; `state` de la app se inicializa de forma explícita, no convertir sus accesos internos a ciegas.
+- [x] Revisar `console.log` en archivos JavaScript de producción: no se encontraron coincidencias en la última auditoría; repetir al tocar código.
+- [ ] En cambios interactivos, ejecutar la app en navegador, probar teclado/táctil y viewport móvil, y revisar errores/avisos de consola.
+
+## 🐛 Bugs Conocidos
+- [x] No hay bugs confirmados pendientes registrados. La emulación de `navigator.vibrate` no demuestra respuesta háptica física; la vibración es opcional y Tap Tempo no depende de ella.
+- [ ] Limitación de contenido: la curación fonética R4 necesita revisión humana; no completar pronunciaciones o rimas por inferencia.

@@ -1,4 +1,8 @@
-# HANDOFF del loop
+# HANDOFF (Estado Actual)
+- **Última acción completada:** Se actualizó `00_cerebro_loop/ROADMAP.md` al formato de funcionalidades, mantenimiento y bugs; se adaptaron `TODO.md` y este handoff para reflejar bloqueos y próximos pasos.
+- **Estado del build/navegador:** Build estático sin pipeline. Validador del vocabulario, cinco pruebas `unittest`, `node --check app.js` y `git diff --check` pasaron. Preview en `http://localhost:3002` cargó el juego completo; Playwright reportó 0 errores y 0 avisos.
+- **Decisiones de diseño tomadas:** R4 queda a la espera de revisión humana; no completar sílabas, acentos ni familias fonéticas por inferencia. No convertir accesos al `state` inicializado en optional chaining indiscriminadamente. El censo de issues sigue bloqueado por falta de autenticación `gh`.
+- **PRÓXIMO PASO INMEDIATO:** Proponer 2–3 referencias concretas, accesibles y comparables para el Gauntlet Loop; esperar que el usuario elija una antes de redactar el prompt. En producto, R4 requiere revisión humana.
 
 ## Cierre R6 — 9 nov 2026
 
