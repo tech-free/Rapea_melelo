@@ -1,8 +1,39 @@
 # HANDOFF (Estado Actual)
-- **Última acción completada:** Se actualizó `00_cerebro_loop/ROADMAP.md` al formato de funcionalidades, mantenimiento y bugs; se adaptaron `TODO.md` y este handoff para reflejar bloqueos y próximos pasos.
-- **Estado del build/navegador:** Build estático sin pipeline. Validador del vocabulario, cinco pruebas `unittest`, `node --check app.js` y `git diff --check` pasaron. Preview en `http://localhost:3002` cargó el juego completo; Playwright reportó 0 errores y 0 avisos.
-- **Decisiones de diseño tomadas:** R4 queda a la espera de revisión humana; no completar sílabas, acentos ni familias fonéticas por inferencia. No convertir accesos al `state` inicializado en optional chaining indiscriminadamente. El censo de issues sigue bloqueado por falta de autenticación `gh`.
-- **PRÓXIMO PASO INMEDIATO:** Proponer 2–3 referencias concretas, accesibles y comparables para el Gauntlet Loop; esperar que el usuario elija una antes de redactar el prompt. En producto, R4 requiere revisión humana.
+
+## Última acción completada
+Revisados los checkpoints 9 y 10 sin merge: el 9 propone una variante acotada de R7; el 10 la revierte y cambia reglas operativas. No se rescata R7 en esta tarea de fundación ni se adoptan cambios que borrarían bloqueos humanos vigentes.
+
+## Estado del build/navegador
+🟢 Verificación actual: validador del vocabulario, cinco pruebas `unittest`, `node --check app.js` y `git diff --check` pasaron. Playwright cargó el juego completo, se probó Doble tempo, subdivisión ×2 y taps manuales (121 BPM); luego se restauraron los controles iniciales. Consola: 0 errores y 0 avisos. Captura visual inspeccionada: `screenshots/foundation-audit.png`.
+
+## Decisiones de diseño tomadas
+- Preservar el juego y las memorias existentes; no reemplazar ROADMAP/TODO/CEMETERY por plantillas vacías.
+- R4 espera revisión humana; no inferir sílabas, acentos ni familias fonéticas.
+- El protocolo del usuario se conserva como texto solicitado; las instrucciones de AGENTS.md siguen disponibles como referencia técnica de entorno.
+- No incorporar ahora la variante R7 de `origin/opencode-checkpoints/9`; R7 permanece pendiente en ROADMAP. No se decide aquí su rescate o descarte futuro.
+- No adoptar los cambios operativos de `origin/opencode-checkpoints/10` que eliminan bloqueos humanos. La comparación del checkpoint 9 también reportó un espacio en blanco final en `todo.md`; no se incorpora ese archivo.
+
+## PRÓXIMO PASO INMEDIATO
+Completar la revisión final del diff y repetir los gates documentales/app; crear un commit atómico y publicar a `main` solo si todo sigue verde y el avance es fast-forward.
+
+## Contexto importante
+- El repositorio es una app estática de freestyle argentino; el juego ya existe y es jugable.
+- El censo remoto de issues continúa bloqueado por falta de autenticación `gh`; no ejecutar `gh` según la solicitud de fundación.
+- No hay pipeline de build y no existen artefactos `dist/` que deban sincronizarse.
+
+## Plan de esta tarea
+1. Anteponer la regla suprema a `AGENTS.md` sin borrar sus instrucciones técnicas.
+2. Alinear las plantillas del cerebro con el estado real y conservar el historial útil.
+3. Revisar los checkpoints 9 y 10 sin merge, y registrar la decisión sobre R7 y los bloqueos humanos.
+4. Verificar documentación, sintaxis/dataset/pruebas y el juego visible en Playwright.
+5. Revisar el diff completo y crear commit atómico; publicar solo tras confirmar avance fast-forward.
+
+---
+
+## Registro previo de estado
+- Última revisión: Se actualizó `00_cerebro_loop/ROADMAP.md` al formato de funcionalidades, mantenimiento y bugs; se adaptaron `TODO.md` y este handoff para reflejar bloqueos y próximos pasos.
+- El estado histórico de decisiones incluye revisión humana pendiente para R4, accesos internos al `state` inicializado y censo de issues bloqueado por falta de autenticación.
+- Próximo trabajo de producto: proponer 2–3 referencias concretas y accesibles para el Gauntlet Loop y esperar elección; R4 requiere revisión humana.
 
 ## Cierre R6 — 9 nov 2026
 
