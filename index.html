@@ -17,7 +17,10 @@
     <header class="topbar">
       <a class="brand" href="#" aria-label="Rapea inicio"><span class="brand-mark">R</span><span>RAPEA<span class="brand-dot">.</span></span></a>
       <div class="top-meta"><span class="live-dot"></span><span>GIMNASIO DE FREESTYLE</span></div>
-      <button id="sound-toggle" class="icon-button" type="button" aria-label="Activar metrónomo sonoro" title="Activar metrónomo sonoro">♫</button>
+      <div class="header-controls" role="group" aria-label="Opciones de pulso">
+        <button id="sound-toggle" class="icon-button" type="button" aria-label="Activar metrónomo sonoro" aria-pressed="false" title="Activar metrónomo sonoro">♫</button>
+        <button id="vibration-toggle" class="icon-button" type="button" aria-label="Activar vibración en cada tap manual" aria-pressed="false" title="Solicitar vibración al tocar (si el navegador lo permite)">〰</button>
+      </div>
     </header>
 
     <main>
@@ -72,6 +75,7 @@
           <button id="tap-button" type="button" class="tap-button"><span class="tap-rings" aria-hidden="true"><i></i><i></i><i></i></span><span class="tap-label">TAP</span><span class="tap-subtitle">TOCÁ AL RITMO</span></button>
           <div class="tempo-controls"><label for="subdivision">SUBDIVISIÓN</label><div class="segmented" id="subdivision"><button type="button" data-subdivision="1" class="selected" aria-pressed="true">×1</button><button type="button" data-subdivision="2" aria-pressed="false">×2</button><button type="button" data-subdivision="4" aria-pressed="false">×4</button></div></div>
           <p class="clock-explanation" id="clock-explanation" role="status" aria-live="polite" aria-atomic="true"></p>
+          <p class="clock-note">El pulso visual es orientativo: puede demorarse y no sincroniza el beat externo.</p>
           <button id="reset-button" type="button" class="text-button">↻ <span>REINICIAR SESIÓN</span></button>
           <div class="session-stats"><div><strong id="streak-value">0</strong><span>RACHA</span></div><div><strong id="hits-value">0</strong><span>REMATES</span></div><div><strong id="best-value">0</strong><span>RÉCORD</span></div></div>
         </aside>

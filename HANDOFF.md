@@ -1,5 +1,9 @@
 # HANDOFF
 
+## En progreso
+
+- R6: hacer explícita la vibración opcional (solo en el tap manual), mejorar el foco de teclado y el contraste del compás, y aclarar que el pulso visual es aproximado. Verificar control compatible/no compatible en Playwright, consola, build checks y captura.
+
 ## Estado
 
 - R3 esquema de vocabulario local terminado: Draft 2020-12, 16 estímulos iniciales, metadatos fonéticos pendientes (`null`) y validador para estructura/IDs/índice de acento. Pasaron `python3 scripts/validate-vocabulary.py`, cinco pruebas `unittest`, `node --check app.js`, parseo JSON y `git diff --check`. Preview Playwright en `http://localhost:3002` cargó con cero errores/avisos; captura inspeccionada: `screenshots/r3-vocabulary.png` (ignorada por Git). La app no incorpora dependencia; `jsonschema` solo se necesita para validar.
