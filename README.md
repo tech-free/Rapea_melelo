@@ -11,7 +11,7 @@ Abrí `index.html` en un navegador moderno o serví esta carpeta localmente (por
 3. Tocá **La hice** si querés registrar voluntariamente tu ronda. Las rachas y el récord se guardan localmente en este navegador; no se escucha ni puntúa la voz.
 4. Opcionalmente, pegá una URL compatible de video o playlist de YouTube para abrir el reproductor visible de YouTube.
 
-El botón de sonido activa el pulso audible y la vibración se usa solo cuando el dispositivo/navegador la admite. **Doble tempo** duplica el tempo de práctica mostrado, sin analizar ni sincronizar la pista externa. El pulso visual conserva aproximadamente su fase al cambiar el BPM y descarta ticks atrasados si el navegador se demora; pestañas en segundo plano pueden pausar o retrasar el reloj, que no garantiza precisión de audio. La disponibilidad, reproducción y restricciones de YouTube dependen de YouTube y del navegador.
+El botón de sonido activa el pulso audible. La vibración es opcional, se activa por separado y solo se solicita al tocar **Marcar pulso**; puede no estar disponible aunque el navegador exponga esa función. **Doble tempo** duplica el tempo de práctica mostrado, sin analizar ni sincronizar la pista externa. El pulso visual es orientativo: conserva aproximadamente su fase al cambiar el BPM y descarta ticks atrasados si el navegador se demora; pestañas en segundo plano pueden pausar o retrasar el reloj, que no garantiza precisión de audio. La disponibilidad, reproducción y restricciones de YouTube dependen de YouTube y del navegador.
 
 ## Implementación y verificación
 

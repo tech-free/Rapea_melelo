@@ -54,7 +54,7 @@ Leyenda: **base** = ya hay una versión inicial; **cola** = posible mejora incre
 
 ### Fase 2 — rejilla y práctica avanzada
 - [x] R5. Hacer explícitas las subdivisiones de doble tempo y probar visualmente x2/x4 en móvil y escritorio. La cuenta dinámica muestra subdivisión × dinámica, golpes por pulso base y golpes por compás 4/4; verificada en escritorio y viewport móvil (390×844) con modo Doble tempo ×2/×4, capturas `screenshots/r5-desktop.png` y `screenshots/r5-mobile.png`, consola sin errores ni avisos.
-- [ ] R6. Evaluar accesibilidad/legibilidad de pulso visual, sonido opcional y vibración compatible, sin presentarlos como reloj de precisión.
+- [x] R6. Evaluar accesibilidad/legibilidad de pulso visual, sonido opcional y vibración compatible, sin presentarlos como reloj de precisión. El pulso se describe como orientativo; la vibración tiene control independiente y solo se solicita en taps manuales, con estado accesible/no disponible y manejo opcional de fallos. Se ajustaron foco visible y contraste del compás. Verificado en Playwright: API de vibración simulada disponible/no disponible, taps con/desactivado, teclado (Enter; BPM actualizado y foco visible), controles de sonido, viewport móvil 390×844 sin desbordamiento horizontal y consola sin errores/avisos. Captura inspeccionada: `screenshots/r6-mobile.jpg` (JPEG, 375×1570 CSS px, ancho menor a 1280). La emulación no verifica hardware háptico físico.
 - [ ] R7. Añadir patrones de rima o desafíos de remate como modos opcionales, con reglas visibles y vocabulario validado.
 
 ### Fase 3 — progresión local

@@ -1,5 +1,13 @@
 # HANDOFF del loop
 
+## Cierre R6 — 9 nov 2026
+
+- Evaluado `origin/opencode-checkpoints/8` por diff, sin merge. Se incorporaron selectivamente cambios de `app.js`, `index.html` y `styles.css` compatibles con R6; se excluyeron los metadatos de checkpoint/conversación y su HANDOFF ajeno.
+- El pulso visual se presenta como orientativo; la vibración tiene control separado, es opt-in y solo se solicita en taps manuales. Se agregaron estados accesibles/no disponible, tolerancia a fallos, foco visible y mayor legibilidad del compás. README y R6 en `roadmap/REA.md` actualizados.
+- Playwright: simulación de API compatible confirmó solicitud de 8 ms únicamente con vibración activada y tap manual; el caso sin API mostró el botón desactivado con etiqueta accesible y Tap Tempo siguió operativo. Teclado Enter actualizó el BPM, con foco visible de 2 px; sonido activado/desactivado actualizó `aria-pressed`. En viewport 390×844, contenido 375 px sin overflow horizontal. Consola: 0 errores/avisos.
+- Captura full-page inspeccionada: `screenshots/r6-mobile.jpg`, JPEG 375×1570 CSS px (ancho <1280). La emulación no prueba vibración física. Verificación final: `node --check app.js`, validador del vocabulario, cinco pruebas `unittest` y `git diff --check` pasaron.
+- Autocrítica: la función `navigator.vibrate` puede existir sin producir respuesta háptica real; la opción queda explícitamente opcional y no es requisito para usar Tap Tempo. R4 continúa pendiente de revisión humana de fonética rioplatense; censo remoto de issues bloqueado por falta de autenticación `gh`.
+
 ## Cierre auditoría Anti-TypeError — 8 nov 2026
 
 - Barrido de `.type` en fuentes JS/TS (excluidos `_assets`, `dist`, dependencias y Git): `oscillator.type` solo se asigna; las dos lecturas del objeto `media` ahora usan optional chaining. El callback de YouTube ignora tipos desconocidos antes de acceder al ID.

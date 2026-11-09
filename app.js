@@ -12,7 +12,7 @@
     promptHint: $('#prompt-hint'), rhymeList: $('#rhyme-list'), revealNote: $('#reveal-note'),
     instruction: $('#instruction'), hit: $('#hit-button'), streak: $('#streak-value'),
     hits: $('#hits-value'), best: $('#best-value'), reset: $('#reset-button'),
-    sound: $('#sound-toggle'), form: $('#youtube-form'), url: $('#youtube-url'),
+    sound: $('#sound-toggle'), vibration: $('#vibration-toggle'), form: $('#youtube-form'), url: $('#youtube-url'),
     playerFrame: $('#player-frame'), player: $('#youtube-player'),
     playerStatus: $('#youtube-status'), closePlayer: $('#close-player'), toast: $('#toast'),
   };
@@ -49,7 +49,7 @@
     nextTickAt: 0, tickNumber: 0, lastTickNumber: -1, lastTickAt: null, clockStepMs: 0,
     roundNumber: 0, currentPrompt: null,
     rhymeRevealed: false, hitThisRound: false, streak: saved.streak,
-    hits: saved.hits, best: saved.best, soundOn: false, audio: null,
+    hits: saved.hits, best: saved.best, soundOn: false, vibrationOn: false, audio: null,
     player: null, pendingMedia: null, apiState: 'idle', toastTimer: 0,
   };
 
@@ -58,6 +58,7 @@
   renderEmptyPrompt();
   setTempoReady(false);
   updateSoundButton();
+  updateVibrationButton();
 
   ui.tap.addEventListener('click', handleTap);
   ui.modeButtons.forEach((button) => button.addEventListener('click', () => setMode(button.dataset.mode)));
@@ -74,6 +75,7 @@
   ui.hit.addEventListener('click', confirmHit);
   ui.reset.addEventListener('click', resetSession);
   ui.sound.addEventListener('click', toggleSound);
+  ui.vibration.addEventListener('click', toggleVibration);
   ui.form.addEventListener('submit', handleYouTubeSubmit);
   ui.closePlayer.addEventListener('click', closeYouTubePlayer);
 
@@ -132,7 +134,7 @@
         ? 'Seguí tocando para fijar el pulso'
         : 'Tocá al ritmo de tu base';
     }
-    if (navigator.vibrate) navigator.vibrate(8);
+    if (state.vibrationOn) requestTapVibration();
   }
 
   function acceptTapInterval(interval) {
@@ -440,6 +442,37 @@
     ui.sound.setAttribute('aria-pressed', String(state.soundOn));
     ui.sound.setAttribute('aria-label', state.soundOn ? 'Silenciar metrónomo' : 'Activar metrónomo sonoro');
     ui.sound.title = state.soundOn ? 'Silenciar metrónomo' : 'Activar metrónomo sonoro';
+  }
+
+  function toggleVibration() {
+    if (typeof navigator.vibrate !== 'function') return;
+    state.vibrationOn = !state.vibrationOn;
+    updateVibrationButton();
+    showToast(state.vibrationOn
+      ? 'Vibración solicitada solo en cada tap manual.'
+      : 'Vibración desactivada.');
+  }
+
+  function updateVibrationButton() {
+    const supported = typeof navigator.vibrate === 'function';
+    ui.vibration.disabled = !supported;
+    ui.vibration.classList.toggle('active', supported && state.vibrationOn);
+    ui.vibration.setAttribute('aria-pressed', String(supported && state.vibrationOn));
+    const label = supported
+      ? (state.vibrationOn ? 'Desactivar vibración en tap manual' : 'Activar vibración en cada tap manual')
+      : 'Vibración no disponible en este dispositivo o navegador';
+    ui.vibration.setAttribute('aria-label', label);
+    ui.vibration.title = supported
+      ? 'Solicitar vibración solo al tocar TAP (si el navegador lo permite)'
+      : label;
+  }
+
+  function requestTapVibration() {
+    try {
+      navigator.vibrate(8);
+    } catch (_) {
+      // Vibration is optional and must not interrupt manual Tap Tempo.
+    }
   }
 
   function resumeAudio() {
