@@ -17,15 +17,15 @@
    - O revertí al último tag `save-NNN` que funcione: `git reset --hard save-XXX`
 
 5. **PUSHEÁ A MAIN después de cada subtarea verificada en el navegador.**
-   - `git add . @COMMENT_BODY@@COMMENT_BODY@ git commit -m "tipo(área): descripción"`
-   - `git push origin HEAD:main` (Fast-forward)
-   - Hito visible → `git tag save-NNN @COMMENT_BODY@@COMMENT_BODY@ git push origin save-NNN`
+   - `git add <archivos de la subtarea> && git commit -m "tipo(área): descripción"`
+   - `git push origin HEAD:main` (Fast-forward; nunca force-push)
+   - Hito visible → `git tag save-NNN && git push origin save-NNN`
 
 6. **IGNORÁ POR COMPLETO `gh` (GitHub CLI).** Usá solo comandos `git`. No te detengas por errores de autenticación de `gh`.
 
 7. **CÓDIGO DEFENSIVO OBLIGATORIO:**
-   - NUNCA accedas a `obj.prop` sin verificar
-   - SIEMPRE usá: `obj?.prop ?? default` o `if (!obj) return null;`
+   - Verificá valores que puedan faltar o provenir de entradas externas antes de leer sus propiedades.
+   - Usá `obj?.prop ?? default` o una guarda temprana cuando el valor sea realmente anulable; no conviertas a ciegas accesos a estado inicializado.
    - Si cambiás un nombre de campo, actualizá TODOS los usos en el mismo commit
 
 ## VERIFICACIÓN ANTES DE CADA PUSH

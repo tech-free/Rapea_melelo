@@ -1,18 +1,20 @@
 # HANDOFF (Estado Actual)
 
 ## Última acción completada
-La infraestructura del cerebro ya existía; se está completando la fundación solicitada y preservando el historial y los bloqueos útiles.
+Revisados los checkpoints 9 y 10 sin merge: el 9 propone una variante acotada de R7; el 10 la revierte y cambia reglas operativas. No se rescata R7 en esta tarea de fundación ni se adoptan cambios que borrarían bloqueos humanos vigentes.
 
 ## Estado del build/navegador
-🟡 En progreso: documentación en revisión. La última verificación registrada fue verde: validación del vocabulario, cinco pruebas `unittest`, `node --check app.js` y Playwright con 0 errores y 0 avisos. Revalidar en esta sesión antes del checkpoint.
+🟢 Verificación actual: validador del vocabulario, cinco pruebas `unittest`, `node --check app.js` y `git diff --check` pasaron. Playwright cargó el juego completo, se probó Doble tempo, subdivisión ×2 y taps manuales (121 BPM); luego se restauraron los controles iniciales. Consola: 0 errores y 0 avisos. Captura visual inspeccionada: `screenshots/foundation-audit.png`.
 
 ## Decisiones de diseño tomadas
 - Preservar el juego y las memorias existentes; no reemplazar ROADMAP/TODO/CEMETERY por plantillas vacías.
 - R4 espera revisión humana; no inferir sílabas, acentos ni familias fonéticas.
 - El protocolo del usuario se conserva como texto solicitado; las instrucciones de AGENTS.md siguen disponibles como referencia técnica de entorno.
+- No incorporar ahora la variante R7 de `origin/opencode-checkpoints/9`; R7 permanece pendiente en ROADMAP. No se decide aquí su rescate o descarte futuro.
+- No adoptar los cambios operativos de `origin/opencode-checkpoints/10` que eliminan bloqueos humanos. La comparación del checkpoint 9 también reportó un espacio en blanco final en `todo.md`; no se incorpora ese archivo.
 
 ## PRÓXIMO PASO INMEDIATO
-Verificar documentación y juego en navegador, completar esta fundación con un commit atómico y publicar solo si el avance a `main` es fast-forward.
+Completar la revisión final del diff y repetir los gates documentales/app; crear un commit atómico y publicar a `main` solo si todo sigue verde y el avance es fast-forward.
 
 ## Contexto importante
 - El repositorio es una app estática de freestyle argentino; el juego ya existe y es jugable.
@@ -22,8 +24,9 @@ Verificar documentación y juego en navegador, completar esta fundación con un 
 ## Plan de esta tarea
 1. Anteponer la regla suprema a `AGENTS.md` sin borrar sus instrucciones técnicas.
 2. Alinear las plantillas del cerebro con el estado real y conservar el historial útil.
-3. Verificar sintaxis/dataset/pruebas y el juego visible en Playwright.
-4. Commit atómico y push fast-forward si todas las verificaciones pasan.
+3. Revisar los checkpoints 9 y 10 sin merge, y registrar la decisión sobre R7 y los bloqueos humanos.
+4. Verificar documentación, sintaxis/dataset/pruebas y el juego visible en Playwright.
+5. Revisar el diff completo y crear commit atómico; publicar solo tras confirmar avance fast-forward.
 
 ---
 
