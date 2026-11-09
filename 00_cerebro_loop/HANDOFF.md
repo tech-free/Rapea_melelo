@@ -1,8 +1,36 @@
 # HANDOFF (Estado Actual)
-- **Última acción completada:** Se actualizó `00_cerebro_loop/ROADMAP.md` al formato de funcionalidades, mantenimiento y bugs; se adaptaron `TODO.md` y este handoff para reflejar bloqueos y próximos pasos.
-- **Estado del build/navegador:** Build estático sin pipeline. Validador del vocabulario, cinco pruebas `unittest`, `node --check app.js` y `git diff --check` pasaron. Preview en `http://localhost:3002` cargó el juego completo; Playwright reportó 0 errores y 0 avisos.
-- **Decisiones de diseño tomadas:** R4 queda a la espera de revisión humana; no completar sílabas, acentos ni familias fonéticas por inferencia. No convertir accesos al `state` inicializado en optional chaining indiscriminadamente. El censo de issues sigue bloqueado por falta de autenticación `gh`.
-- **PRÓXIMO PASO INMEDIATO:** Proponer 2–3 referencias concretas, accesibles y comparables para el Gauntlet Loop; esperar que el usuario elija una antes de redactar el prompt. En producto, R4 requiere revisión humana.
+
+## Última acción completada
+La infraestructura del cerebro ya existía; se está completando la fundación solicitada y preservando el historial y los bloqueos útiles.
+
+## Estado del build/navegador
+🟡 En progreso: documentación en revisión. La última verificación registrada fue verde: validación del vocabulario, cinco pruebas `unittest`, `node --check app.js` y Playwright con 0 errores y 0 avisos. Revalidar en esta sesión antes del checkpoint.
+
+## Decisiones de diseño tomadas
+- Preservar el juego y las memorias existentes; no reemplazar ROADMAP/TODO/CEMETERY por plantillas vacías.
+- R4 espera revisión humana; no inferir sílabas, acentos ni familias fonéticas.
+- El protocolo del usuario se conserva como texto solicitado; las instrucciones de AGENTS.md siguen disponibles como referencia técnica de entorno.
+
+## PRÓXIMO PASO INMEDIATO
+Verificar documentación y juego en navegador, completar esta fundación con un commit atómico y publicar solo si el avance a `main` es fast-forward.
+
+## Contexto importante
+- El repositorio es una app estática de freestyle argentino; el juego ya existe y es jugable.
+- El censo remoto de issues continúa bloqueado por falta de autenticación `gh`; no ejecutar `gh` según la solicitud de fundación.
+- No hay pipeline de build y no existen artefactos `dist/` que deban sincronizarse.
+
+## Plan de esta tarea
+1. Anteponer la regla suprema a `AGENTS.md` sin borrar sus instrucciones técnicas.
+2. Alinear las plantillas del cerebro con el estado real y conservar el historial útil.
+3. Verificar sintaxis/dataset/pruebas y el juego visible en Playwright.
+4. Commit atómico y push fast-forward si todas las verificaciones pasan.
+
+---
+
+## Registro previo de estado
+- Última revisión: Se actualizó `00_cerebro_loop/ROADMAP.md` al formato de funcionalidades, mantenimiento y bugs; se adaptaron `TODO.md` y este handoff para reflejar bloqueos y próximos pasos.
+- El estado histórico de decisiones incluye revisión humana pendiente para R4, accesos internos al `state` inicializado y censo de issues bloqueado por falta de autenticación.
+- Próximo trabajo de producto: proponer 2–3 referencias concretas y accesibles para el Gauntlet Loop y esperar elección; R4 requiere revisión humana.
 
 ## Cierre R6 — 9 nov 2026
 
