@@ -55,7 +55,7 @@ Leyenda: **base** = ya hay una versión inicial; **cola** = posible mejora incre
 ### Fase 2 — rejilla y práctica avanzada
 - [x] R5. Hacer explícitas las subdivisiones de doble tempo y probar visualmente x2/x4 en móvil y escritorio. La cuenta dinámica muestra subdivisión × dinámica, golpes por pulso base y golpes por compás 4/4; verificada en escritorio y viewport móvil (390×844) con modo Doble tempo ×2/×4, capturas `screenshots/r5-desktop.png` y `screenshots/r5-mobile.png`, consola sin errores ni avisos.
 - [x] R6. Evaluar accesibilidad/legibilidad de pulso visual, sonido opcional y vibración compatible, sin presentarlos como reloj de precisión. El pulso se describe como orientativo; la vibración tiene control independiente y solo se solicita en taps manuales, con estado accesible/no disponible y manejo opcional de fallos. Se ajustaron foco visible y contraste del compás. Verificado en Playwright: API de vibración simulada disponible/no disponible, taps con/desactivado, teclado (Enter; BPM actualizado y foco visible), controles de sonido, viewport móvil 390×844 sin desbordamiento horizontal y consola sin errores/avisos. Captura inspeccionada: `screenshots/r6-mobile.jpg` (JPEG, 375×1570 CSS px, ancho menor a 1280). La emulación no verifica hardware háptico físico.
-- [ ] R7. Añadir patrones de rima o desafíos de remate como modos opcionales, con reglas visibles y vocabulario validado.
+- [x] R7 (alcance acotado). Ofrecer una guía opcional de remate en el pulso 4, conservando el pulso 3 predeterminado. La opción accesible puede cambiar durante una ronda, actualiza instrucciones/revelado y reutiliza los prompts/rimas existentes; no incorpora metadatos fonéticos nuevos.
 
 ### Fase 3 — progresión local
 - [ ] R8. Reducir repetición en la sesión y comprobar el comportamiento con conjuntos de vocabulario pequeños.
@@ -75,6 +75,22 @@ El orden es una sugerencia, no una promesa de calendario. Al cerrar cada tarea, 
 - Las afirmaciones sobre implementaciones internas y fallas de RapScript, RapApp, Soundbrenner y otros competidores son hipótesis no verificadas. No presentarlas como hechos ni replicar código sin fuentes confiables.
 - El fragmento de `index.html` recibido es ilustrativo y está roto/incompleto: URL del SDK incorrecta para IFrame API, regex con marcadores, arrays sin inicializar y cadenas/template literals mal formados; no copiarlo. La integración existente y verificada del repo es la fuente de verdad.
 - Mantener YouTube visible y oficial, con sus controles/restricciones. No ocultar el reproductor ni prometer reproducción en segundo plano, control irrestricto de playlist o sincronización automática.
+
+## Propuestas investigadas y priorizadas
+
+Observación de páginas públicas consultadas el 9 nov 2026. Son referencias de funciones visibles, no evidencia de su implementación interna ni permiso para copiar código, interfaz, contenido o activos. La prioridad indica valor potencial para este MVP y debe validarse con una tarea acotada antes de programar.
+
+1. **[P1 — candidata para después de R8] Reducir repeticiones por sesión.** Mantener una bolsa local de estímulos ya aprobados y evitar repetirlos hasta agotar el conjunto; con listas pequeñas, permitir repeticiones cuando sean inevitables y no prometer unicidad. Es una mejora afín al flujo de palabras aleatorias temporizadas que muestran RhymeFlux y RapScript. No sumar palabras ni datos fonéticos sin revisión R4.
+2. **[P2 — exploración] Presets de práctica progresivos.** Evaluar configuraciones simples que combinen ritmo y dinámica usando solo los modos existentes. RapApp publica modos de dificultad y temáticos; la adaptación local no incluiría sus modos de imagen/ahorcado ni requeriría replicar sus contenidos. Primero medir si los controles actuales ya resuelven esos casos.
+3. **[P3 — exploración] Vista de estímulos enfocada.** Probar una presentación opcional de pantalla despejada con avance manual y controles de teclado, inspirada en el avance por toque/espacio y pantalla completa visibles en el generador de RhymeFlux. Evitar duplicar la guía de remate R7 y verificar accesibilidad, salida de pantalla completa y viewport móvil antes de aceptarla.
+4. **[P4 — fuera de la cola inmediata] Favoritos o configuraciones guardadas de sesión.** RapApp y Soundbrenner presentan bibliotecas/favoritos o setlists y seguimiento del progreso. Para este proyecto, explorar primero guardar localmente presets de tempo/modo; importación de audio, biblioteca online y analítica adicional quedan fuera hasta demostrar demanda y definir permisos, almacenamiento y límites del reproductor externo.
+
+### Evidencia pública
+
+- RapScript, generador de palabras: selector de intervalo de 2–12 segundos y controles de nivel/idioma visibles. <https://rapscript.net/words/>.
+- RhymeFlux, generador de palabras: flujo temporizado, avance manual por toque/espacio y control de pantalla completa visibles. <https://rhymeflux.com/tools/freestyle-rap-word-generator/>.
+- RapApp, página de funciones: modos por dificultad y temáticos; beats, favoritos y herramientas de ligas visibles. <https://rap-app.com/en>.
+- Soundbrenner, página de la app de metrónomo: la página promociona canciones/setlists guardados y seguimiento de progreso. <https://www.soundbrenner.com/pages/the-metronome-app>.
 
 ## Criterios para cada entrega
 

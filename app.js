@@ -7,7 +7,8 @@
     tempoCaption: $('#tempo-caption'), clockExplanation: $('#clock-explanation'),
     beatBoxes: [...document.querySelectorAll('.beat')],
     subdivisionButtons: [...document.querySelectorAll('[data-subdivision]')],
-    modeButtons: [...document.querySelectorAll('[data-mode]')], round: $('#round-count'),
+    modeButtons: [...document.querySelectorAll('[data-mode]')],
+    finishBeatOptions: [...document.querySelectorAll('[name="finish-beat"]')], round: $('#round-count'),
     promptLabel: $('#prompt-label'), promptIndex: $('#prompt-index'), promptWord: $('#prompt-word'),
     promptHint: $('#prompt-hint'), rhymeList: $('#rhyme-list'), revealNote: $('#reveal-note'),
     instruction: $('#instruction'), hit: $('#hit-button'), streak: $('#streak-value'),
@@ -47,7 +48,7 @@
     mode: 'esdrujulas', subdivision: 1, lastTapAt: null, intervals: [], pendingIntervals: [], bpm: null,
     running: false, timer: 0, tickTimerIds: new Set(), generation: 0,
     nextTickAt: 0, tickNumber: 0, lastTickNumber: -1, lastTickAt: null, clockStepMs: 0,
-    roundNumber: 0, currentPrompt: null,
+    roundNumber: 0, currentPrompt: null, finishBeat: 2,
     rhymeRevealed: false, hitThisRound: false, streak: saved.streak,
     hits: saved.hits, best: saved.best, soundOn: false, vibrationOn: false, audio: null,
     player: null, pendingMedia: null, apiState: 'idle', toastTimer: 0,
@@ -62,6 +63,11 @@
 
   ui.tap.addEventListener('click', handleTap);
   ui.modeButtons.forEach((button) => button.addEventListener('click', () => setMode(button.dataset.mode)));
+  ui.finishBeatOptions.forEach((option) => option.addEventListener('change', () => {
+    if (!option.checked) return;
+    state.finishBeat = Number(option.value) - 1;
+    updateRoundGuidance();
+  }));
   ui.subdivisionButtons.forEach((button) => button.addEventListener('click', () => {
     state.subdivision = Number(button.dataset.subdivision);
     ui.subdivisionButtons.forEach((item) => {
@@ -304,10 +310,10 @@
       void ui.promptWord.offsetWidth;
       ui.promptWord.classList.add('pop');
       ui.promptHint.textContent = state.currentPrompt.hint;
-      ui.instruction.textContent = state.mode === 'doble' ? 'Doblá las sílabas; el remate llega en el pulso 3.' : 'En el 1, agarrá el concepto. En el 3, buscá el remate.';
+      updateRoundGuidance();
       showEmptyRhymes();
     }
-    if (beat === 2 && state.currentPrompt && !state.rhymeRevealed) revealRhymes();
+    if (beat === state.finishBeat && state.currentPrompt && !state.rhymeRevealed) revealRhymes();
   }
 
   function choosePrompt(mode) {
@@ -322,7 +328,15 @@
       chip.textContent = '—';
       return chip;
     }));
-    ui.revealNote.textContent = 'APARECE EN EL TIEMPO 3';
+    ui.revealNote.textContent = `APARECE EN EL PULSO ${state.finishBeat + 1}`;
+  }
+
+  function updateRoundGuidance() {
+    const beat = state.finishBeat + 1;
+    ui.instruction.textContent = state.mode === 'doble'
+      ? `Doblá las sílabas; el remate llega en el pulso ${beat}.`
+      : `En el 1, agarrá el concepto. En el ${beat}, buscá el remate.`;
+    ui.revealNote.textContent = `APARECE EN EL PULSO ${beat}`;
   }
 
   function revealRhymes() {
@@ -335,7 +349,7 @@
       requestAnimationFrame(() => chip.classList.add('visible'));
       return chip;
     }));
-    ui.revealNote.textContent = '¡REMATE A TU MANERA!';
+    ui.revealNote.textContent = `¡REMATE EN EL PULSO ${state.finishBeat + 1}!`;
     ui.hit.disabled = false;
   }
 
@@ -345,7 +359,7 @@
     ui.promptIndex.textContent = '#01';
     ui.promptWord.textContent = 'LISTA';
     ui.promptHint.textContent = 'Marcá cuatro pulsos para empezar';
-    ui.instruction.textContent = 'En el 1, agarrá el concepto. En el 3, buscá el remate.';
+    updateRoundGuidance();
     ui.hit.disabled = true;
     showEmptyRhymes();
   }
@@ -380,6 +394,7 @@
       button.setAttribute('aria-pressed', String(active));
     });
     updateClockExplanation();
+    updateRoundGuidance();
     if (state.bpm) ui.tempoCaption.textContent = `Pulso estimado · ${effectiveTempo()} BPM de práctica`;
     restartClockPhase();
   }

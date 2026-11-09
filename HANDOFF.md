@@ -25,9 +25,16 @@
 - La guía de rimas es un apoyo, no una autoridad fonética exhaustiva.
 - La integración externa de YouTube queda sujeta a restricciones de plataforma/navegador.
 
-## Próximo
+## En progreso — R7 acotada
+
+- Añadir una opción accesible para guiar el remate en el pulso 4 sin alterar el modo actual (pulso 3 por defecto).
+- Reutilizar prompts y rimas existentes; no incorporar ni inferir datos fonéticos nuevos.
+- Verificar estados iniciales, cambio de opción durante la ronda, revelado en el pulso elegido y disponibilidad del botón de acierto.
+- Ejecutar pruebas existentes, `node --check app.js` y revisión Playwright en escritorio/móvil con consola limpia.
+- Al completar, actualizar el alcance/documentación visible, marcar R7 si los criterios quedan cubiertos y crear un checkpoint atómico.
+
+## Bloqueos y cautelas
 
 - Censo de issues y forensis siguen bloqueados hasta autenticar `gh`; no se cerraron issues.
-- R3 queda completado y checkpointed. R4 requiere revisión humana de ejemplos rioplatenses antes de completar fonética o ampliar datos; mantener los campos revisados como `null` mientras no haya esa revisión.
-- `jsonschema` se usa solo para validar datos, no para ejecutar la app. Comandos y alcance en `README.md`.
-- No asumir sincronización con YouTube, precisión de audio milimétrica ni la veracidad de afirmaciones no verificadas sobre competidores.
+- R4 requiere revisión humana de ejemplos rioplatenses antes de completar fonética o ampliar datos; mantener los campos revisados como `null` mientras no haya esa revisión.
+- `jsonschema` se usa solo para validar datos, no para ejecutar la app. No asumir sincronización con YouTube, precisión de audio milimétrica ni afirmaciones no verificadas sobre competidores.
