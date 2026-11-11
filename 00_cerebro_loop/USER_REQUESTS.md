@@ -10,3 +10,4 @@
 - [x] R13 terminación obligatoria opcional: cierre por ronda visible antes del remate, sin validación de voz.
 - [x] R14 ayuda progresiva: todas, primera, última o ninguna rima, con preferencia persistida.
 - [x] R15 contador de barras 4/8/16: barra actual, total y progreso, con ronda de 4/8/16 compases y patrón repetido cada 4.
+- [x] R16 modo personaje: rol breve por ronda, desactivable, persistido y sin alterar el mazo de palabras.

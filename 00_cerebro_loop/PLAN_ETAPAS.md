@@ -35,15 +35,15 @@ Sin backend, sin cuentas, sin telemetría, sin audio subido y sin beats con copy
 | R15 | 12 | **Contador de barras 4/8/16** | Barra actual y total, con progreso visual. | M | El contador avanza con el reloj, se reinicia con la ronda y el patrón se repite bien en 8/16. |
 | R16 | 7 | **Modo personaje** | Un personaje (vecino, porteño, pibe del barrio) condiciona la ronda. | S | El personaje aparece junto a la palabra, cambia por ronda y se puede desactivar. |
 
-**Estado:** R12 ✅ completada (formato 1/5 persistido, cinco palabras distintas, remate en el tiempo 3). R13 ✅ completada (terminación opcional visible antes del remate). R14 ✅ completada (ayuda progresiva persistida). R15 ✅ completada (ronda de 4/8/16 barras con contador y progreso). Próxima: R16.
+**Estado:** Etapa 1 completa. R12 ✅ (formato 1/5 persistido, cinco palabras distintas, remate en el tiempo 3). R13 ✅ (terminación opcional visible antes del remate). R14 ✅ (ayuda progresiva persistida). R15 ✅ (ronda de 4/8/16 barras con contador y progreso). R16 ✅ (personaje opcional por ronda). Próxima: R17, inicio de la Etapa 2.
 
-**Orden de ejecución:** R12 ✅ → R13 ✅ → R14 ✅ → R15 ✅ → R16.
+**Orden de ejecución:** R12 ✅ → R13 ✅ → R14 ✅ → R15 ✅ → R16 ✅ → R17 → R18 → R19 → R20 → R21.
 
 **Detalle mínimo por tarea:**
 
 - **R12:** separar “formato de ronda” de “dinámica” para no mezclar esdrújulas con 5 palabras. El mazo de 5 palabras usa el mismo mezclador que R8. En móvil, las 5 palabras van en una grilla de 2 columnas.
 - **R13:** lista local de terminaciones rioplatenses simples (`-ón`, `-ero`, `-ar`, `-ada`, `-ingo`). Se muestra como chip; no se evalúa si el usuario la usó.
-- **R14:** el nivel se guarda en `localStorage`; el texto “APARECE EN EL TIEMPO 3” se adapta al nivel elegido.
+- **R14:** el nivel se guarda en `localStorage`; el texto “APARECE EN EL 3 FINAL” se adapta al nivel elegido.
 - **R15:** el contador se alimenta del mismo tick que el beat; no crear un segundo reloj. El patrón de 4 barras se repite cada 4.
 - **R16:** lista corta de personajes; sin imágenes externas. El modo es opcional y no cambia el mazo de palabras.
 

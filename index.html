@@ -64,7 +64,10 @@
                 <button type="button" data-format="una" class="selected" aria-pressed="true">1 PALABRA</button>
                 <button type="button" data-format="cinco" aria-pressed="false">5 PALABRAS</button>
               </div>
-              <button id="termination-toggle" type="button" class="termination-toggle" aria-pressed="false" title="Agregar una terminación obligatoria para cerrar la barra; no se valida tu voz">TERMINACIÓN <span id="termination-state">OFF</span></button>
+              <div class="format-toggles">
+                <button id="termination-toggle" type="button" class="termination-toggle" aria-pressed="false" title="Agregar una terminación obligatoria para cerrar la barra; no se valida tu voz">TERMINACIÓN <span id="termination-state">OFF</span></button>
+                <button id="character-toggle" type="button" class="termination-toggle character-toggle" aria-pressed="false" title="Agregar un personaje que condiciona la ronda; no cambia el mazo de palabras">PERSONAJE <span id="character-state">OFF</span></button>
+              </div>
             </div>
           </div>
           <div class="mode-switch" role="group" aria-label="Dinámica de entrenamiento">
@@ -105,6 +108,11 @@
           </div>
           <div class="prompt-panel" aria-live="polite" aria-atomic="true">
             <div class="prompt-topline"><span id="prompt-label">TU CONCEPTO</span><span class="prompt-index" id="prompt-index">#01</span></div>
+            <div class="character-chip" id="character-chip" hidden>
+              <span class="character-badge">PERSONAJE</span>
+              <strong id="character-name">EL VECINO</strong>
+              <span class="character-rule" id="character-rule">Contá la escena como si la vieras desde la ventana.</span>
+            </div>
             <div class="prompt-word" id="prompt-word">LISTA</div>
             <div class="prompt-words" id="prompt-words" hidden></div>
             <div class="prompt-termination" id="prompt-termination" hidden><span>CIERRE OBLIGATORIO</span><strong id="termination-value">-ÓN</strong></div>

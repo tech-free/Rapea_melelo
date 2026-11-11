@@ -17,6 +17,8 @@
     promptLabel: $('#prompt-label'), promptIndex: $('#prompt-index'), promptWord: $('#prompt-word'),
     promptWords: $('#prompt-words'), promptTermination: $('#prompt-termination'), terminationValue: $('#termination-value'),
     terminationToggle: $('#termination-toggle'), terminationState: $('#termination-state'),
+    characterToggle: $('#character-toggle'), characterState: $('#character-state'),
+    characterChip: $('#character-chip'), characterName: $('#character-name'), characterRule: $('#character-rule'),
     helpButtons: [...document.querySelectorAll('[data-help]')],
     promptHint: $('#prompt-hint'), rhymeArea: $('#rhyme-area'), rhymeList: $('#rhyme-list'), revealNote: $('#reveal-note'),
     instruction: $('#instruction'), hit: $('#hit-button'), streak: $('#streak-value'),
@@ -59,6 +61,14 @@
   ];
 
   const TERMINATIONS = ['-ÓN', '-ERO', '-AR', '-ADA', '-INGO', '-UELA', '-ISMO', '-AJE'];
+  const CHARACTERS = [
+    { name: 'EL VECINO', rule: 'Contá la escena como si la vieras desde la ventana.' },
+    { name: 'EL PORTEÑO', rule: 'Llevá la ronda al centro: subte, esquina y apuro.' },
+    { name: 'EL PIBE DEL BARRIO', rule: 'Hablá como en la cancha, sin pedir permiso.' },
+    { name: 'LA TÍA DEL ASADO', rule: 'Meté una historia de familia y un remate seco.' },
+    { name: 'EL DUEÑO DEL KIOSCO', rule: 'Observá el barrio desde el mostrador.' },
+    { name: 'LA PIBARDA DEL SUBTE', rule: 'Improvisá como si el viaje fuera corto.' },
+  ];
   const HELP_LEVELS = ['todas', 'primera', 'ultima', 'ninguna'];
   const BAR_OPTIONS = [4, 8, 16];
 
@@ -71,11 +81,12 @@
 
   const saved = readProgress();
   const state = {
-    mode: 'esdrujulas', format: saved.format, terminationOn: saved.terminationOn, help: saved.help, barsPerRound: saved.barsPerRound, subdivision: 1, pattern: saved.pattern, lastTapAt: null, intervals: [], pendingIntervals: [], bpm: null,
+    mode: 'esdrujulas', format: saved.format, terminationOn: saved.terminationOn, characterOn: saved.characterOn, help: saved.help, barsPerRound: saved.barsPerRound, subdivision: 1, pattern: saved.pattern, lastTapAt: null, intervals: [], pendingIntervals: [], bpm: null,
     running: false, timer: 0, tickTimerIds: new Set(), generation: 0,
     nextTickAt: 0, tickNumber: 0, lastTickNumber: -1, lastTickAt: null, clockStepMs: 0,
     roundNumber: 0, barNumber: 0, currentPrompt: null,
     decks: { esdrujulas: [], doble: [] }, fiveDeck: [], terminationDeck: [], currentTermination: null,
+    characterDeck: [], currentCharacter: null,
     rhymeRevealed: false, hitThisRound: false, streak: saved.streak,
     hits: saved.hits, best: saved.best, soundOn: false, vibrationOn: false, audio: null,
     player: null, pendingMedia: null, apiState: 'idle', toastTimer: 0,
@@ -86,6 +97,7 @@
   setFormat(state.format);
   setBarsPerRound(state.barsPerRound);
   setTermination(state.terminationOn);
+  setCharacter(state.characterOn);
   setHelp(state.help);
   setPattern(state.pattern);
   renderEmptyPrompt();
@@ -101,6 +113,7 @@
     showToast(`Ronda de ${state.barsPerRound} barras. El patrón de 4 se repite en cada ciclo.`);
   }));
   ui.terminationToggle.addEventListener('click', toggleTermination);
+  ui.characterToggle.addEventListener('click', toggleCharacter);
   ui.helpButtons.forEach((button) => button.addEventListener('click', () => setHelp(button.dataset.help)));
   ui.subdivisionButtons.forEach((button) => button.addEventListener('click', () => {
     state.subdivision = Number(button.dataset.subdivision);
@@ -129,11 +142,12 @@
         pattern: PATTERNS[value?.pattern] ? value.pattern : 'libre',
         format: value?.format === 'cinco' ? 'cinco' : 'una',
         terminationOn: Boolean(value?.terminationOn),
+        characterOn: Boolean(value?.characterOn),
         help: HELP_LEVELS.includes(value?.help) ? value.help : 'todas',
         barsPerRound: BAR_OPTIONS.includes(Number(value?.barsPerRound)) ? Number(value.barsPerRound) : 4,
       };
     } catch (_) {
-      return { streak: 0, hits: 0, best: 0, pattern: 'libre', format: 'una', terminationOn: false, help: 'todas', barsPerRound: 4 };
+      return { streak: 0, hits: 0, best: 0, pattern: 'libre', format: 'una', terminationOn: false, characterOn: false, help: 'todas', barsPerRound: 4 };
     }
   }
 
@@ -145,7 +159,7 @@
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
         streak: state.streak, hits: state.hits, best: state.best, pattern: state.pattern, format: state.format,
-        terminationOn: state.terminationOn, help: state.help, barsPerRound: state.barsPerRound,
+        terminationOn: state.terminationOn, characterOn: state.characterOn, help: state.help, barsPerRound: state.barsPerRound,
       }));
     } catch (_) {
       // Private browsing or a full storage quota must not interrupt practice.
@@ -349,12 +363,14 @@
     state.roundNumber += 1;
     state.currentPrompt = choosePromptForRound();
     if (state.terminationOn) state.currentTermination = drawTermination();
+    if (state.characterOn) state.currentCharacter = drawCharacter();
     state.rhymeRevealed = false;
     state.hitThisRound = false;
     ui.hit.disabled = true;
     ui.round.textContent = `RONDA ${String(state.roundNumber).padStart(2, '0')}`;
     renderPrompt();
     updateTerminationUI();
+    updateCharacterUI();
     showEmptyRhymes();
   }
 
@@ -629,6 +645,50 @@
     if (visible) ui.terminationValue.textContent = state.currentTermination;
   }
 
+  function setCharacter(enabled, drawNow = false) {
+    state.characterOn = Boolean(enabled);
+    if (!state.characterOn) {
+      state.currentCharacter = null;
+    } else if (drawNow) {
+      state.currentCharacter = drawCharacter();
+    }
+    updateCharacterUI();
+    saveProgress();
+  }
+
+  function toggleCharacter() {
+    const next = !state.characterOn;
+    setCharacter(next, next && state.running);
+    if (!next) {
+      showToast('Personaje desactivado.');
+    } else if (state.currentCharacter) {
+      showToast(`Personaje activado: ${state.currentCharacter.name}.`);
+    } else {
+      showToast('Personaje activado. Aparece al empezar la ronda.');
+    }
+  }
+
+  function drawCharacter() {
+    if (!state.characterDeck.length) {
+      const fresh = CHARACTERS.filter((item) => item !== state.currentCharacter);
+      state.characterDeck = shuffle(fresh.length ? fresh : CHARACTERS);
+    }
+    return state.characterDeck.shift() || CHARACTERS[0];
+  }
+
+  function updateCharacterUI() {
+    const on = state.characterOn;
+    ui.characterToggle.classList.toggle('active', on);
+    ui.characterToggle.setAttribute('aria-pressed', String(on));
+    ui.characterState.textContent = on ? 'ON' : 'OFF';
+    const visible = on && Boolean(state.currentCharacter);
+    ui.characterChip.hidden = !visible;
+    if (visible) {
+      ui.characterName.textContent = state.currentCharacter.name;
+      ui.characterRule.textContent = state.currentCharacter.rule;
+    }
+  }
+
   function setHelp(level) {
     state.help = HELP_LEVELS.includes(level) ? level : 'todas';
     ui.helpButtons.forEach((button) => {
@@ -705,6 +765,8 @@
     state.fiveDeck = [];
     state.terminationDeck = [];
     state.currentTermination = null;
+    state.characterDeck = [];
+    state.currentCharacter = null;
     state.rhymeRevealed = false;
     state.hitThisRound = false;
     state.streak = 0;
@@ -714,6 +776,7 @@
     ui.hit.innerHTML = '¡LA EMBOQUÉ! <span>↗</span>';
     renderEmptyPrompt();
     updateTerminationUI();
+    updateCharacterUI();
     updateBarUI();
     updateStats();
     saveProgress();
