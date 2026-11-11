@@ -2,7 +2,7 @@
 
 ## Qué es este documento
 
-Investigación de producto (reverse engineering de **funciones públicas**, no de código) sobre las apps más relevantes de entrenamiento de freestyle/rap improvisado. El objetivo es tener una lista numerada de mejoras candidatas para **Rapea**, y que el usuario elija cuáles quiere.
+Investigación de producto (reverse engineering de **funciones públicas**, no de código) sobre las apps más relevantes de entrenamiento de freestyle/rap improvisado. La lista numerada 1–25 se convirtió en un plan por etapas en **`PLAN_ETAPAS.md`**, aprobado por el usuario el 11 nov 2026. Ahora se implementan solo rimas y freestyle; grabación y beats quedan en parking.
 
 **Límites y honestidad:**
 - Fuentes: fichas de App Store/Google Play y sitios oficiales, consultadas en noviembre de 2026. No se copió código, assets ni textos de esas apps.
@@ -86,13 +86,18 @@ Investigación de producto (reverse engineering de **funciones públicas**, no d
 | 24 | **Planilla de jurado** | Puntuar flow, skills, puesta en escena y punchlines (para batallas reales). | RapApp | M | ★★☆ |
 | 25 | **Tarjeta compartible + PWA** | Imagen/texto de tu sesión para compartir y app instalable offline. | Rap Fame / general | S | ★★☆ |
 
-## Mi recomendación (si querés un orden)
+## Plan aprobado
 
-**Primera ola (identidad + foco palabras):** 1, 2, 4, 12, 18.
-**Segunda ola (progresión):** 3, 11, 9, 19.
-**Tercera ola (beat propio y pulido):** 15, 13, 17, 21.
+El usuario aprobó el conjunto de las 25 mejoras. El orden, las dependencias y los criterios de aceptación están en **`PLAN_ETAPAS.md`**:
 
-Con eso Rapea queda claramente enfocada en palabras/flow, sin volverse una red social ni prometer IA que no podemos verificar.
+- **Etapa 1 (ahora):** 1, 4, 2, 12, 7 — la palabra y el remate.
+- **Etapa 2 (ahora):** 13, 17, 16, 14, 3 — flow y tempo.
+- **Etapa 3 (después de R4):** 5, 9, 10, 6, 8 — vocabulario y variedad.
+- **Etapa 4 (después):** 11, 19, 21, 22 — hábito y progreso local.
+- **Etapa 5 (después):** 23, 24, 25 — juego local y compartir.
+- **Parking (no ahora):** 18 (grabación), 15 (importar beats), 20 (micrófono).
+
+Con eso Rapea queda enfocada en palabras/flow, sin volverse una red social ni prometer IA que no podemos verificar.
 
 ## Lo que NO vamos a copiar
 
@@ -117,5 +122,6 @@ Con eso Rapea queda claramente enfocada en palabras/flow, sin volverse una red s
 
 ## Estado de implementación
 
-- **R11 (aplicada en esta sesión):** el control de tempo pasó de una tarjeta lateral dominante a una barra compacta (~46 px de alto útil, TAP de 46 px, BPM de 26 px). El desafío y la palabra son ahora el bloque principal. Ver `screenshots/r11-desktop-v2.jpg` y `screenshots/r11-mobile.jpg`.
-- Las mejoras 1–25 quedan **pendientes de elección del usuario**. Al elegir, se agregan a `ROADMAP.md` como tareas [B] una por una.
+- **R11 (aplicada):** el control de tempo pasó de una tarjeta lateral dominante a una barra compacta. El desafío y la palabra son el bloque principal.
+- **R11.2–R11.3 (aplicadas):** TAP de 38×22 px y barra de tempo de 42 px de alto, prácticamente del alto del título. En móvil la barra se acomoda en dos filas. Ver `screenshots/r11-tap-line.jpg` y `screenshots/r11-tap-mobile.jpg`.
+- Las 25 mejoras están **planificadas por etapas** en `PLAN_ETAPAS.md`. La próxima tarea activa es **R12 (modo 5 palabras)**.
