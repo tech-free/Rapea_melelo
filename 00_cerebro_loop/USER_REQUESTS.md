@@ -11,3 +11,4 @@
 - [x] R14 ayuda progresiva: todas, primera, última o ninguna rima, con preferencia persistida.
 - [x] R15 contador de barras 4/8/16: barra actual, total y progreso, con ronda de 4/8/16 compases y patrón repetido cada 4.
 - [x] R16 modo personaje: rol breve por ronda, desactivable, persistido y sin alterar el mazo de palabras.
+- [x] R17 count-in y final limpio: entrada de 4 pulsos 1→2→3→4 y remate único por ronda.

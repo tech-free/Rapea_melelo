@@ -84,7 +84,7 @@
     mode: 'esdrujulas', format: saved.format, terminationOn: saved.terminationOn, characterOn: saved.characterOn, help: saved.help, barsPerRound: saved.barsPerRound, subdivision: 1, pattern: saved.pattern, lastTapAt: null, intervals: [], pendingIntervals: [], bpm: null,
     running: false, timer: 0, tickTimerIds: new Set(), generation: 0,
     nextTickAt: 0, tickNumber: 0, lastTickNumber: -1, lastTickAt: null, clockStepMs: 0,
-    roundNumber: 0, barNumber: 0, currentPrompt: null,
+    roundNumber: 0, barNumber: 0, countInRemaining: 0, currentPrompt: null,
     decks: { esdrujulas: [], doble: [] }, fiveDeck: [], terminationDeck: [], currentTermination: null,
     characterDeck: [], currentCharacter: null,
     rhymeRevealed: false, hitThisRound: false, streak: saved.streak,
@@ -269,6 +269,7 @@
   function startClock() {
     if (!state.bpm || state.running) return;
     state.running = true;
+    state.countInRemaining = 4;
     state.generation += 1;
     state.tickNumber = 0;
     state.lastTickNumber = -1;
@@ -351,12 +352,38 @@
   }
 
   function onMainBeat(beat) {
+    if (state.countInRemaining > 0) {
+      renderCountIn(4 - state.countInRemaining + 1);
+      state.countInRemaining -= 1;
+      return;
+    }
     if (beat === 0) {
       state.barNumber = state.barNumber >= state.barsPerRound ? 1 : state.barNumber + 1;
       if (state.barNumber === 1) startNewRound();
       updateBarUI();
     }
     if (beat === 2 && state.currentPrompt && !state.rhymeRevealed && state.barNumber === state.barsPerRound) revealRhymes();
+  }
+
+  function renderCountIn(number) {
+    ui.round.textContent = 'RONDA 01';
+    ui.promptLabel.textContent = 'ENTRADA · CONTÁ CUATRO';
+    ui.promptIndex.textContent = '#00';
+    ui.promptWord.hidden = false;
+    ui.promptWords.hidden = true;
+    ui.rhymeArea.hidden = state.format === 'cinco';
+    ui.promptWord.textContent = String(number);
+    ui.promptWord.classList.remove('pop');
+    void ui.promptWord.offsetWidth;
+    ui.promptWord.classList.add('pop');
+    ui.promptHint.textContent = 'Preparate: la ronda arranca después del cuarto pulso.';
+    ui.instruction.textContent = 'Cuatro pulsos de entrada; después arranca la ronda.';
+    ui.hit.disabled = true;
+    showEmptyRhymes();
+    ui.revealNote.textContent = 'ENTRADA · 4 PULSOS';
+    updateTerminationUI();
+    updateCharacterUI();
+    updateBarUI();
   }
 
   function startNewRound() {
@@ -658,7 +685,7 @@
 
   function toggleCharacter() {
     const next = !state.characterOn;
-    setCharacter(next, next && state.running);
+    setCharacter(next, next && state.running && state.countInRemaining === 0);
     if (!next) {
       showToast('Personaje desactivado.');
     } else if (state.currentCharacter) {
@@ -731,6 +758,7 @@
 
   function restartClockPhase() {
     if (!state.running) return;
+    state.countInRemaining = 0;
     state.generation += 1;
     clearClockTimers();
     state.tickNumber = 0;
@@ -745,6 +773,7 @@
 
   function stopClock() {
     state.running = false;
+    state.countInRemaining = 0;
     state.generation += 1;
     clearClockTimers();
     ui.beatBoxes.forEach((box) => box.classList.remove('active', 'sub-beat'));
@@ -760,6 +789,7 @@
     state.bpm = null;
     state.roundNumber = 0;
     state.barNumber = 0;
+    state.countInRemaining = 0;
     state.currentPrompt = null;
     state.decks = { esdrujulas: [], doble: [] };
     state.fiveDeck = [];

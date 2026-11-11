@@ -70,7 +70,8 @@ Leyenda: **base** = ya hay una versión inicial; **cola** = posible mejora incre
 - [x] R14. Ayuda progresiva de rimas: todas, primera, última o ninguna; preferencia persistida y navegación por teclado. Verificado en escritorio y móvil, consola sin errores/avisos.
 - [x] R15. Contador de barras 4/8/16: barra actual, total y progreso; ronda de 4/8/16 compases, ciclo del patrón cada 4 barras y remate revelado en la última barra. Verificado en escritorio y móvil, consola sin errores/avisos.
 - [x] R16. Modo personaje opcional: rol breve por ronda que condiciona el enfoque, cambia sin repetir de inmediato, se puede desactivar y no altera el mazo de palabras. Verificado con 1 y 5 palabras, escritorio y móvil, consola sin errores/avisos.
-- [ ] R17+. Plan por etapas aprobado en `00_cerebro_loop/PLAN_ETAPAS.md`, basado en las 25 mejoras del REA. Ahora: Etapa 2 (R17–R21). Después: Etapas 4–5. Parking: grabación local, importar MP3/BPM y micrófono.
+- [x] R17. Count-in y final limpio: entrada visual de 4 pulsos (1→2→3→4) al arrancar el reloj, sin repetirse al cambiar de modo; el remate se dispara una sola vez por ronda y un clic temprano no altera las estadísticas. Verificado en escritorio y móvil, consola sin errores/avisos.
+- [ ] R19+. Plan por etapas aprobado en `00_cerebro_loop/PLAN_ETAPAS.md`, basado en las 25 mejoras del REA. Ahora: Etapa 2 (R19 → R18 → R21 → R20). Después: Etapas 4–5. Parking: grabación local, importar MP3/BPM y micrófono.
 
 El orden es una sugerencia, no una promesa de calendario. Al cerrar cada tarea, marcarla, actualizar documentación de alcance si cambia el comportamiento y checkpoint antes de tomar la siguiente.
 

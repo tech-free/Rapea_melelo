@@ -35,9 +35,9 @@ Sin backend, sin cuentas, sin telemetría, sin audio subido y sin beats con copy
 | R15 | 12 | **Contador de barras 4/8/16** | Barra actual y total, con progreso visual. | M | El contador avanza con el reloj, se reinicia con la ronda y el patrón se repite bien en 8/16. |
 | R16 | 7 | **Modo personaje** | Un personaje (vecino, porteño, pibe del barrio) condiciona la ronda. | S | El personaje aparece junto a la palabra, cambia por ronda y se puede desactivar. |
 
-**Estado:** Etapa 1 completa. R12 ✅ (formato 1/5 persistido, cinco palabras distintas, remate en el tiempo 3). R13 ✅ (terminación opcional visible antes del remate). R14 ✅ (ayuda progresiva persistida). R15 ✅ (ronda de 4/8/16 barras con contador y progreso). R16 ✅ (personaje opcional por ronda). Próxima: R17, inicio de la Etapa 2.
+**Estado:** Etapa 1 completa. R12 ✅ (formato 1/5 persistido, cinco palabras distintas, remate en el tiempo 3). R13 ✅ (terminación opcional visible antes del remate). R14 ✅ (ayuda progresiva persistida). R15 ✅ (ronda de 4/8/16 barras con contador y progreso). R16 ✅ (personaje opcional por ronda). R17 ✅ (entrada de 4 pulsos y remate único). Próxima: R19, velocidad de estímulos.
 
-**Orden de ejecución:** R12 ✅ → R13 ✅ → R14 ✅ → R15 ✅ → R16 ✅ → R17 → R18 → R19 → R20 → R21.
+**Orden de ejecución:** R12 ✅ → R13 ✅ → R14 ✅ → R15 ✅ → R16 ✅ → R17 ✅ → R19 → R18 → R21 → R20.
 
 **Detalle mínimo por tarea:**
 
@@ -59,7 +59,7 @@ Sin backend, sin cuentas, sin telemetría, sin audio subido y sin beats con copy
 | R20 | 3 | **Grilla sincronizada** | Rejilla de 4/8 casilleros con el pulso actual y el objetivo de rima. | L | El casillero activo coincide con el beat, no se desfasa al cambiar BPM y respeta `prefers-reduced-motion`. |
 | R21 | 14 | **Calibración de latencia** | Ajuste visual de ±200 ms probando taps. | M | El offset se guarda, se puede volver a 0 y no modifica el cálculo del BPM. |
 
-**Orden de ejecución:** R17 → R19 → R18 → R21 → R20. La grilla va última porque depende de que el reloj y el count-in estén estables.
+**Orden de ejecución:** R17 ✅ → R19 → R18 → R21 → R20. La grilla va última porque depende de que el reloj y el count-in estén estables.
 
 **Detalle mínimo por tarea:**
 

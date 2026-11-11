@@ -23,7 +23,8 @@
   - [x] R15 contador de barras 4/8/16: barra actual, total y progreso; la ronda dura 4/8/16 compases, el patrón de 4 se repite por ciclo y el remate se revela en la última barra.
   - [x] R16 modo personaje: rol breve por ronda que condiciona el enfoque, cambia sin repetir de inmediato, se puede desactivar y no altera el mazo de palabras.
 - [~] **Etapa 2 — Flow y tempo:**
-  - [ ] R17 count-in y final limpio.
+  - [x] R17 count-in y final limpio: entrada visual de 4 pulsos (1→2→3→4), sin repetirse al cambiar de modo, y remate único por ronda.
+  - [ ] Siguiente: R19 velocidad de estímulos.
   - [ ] R18 interrupción a mitad de verso.
   - [ ] R19 velocidad de estímulos.
   - [ ] R20 grilla sincronizada.

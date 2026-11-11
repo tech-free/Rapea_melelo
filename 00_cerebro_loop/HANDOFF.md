@@ -1,20 +1,20 @@
 # HANDOFF (Estado Actual)
 
 ## Última acción completada
-R16 completada: **modo personaje** opcional. Cada ronda puede mostrar un rol breve (vecino, porteño, pibe del barrio, tía del asado, dueño del kiosco o pibarda del subte) con una consigna de enfoque. El personaje aparece junto a la palabra, cambia por ronda sin repetir de inmediato, se puede activar o desactivar en caliente y no altera el mazo de palabras. La preferencia queda guardada localmente. Con esto cerró la Etapa 1 del plan.
+R17 completada: **count-in y final limpio**. Al arrancar el reloj suena/ve una entrada de cuatro pulsos (1→2→3→4) antes de la primera ronda; la entrada no se repite al cambiar de modo o subdivisión y el botón de remate permanece deshabilitado durante ella. El remate se revela y habilita una sola vez por ronda: un segundo clic o un clic temprano en la ronda siguiente no altera las estadísticas.
 
 ## Estado del build/navegador
-🟢 `node --check app.js` y parseo HTML OK. Playwright en `http://localhost:3002`: personaje ON en reposo no muestra chip hasta arrancar; en la primera ronda apareció `LA TÍA DEL ASADO` y en la segunda `EL DUEÑO DEL KIOSCO`; OFF lo ocultó y ON en marcha lo mostró al instante. Persistencia tras recargar verificada. También se probó con 5 palabras + terminación: cinco palabras distintas, personaje y cierre visibles. Sin overflow en 1280×900, 390×844, 360×800 ni 320×700; consola con 0 errores y 0 avisos. Capturas: `screenshots/r16-character-desktop.jpg`, `screenshots/r16-character-mobile.jpg`; R15: `screenshots/r15-bars-desktop.jpg`, `screenshots/r15-bars-mobile.jpg`.
+🟢 `node --check app.js` y parseo HTML OK. Playwright en `http://localhost:3002`: la entrada mostró 1, 2, 3, 4 y luego arrancó la ronda en la barra 01; al cambiar a Doble tempo durante la entrada no se repitió el count-in; el segundo clic en la misma ronda no sumó aciertos y el clic temprano en la ronda siguiente tampoco; el remate volvió a habilitarse recién en la última barra. Sin overflow en 1280×900 ni 390×844; consola con 0 errores y 0 avisos. Capturas: `screenshots/r17-countin-desktop.jpg`, `screenshots/r17-countin-mobile.jpg`; R16: `screenshots/r16-character-desktop.jpg`, `screenshots/r16-character-mobile.jpg`.
 
 ## Decisiones de diseño tomadas
-- El personaje es una consigna de enfoque, no una evaluación de voz ni un cambio de vocabulario; el mazo de palabras sigue igual.
-- El mazo de personajes evita repetir el actual al rebarajar, igual que los estímulos.
-- Al activarlo en reposo se muestra recién al empezar la ronda; al activarlo en marcha se aplica a la ronda actual.
-- La preferencia se guarda junto con formato, barras, terminación, ayuda, patrón y estadísticas locales.
+- El count-in reutiliza el mismo scheduler del reloj; no hay `setTimeout` paralelo. Es visual y no depende del audio.
+- La entrada corre una sola vez al arrancar el reloj; los cambios de configuración reinician el ciclo sin volver a contar.
+- El remate queda deshabilitado hasta el tiempo 3 de la última barra y el clic solo cuenta una vez por ronda.
+- El personaje es una consigna de enfoque, no una evaluación de voz ni un cambio de vocabulario.
 - R4 sigue bloqueada por revisión humana; la Etapa 3 no arranca sin ese lote revisado.
 
 ## PRÓXIMO PASO INMEDIATO
-R17 (count-in y final limpio): cuatro pulsos de entrada antes de arrancar y cierre de ronda sin cortar ni disparar dos veces el remate. Debe sonar/verse una sola vez y no duplicarse al cambiar de modo. Después R18–R21, una por commit con verificación en navegador.
+R19 (velocidad de estímulos): selector cada 2/4/8 pulsos, independiente del BPM, que no altere el mazo y cambie el estímulo en la barra correcta. Después R18, R21 y R20, una por commit con verificación en navegador.
 
 ## Contexto importante
 - App estática de freestyle argentino, sin pipeline de build ni artefactos `dist/`.
