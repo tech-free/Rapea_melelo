@@ -65,7 +65,8 @@ Leyenda: **base** = ya hay una versión inicial; **cola** = posible mejora incre
 ### Fase 4 — foco en palabras y REA de apps (2026)
 - [x] R11. Compactar el control de tempo: de tarjeta lateral dominante a barra superior. El desafío y la palabra pasan a ser el bloque principal. Verificado en escritorio 1280×900 y móvil 390×844, consola sin errores/avisos.
 - [x] R11.2–R11.3. TAP de 38×22 px y barra de tempo de 42 px, del alto del título; en móvil se acomoda en dos filas. Capturas: `screenshots/r11-tap-line.jpg`, `screenshots/r11-tap-mobile.jpg`.
-- [ ] R12+. Plan por etapas aprobado en `00_cerebro_loop/PLAN_ETAPAS.md`, basado en las 25 mejoras del REA. Ahora: Etapas 1–3 (rimas y freestyle). Después: Etapas 4–5. Parking: grabación local, importar MP3/BPM y micrófono.
+- [x] R12. Modo 5 palabras: formato de ronda independiente de la dinámica, cinco palabras distintas por ronda, sin repetición dentro de la ronda, remate en el tiempo 3 y preferencia 1/5 persistida localmente. Verificado en escritorio 1280×900 y móvil 390×844, consola sin errores/avisos.
+- [ ] R13+. Plan por etapas aprobado en `00_cerebro_loop/PLAN_ETAPAS.md`, basado en las 25 mejoras del REA. Ahora: Etapa 1 (R13–R16) y Etapa 2. Después: Etapas 4–5. Parking: grabación local, importar MP3/BPM y micrófono.
 
 El orden es una sugerencia, no una promesa de calendario. Al cerrar cada tarea, marcarla, actualizar documentación de alcance si cambia el comportamiento y checkpoint antes de tomar la siguiente.
 

@@ -1,19 +1,19 @@
 # HANDOFF (Estado Actual)
 
 ## Última acción completada
-R11.2–R11.3 completadas: el TAP quedó en 38×22 px y la barra de tempo en 42 px de alto, prácticamente del alto del título (40 px). En móvil se acomoda en dos filas. Además, el REA de 10 apps se convirtió en un plan por etapas en `PLAN_ETAPAS.md`: Etapas 1–2 activas (palabra y flow), Etapa 3 lista pero esperando R4, Etapas 4–5 después y parking para grabación, beats y micrófono.
+R12 completada: formato de ronda **1 palabra / 5 palabras** independiente de la dinámica. En 5 palabras se muestran cinco palabras distintas por ronda, se usan en cuatro barras, el remate se habilita en el tiempo 3 y la preferencia queda guardada localmente. El mazo de cinco palabras evita repetir dentro de la ronda y no repite la tanda anterior.
 
 ## Estado del build/navegador
-🟢 `node --check app.js` y parseo HTML OK. Playwright en `http://localhost:3002`: barra de tempo de 42 px, TAP de 38×22 px, sin overflow en 1280×900; móvil 390×844 en 87 px de alto y sin overflow. Taps, BPM, beat activo, subdivisión y Doble tempo siguen funcionando. Consola: 0 errores y 0 avisos. Capturas: `screenshots/r11-tap-line.jpg`, `screenshots/r11-tap-mobile.jpg`.
+🟢 `node --check app.js` y parseo HTML OK. Playwright en `http://localhost:3002`: formato 1/5 cambia sin recargar, cinco palabras distintas (RISA, RIMA, SUEÑO, SUBTE, ORGULLO), remate registrado (racha 1), cambio a Doble tempo y vuelta a 1 palabra. Sin overflow en 1280×900 ni 390×844; consola con 0 errores y 0 avisos. Capturas: `screenshots/r12-cinco-desktop.jpg`, `screenshots/r12-cinco-mobile.jpg`.
 
 ## Decisiones de diseño tomadas
-- El foco visual es la palabra y el remate; el tempo es una barra de control del alto del título, no un protagonista.
-- El plan separa “ahora” (palabra, flow, vocabulario) de “después” (hábito, juego local) y “parking” (grabación, beats, micrófono).
+- El formato de ronda se separó de la dinámica: 5 palabras funciona con Esdrújulas o Doble tempo.
+- En 5 palabras se oculta la familia de rimas porque no hay una sola palabra objetivo; el remate se marca con el cambio de hint en el tiempo 3.
+- La preferencia 1/5 se guarda junto con el patrón y las estadísticas locales.
 - R4 sigue bloqueada por revisión humana; la Etapa 3 no arranca sin ese lote revisado.
-- R7/R8 se mantienen: patrones de remate y mazo sin repeticiones.
 
 ## PRÓXIMO PASO INMEDIATO
-Arrancar la Etapa 1 con R12 (modo 5 palabras): cinco palabras distintas por ronda, usadas en cuatro barras, integradas al mazo y a los patrones existentes. Después R13, R14, R15 y R16, una por commit con verificación en navegador.
+R13 (terminaciones forzadas): una terminación o palabra obligatoria para cerrar la barra, visible antes del remate y sin prometer validación fonética. Después R14, R15 y R16, una por commit con verificación en navegador.
 
 ## Contexto importante
 - App estática de freestyle argentino, sin pipeline de build ni artefactos `dist/`.
@@ -21,6 +21,7 @@ Arrancar la Etapa 1 con R12 (modo 5 palabras): cinco palabras distintas por rond
 - El cerebro vive en `/00_cerebro_loop/`; este archivo es la fuente de estado.
 
 ## Registro previo de estado
+- R11.2–R11.3: TAP de 38×22 px y barra de tempo de 42 px, del alto del título; móvil en dos filas. Capturas `screenshots/r11-tap-line.jpg` y `screenshots/r11-tap-mobile.jpg`.
 - Última revisión: Se actualizó `00_cerebro_loop/ROADMAP.md` al formato de funcionalidades, mantenimiento y bugs; se adaptaron `TODO.md` y este handoff para reflejar bloqueos y próximos pasos.
 - El estado histórico de decisiones incluye revisión humana pendiente para R4, accesos internos al `state` inicializado y censo de issues bloqueado por falta de autenticación.
 - Próximo trabajo de producto: proponer 2–3 referencias concretas y accesibles para el Gauntlet Loop y esperar elección; R4 requiere revisión humana.

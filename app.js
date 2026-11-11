@@ -8,10 +8,12 @@
     beatBoxes: [...document.querySelectorAll('.beat')],
     subdivisionButtons: [...document.querySelectorAll('[data-subdivision]')],
     modeButtons: [...document.querySelectorAll('[data-mode]')],
+    formatButtons: [...document.querySelectorAll('[data-format]')],
     patternButtons: [...document.querySelectorAll('[data-pattern]')],
     patternStrip: $('#pattern-strip'), patternRule: $('#pattern-rule'), round: $('#round-count'),
     promptLabel: $('#prompt-label'), promptIndex: $('#prompt-index'), promptWord: $('#prompt-word'),
-    promptHint: $('#prompt-hint'), rhymeList: $('#rhyme-list'), revealNote: $('#reveal-note'),
+    promptWords: $('#prompt-words'), promptHint: $('#prompt-hint'), rhymeArea: $('#rhyme-area'),
+    rhymeList: $('#rhyme-list'), revealNote: $('#reveal-note'),
     instruction: $('#instruction'), hit: $('#hit-button'), streak: $('#streak-value'),
     hits: $('#hits-value'), best: $('#best-value'), reset: $('#reset-button'),
     sound: $('#sound-toggle'), vibration: $('#vibration-toggle'), form: $('#youtube-form'), url: $('#youtube-url'),
@@ -44,6 +46,13 @@
     ],
   };
 
+  const FIVE_WORDS = [
+    'BARRIO', 'ESQUINA', 'VEREDA', 'BONDI', 'MATE', 'PLAZA', 'POTRERO', 'SUBTE',
+    'CANCHA', 'ASADO', 'LLUVIA', 'VENTANA', 'ESPEJO', 'CAMINO', 'FUEGO', 'TIEMPO',
+    'SILENCIO', 'PALABRA', 'RISA', 'HERIDA', 'SUEÑO', 'CALLE', 'NOCHE', 'MAÑANA',
+    'BANDERA', 'TAMBOR', 'MICRÓFONO', 'BATALLA', 'FLOW', 'RIMA', 'ORGULLO', 'MEMORIA',
+  ];
+
   const PATTERNS = {
     libre: { scheme: null, rule: 'Sin patrón: rematá como te salga. Elegí AABB, ABAB o ABBA para ver qué barras comparten rima.' },
     aabb: { scheme: ['A', 'A', 'B', 'B'], rule: 'AABB · las barras 1 y 2 comparten rima; las barras 3 y 4 cierran con otra.' },
@@ -53,11 +62,11 @@
 
   const saved = readProgress();
   const state = {
-    mode: 'esdrujulas', subdivision: 1, pattern: saved.pattern, lastTapAt: null, intervals: [], pendingIntervals: [], bpm: null,
+    mode: 'esdrujulas', format: saved.format, subdivision: 1, pattern: saved.pattern, lastTapAt: null, intervals: [], pendingIntervals: [], bpm: null,
     running: false, timer: 0, tickTimerIds: new Set(), generation: 0,
     nextTickAt: 0, tickNumber: 0, lastTickNumber: -1, lastTickAt: null, clockStepMs: 0,
     roundNumber: 0, currentPrompt: null,
-    decks: { esdrujulas: [], doble: [] },
+    decks: { esdrujulas: [], doble: [] }, fiveDeck: [],
     rhymeRevealed: false, hitThisRound: false, streak: saved.streak,
     hits: saved.hits, best: saved.best, soundOn: false, vibrationOn: false, audio: null,
     player: null, pendingMedia: null, apiState: 'idle', toastTimer: 0,
@@ -65,6 +74,7 @@
 
   updateStats();
   setMode('esdrujulas');
+  setFormat(state.format);
   setPattern(state.pattern);
   renderEmptyPrompt();
   setTempoReady(false);
@@ -73,6 +83,7 @@
 
   ui.tap.addEventListener('click', handleTap);
   ui.modeButtons.forEach((button) => button.addEventListener('click', () => setMode(button.dataset.mode)));
+  ui.formatButtons.forEach((button) => button.addEventListener('click', () => setFormat(button.dataset.format)));
   ui.subdivisionButtons.forEach((button) => button.addEventListener('click', () => {
     state.subdivision = Number(button.dataset.subdivision);
     ui.subdivisionButtons.forEach((item) => {
@@ -98,9 +109,10 @@
         streak: safeCount(value.streak), hits: safeCount(value.hits),
         best: safeCount(value.best),
         pattern: PATTERNS[value?.pattern] ? value.pattern : 'libre',
+        format: value?.format === 'cinco' ? 'cinco' : 'una',
       };
     } catch (_) {
-      return { streak: 0, hits: 0, best: 0, pattern: 'libre' };
+      return { streak: 0, hits: 0, best: 0, pattern: 'libre', format: 'una' };
     }
   }
 
@@ -111,7 +123,7 @@
   function saveProgress() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        streak: state.streak, hits: state.hits, best: state.best, pattern: state.pattern,
+        streak: state.streak, hits: state.hits, best: state.best, pattern: state.pattern, format: state.format,
       }));
     } catch (_) {
       // Private browsing or a full storage quota must not interrupt practice.
@@ -305,22 +317,65 @@
   function onMainBeat(beat) {
     if (beat === 0) {
       state.roundNumber += 1;
-      state.currentPrompt = choosePrompt(state.mode);
+      state.currentPrompt = choosePromptForRound();
       state.rhymeRevealed = false;
       state.hitThisRound = false;
       ui.hit.disabled = true;
       ui.round.textContent = `RONDA ${String(state.roundNumber).padStart(2, '0')}`;
-      ui.promptLabel.textContent = state.mode === 'esdrujulas' ? 'CONCEPTO · ACENTO EN LA ANTEPENÚLTIMA' : 'CONCEPTO · DOBLE TEMPO';
-      ui.promptIndex.textContent = `#${String(state.roundNumber).padStart(2, '0')}`;
-      ui.promptWord.textContent = state.currentPrompt.word;
-      ui.promptWord.classList.remove('pop');
-      void ui.promptWord.offsetWidth;
-      ui.promptWord.classList.add('pop');
-      ui.promptHint.textContent = state.currentPrompt.hint;
-      ui.instruction.textContent = state.mode === 'doble' ? 'Doblá las sílabas; el remate llega en el pulso 3.' : 'En el 1, agarrá el concepto. En el 3, buscá el remate.';
+      renderPrompt();
       showEmptyRhymes();
     }
     if (beat === 2 && state.currentPrompt && !state.rhymeRevealed) revealRhymes();
+  }
+
+  function renderPrompt() {
+    const prompt = state.currentPrompt;
+    if (!prompt) return;
+    const five = state.format === 'cinco';
+    ui.promptIndex.textContent = `#${String(state.roundNumber).padStart(2, '0')}`;
+    ui.promptWord.hidden = five;
+    ui.promptWords.hidden = !five;
+    ui.rhymeArea.hidden = five;
+    if (five) {
+      ui.promptLabel.textContent = 'CINCO PALABRAS · USALAS EN 4 BARRAS';
+      ui.promptWords.replaceChildren(...prompt.words.map((word, index) => {
+        const chip = document.createElement('span');
+        chip.className = 'prompt-word-chip';
+        chip.textContent = word;
+        chip.style.transitionDelay = `${index * 45}ms`;
+        requestAnimationFrame(() => chip.classList.add('visible'));
+        return chip;
+      }));
+      ui.promptHint.textContent = prompt.hint;
+      ui.instruction.textContent = 'En el 1, agarrá las cinco. En el 3, cerrá el remate.';
+    } else {
+      ui.promptLabel.textContent = state.mode === 'esdrujulas' ? 'CONCEPTO · ACENTO EN LA ANTEPENÚLTIMA' : 'CONCEPTO · DOBLE TEMPO';
+      ui.promptWord.textContent = prompt.word;
+      ui.promptWord.classList.remove('pop');
+      void ui.promptWord.offsetWidth;
+      ui.promptWord.classList.add('pop');
+      ui.promptHint.textContent = prompt.hint;
+      ui.instruction.textContent = state.mode === 'doble' ? 'Doblá las sílabas; el remate llega en el pulso 3.' : 'En el 1, agarrá el concepto. En el 3, buscá el remate.';
+    }
+  }
+
+  function choosePromptForRound() {
+    if (state.format === 'cinco') {
+      return { words: drawFiveWords(), hint: 'Usalas todas en cuatro barras; el remate cierra la última.', rhymes: [] };
+    }
+    return choosePrompt(state.mode);
+  }
+
+  function drawFiveWords() {
+    if (!Array.isArray(state.fiveDeck)) state.fiveDeck = [];
+    while (state.fiveDeck.length < 5) {
+      const currentWords = new Set(state.currentPrompt?.words || []);
+      const available = FIVE_WORDS.filter((word) => !state.fiveDeck.includes(word) && !currentWords.has(word));
+      const fallback = FIVE_WORDS.filter((word) => !state.fiveDeck.includes(word));
+      state.fiveDeck.push(...shuffle(available.length ? available : fallback));
+      if (!state.fiveDeck.length) break;
+    }
+    return state.fiveDeck.splice(0, 5);
   }
 
   function choosePrompt(mode) {
@@ -355,6 +410,11 @@
 
   function revealRhymes() {
     state.rhymeRevealed = true;
+    if (state.format === 'cinco') {
+      ui.promptHint.textContent = '¡Tiempo 3! Cerrá con una de las cinco.';
+      ui.hit.disabled = false;
+      return;
+    }
     ui.rhymeList.replaceChildren(...state.currentPrompt.rhymes.map((word, index) => {
       const chip = document.createElement('span');
       chip.className = 'rhyme-chip';
@@ -368,13 +428,29 @@
   }
 
   function renderEmptyPrompt() {
+    const five = state.format === 'cinco';
     ui.round.textContent = 'RONDA 01';
-    ui.promptLabel.textContent = 'TU CONCEPTO';
     ui.promptIndex.textContent = '#01';
-    ui.promptWord.textContent = 'LISTA';
-    ui.promptHint.textContent = 'Marcá cuatro pulsos para empezar';
-    ui.instruction.textContent = 'En el 1, agarrá el concepto. En el 3, buscá el remate.';
+    ui.promptWord.hidden = five;
+    ui.promptWords.hidden = !five;
+    ui.rhymeArea.hidden = five;
     ui.hit.disabled = true;
+    if (five) {
+      ui.promptLabel.textContent = 'CINCO PALABRAS · USALAS EN 4 BARRAS';
+      ui.promptWords.replaceChildren(...Array.from({ length: 5 }, () => {
+        const chip = document.createElement('span');
+        chip.className = 'prompt-word-chip visible';
+        chip.textContent = '—';
+        return chip;
+      }));
+      ui.promptHint.textContent = 'Marcá cuatro pulsos para empezar';
+      ui.instruction.textContent = 'En el 1, agarrá las cinco. En el 3, cerrá el remate.';
+    } else {
+      ui.promptLabel.textContent = 'TU CONCEPTO';
+      ui.promptWord.textContent = 'LISTA';
+      ui.promptHint.textContent = 'Marcá cuatro pulsos para empezar';
+      ui.instruction.textContent = 'En el 1, agarrá el concepto. En el 3, buscá el remate.';
+    }
     showEmptyRhymes();
   }
 
@@ -412,6 +488,18 @@
     updateClockExplanation();
     if (state.bpm) ui.tempoCaption.textContent = `Pulso estimado · ${effectiveTempo()} BPM de práctica`;
     restartClockPhase();
+  }
+
+  function setFormat(format) {
+    state.format = format === 'cinco' ? 'cinco' : 'una';
+    ui.formatButtons.forEach((button) => {
+      const active = button.dataset.format === state.format;
+      button.classList.toggle('selected', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+    if (state.running) restartClockPhase();
+    else renderEmptyPrompt();
+    saveProgress();
   }
 
   function setPattern(pattern) {
@@ -471,6 +559,7 @@
     state.roundNumber = 0;
     state.currentPrompt = null;
     state.decks = { esdrujulas: [], doble: [] };
+    state.fiveDeck = [];
     state.rhymeRevealed = false;
     state.hitThisRound = false;
     state.streak = 0;

@@ -16,7 +16,12 @@
 ## 🗺️ Plan por etapas (ver `PLAN_ETAPAS.md`)
 
 ### Ahora — rimas y freestyle
-- [ ] **Etapa 1 — La palabra manda:** R12 modo 5 palabras, R13 terminaciones forzadas, R14 ayuda progresiva, R15 contador de barras 4/8/16, R16 modo personaje.
+- [~] **Etapa 1 — La palabra manda:**
+  - [x] R12 modo 5 palabras: cinco palabras distintas por ronda, sin repetir dentro de la ronda y con remate en el tiempo 3; formato 1/5 persistido localmente.
+  - [ ] R13 terminaciones forzadas.
+  - [ ] R14 ayuda progresiva.
+  - [ ] R15 contador de barras 4/8/16.
+  - [ ] R16 modo personaje.
 - [ ] **Etapa 2 — Flow y tempo:** R17 count-in y final limpio, R18 interrupción a mitad de verso, R19 velocidad de estímulos, R20 grilla sincronizada, R21 calibración de latencia.
 
 ### Siguiente — cuando R4 esté revisada

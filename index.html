@@ -57,6 +57,13 @@
       <section class="studio-grid" aria-label="Estudio de entrenamiento">
         <article class="card challenge-card">
           <div class="card-heading"><div><p class="eyebrow">01 / EL DESAFÍO</p><h2>Elegí tu dinámica</h2></div><span class="round-count" id="round-count">RONDA 01</span></div>
+          <div class="format-block">
+            <span class="format-heading">FORMATO DE RONDA</span>
+            <div class="segmented format-switch" id="format-switch" role="group" aria-label="Formato de ronda">
+              <button type="button" data-format="una" class="selected" aria-pressed="true">1 PALABRA</button>
+              <button type="button" data-format="cinco" aria-pressed="false">5 PALABRAS</button>
+            </div>
+          </div>
           <div class="mode-switch" role="group" aria-label="Dinámica de entrenamiento">
             <button type="button" class="mode-button active" data-mode="esdrujulas" aria-pressed="true"><span class="mode-icon">Á</span><span><strong>Esdrújulas</strong><small>Acento al frente</small></span></button>
             <button type="button" class="mode-button" data-mode="doble" aria-pressed="false"><span class="mode-icon">×2</span><span><strong>Doble tempo</strong><small>El doble de rebote</small></span></button>
@@ -80,9 +87,10 @@
           <div class="prompt-panel" aria-live="polite" aria-atomic="true">
             <div class="prompt-topline"><span id="prompt-label">TU CONCEPTO</span><span class="prompt-index" id="prompt-index">#01</span></div>
             <div class="prompt-word" id="prompt-word">LISTA</div>
+            <div class="prompt-words" id="prompt-words" hidden></div>
             <p class="prompt-hint" id="prompt-hint">Marcá cuatro pulsos para empezar</p>
           </div>
-          <div class="rhyme-area">
+          <div class="rhyme-area" id="rhyme-area">
             <div class="rhyme-heading"><span>FAMILIA PARA EL REMATE</span><span class="reveal-note" id="reveal-note">APARECE EN EL TIEMPO 3</span></div>
             <div class="rhyme-list" id="rhyme-list"><span class="rhyme-chip empty-chip">—</span><span class="rhyme-chip empty-chip">—</span><span class="rhyme-chip empty-chip">—</span><span class="rhyme-chip empty-chip">—</span></div>
           </div>
