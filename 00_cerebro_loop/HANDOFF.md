@@ -1,19 +1,19 @@
 # HANDOFF (Estado Actual)
 
 ## Última acción completada
-R8 completada: mazo mezclado por modo que evita repetir estímulos hasta completar la vuelta; el rebarajado excluye el estímulo actual y el reinicio vuelve a mezclar. Antes se había cerrado R7 (patrones de remate LIBRE/AABB/ABAB/ABBA con regla visible y preferencia local).
+R11 completada: el control de tempo pasó de tarjeta lateral dominante a una barra compacta (~46 px útil, TAP de 46 px, BPM de 26 px). El desafío y la palabra son ahora el bloque principal. Además se creó `REA_APPS.md` con el análisis de 10 apps de la categoría y una lista numerada 1–25 de mejoras candidatas.
 
 ## Estado del build/navegador
-🟢 `node --check app.js` OK. Playwright en `http://localhost:3002`: 22 rondas continuas sin repeticiones inmediatas y con cobertura completa de los 8 estímulos por ciclo; taps manuales, revelado de rimas y registro de remate funcionando. Viewport móvil 390×844 sin overflow horizontal. Consola: 0 errores y 0 avisos. Capturas R7: `screenshots/r7-desktop.jpg`, `screenshots/r7-mobile.jpg`.
+🟢 `node --check app.js` y parseo HTML OK. Playwright en `http://localhost:3002`: 9 taps → 120 BPM, estado EN MARCHA, beat activo, detalles del compás, subdivisión ×2 y Doble tempo actualizando la cuenta; 0 overflow horizontal. Móvil 390×844 verificado. Consola: 0 errores y 0 avisos. Capturas: `screenshots/r11-desktop-v2.jpg`, `screenshots/r11-mobile.jpg`.
 
 ## Decisiones de diseño tomadas
-- El patrón es una guía estructural de 4 barras; no promete validez fonética ni puntúa la barra.
-- R4 sigue bloqueada por revisión humana; R7 no agrega datos de sílabas, acentos ni rimas.
-- Se conserva el flujo previo: ronda/estímulo/rimas/hit y Tap Tempo independiente del audio externo.
-- La publicación se reconstruyó sobre `origin/main` en una rama temporal para lograr un fast-forward limpio, sin merge ciego ni force push.
+- El foco visual es la palabra y el remate; el tempo queda como barra de control, no como protagonista.
+- La lista REA es de funciones públicas, sin copiar código ni afirmar cómo funcionan por dentro las apps analizadas.
+- R4 sigue bloqueada por revisión humana; las mejoras que dependen de fonética quedan condicionadas.
+- R7/R8 se mantienen: patrones de remate y mazo sin repeticiones.
 
 ## PRÓXIMO PASO INMEDIATO
-R9/R10: decidir si se guardan métricas locales útiles (sin audio ni telemetría) y verificar el conjunto acumulado en navegador, teclado y móvil.
+Esperar que el usuario elija números de la lista 1–25 de `REA_APPS.md`. Cada elegido se agrega a `ROADMAP.md` como tarea [B] y se implementa de a uno, con verificación en navegador.
 
 ## Contexto importante
 - App estática de freestyle argentino, sin pipeline de build ni artefactos `dist/`.
