@@ -6,7 +6,7 @@
 - [x] R1–R3: Tap Tempo resistente, reloj cuantizado y esquema/validador de vocabulario local; detalles y pruebas en `roadmap/REA.md`.
 - [ ] R4: Curar y revisar humanamente un lote pequeño de ejemplos rioplatenses antes de completar sílabas, acentos o familias fonéticas.
 - [x] R5–R6: Explicar golpes por pulso/compás y añadir mejoras de accesibilidad, foco visible y vibración manual opcional; verificación móvil y evidencia en `screenshots/r6-mobile.jpg`.
-- [ ] R7: Añadir patrones de rima o desafíos de remate opcionales con reglas claras y vocabulario validado.
+- [x] R7: Patrones de remate opcionales (LIBRE/AABB/ABAB/ABBA) con regla visible, tira de barras y preferencia guardada localmente; no evalúa voz ni sustituye la curación fonética de R4.
 - [ ] R8–R10: Reducir repeticiones, revisar métricas locales voluntarias y verificar el conjunto acumulado en navegador, teclado y móvil; sin audio grabado ni telemetría remota.
 
 ## 🛠️ Deuda Técnica y Mantenimiento (Tareas [C])

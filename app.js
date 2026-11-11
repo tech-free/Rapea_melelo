@@ -7,7 +7,9 @@
     tempoCaption: $('#tempo-caption'), clockExplanation: $('#clock-explanation'),
     beatBoxes: [...document.querySelectorAll('.beat')],
     subdivisionButtons: [...document.querySelectorAll('[data-subdivision]')],
-    modeButtons: [...document.querySelectorAll('[data-mode]')], round: $('#round-count'),
+    modeButtons: [...document.querySelectorAll('[data-mode]')],
+    patternButtons: [...document.querySelectorAll('[data-pattern]')],
+    patternStrip: $('#pattern-strip'), patternRule: $('#pattern-rule'), round: $('#round-count'),
     promptLabel: $('#prompt-label'), promptIndex: $('#prompt-index'), promptWord: $('#prompt-word'),
     promptHint: $('#prompt-hint'), rhymeList: $('#rhyme-list'), revealNote: $('#reveal-note'),
     instruction: $('#instruction'), hit: $('#hit-button'), streak: $('#streak-value'),
@@ -42,9 +44,16 @@
     ],
   };
 
+  const PATTERNS = {
+    libre: { scheme: null, rule: 'Sin patrón: rematá como te salga. Elegí AABB, ABAB o ABBA para ver qué barras comparten rima.' },
+    aabb: { scheme: ['A', 'A', 'B', 'B'], rule: 'AABB · las barras 1 y 2 comparten rima; las barras 3 y 4 cierran con otra.' },
+    abab: { scheme: ['A', 'B', 'A', 'B'], rule: 'ABAB · las barras 1 y 3 comparten rima; las barras 2 y 4, otra.' },
+    abba: { scheme: ['A', 'B', 'B', 'A'], rule: 'ABBA · las barras 2 y 3 comparten rima; la barra 4 vuelve a la de la 1.' },
+  };
+
   const saved = readProgress();
   const state = {
-    mode: 'esdrujulas', subdivision: 1, lastTapAt: null, intervals: [], pendingIntervals: [], bpm: null,
+    mode: 'esdrujulas', subdivision: 1, pattern: saved.pattern, lastTapAt: null, intervals: [], pendingIntervals: [], bpm: null,
     running: false, timer: 0, tickTimerIds: new Set(), generation: 0,
     nextTickAt: 0, tickNumber: 0, lastTickNumber: -1, lastTickAt: null, clockStepMs: 0,
     roundNumber: 0, currentPrompt: null,
@@ -55,6 +64,7 @@
 
   updateStats();
   setMode('esdrujulas');
+  setPattern(state.pattern);
   renderEmptyPrompt();
   setTempoReady(false);
   updateSoundButton();
@@ -73,6 +83,7 @@
     restartClockPhase();
   }));
   ui.hit.addEventListener('click', confirmHit);
+  ui.patternButtons.forEach((button) => button.addEventListener('click', () => setPattern(button.dataset.pattern)));
   ui.reset.addEventListener('click', resetSession);
   ui.sound.addEventListener('click', toggleSound);
   ui.vibration.addEventListener('click', toggleVibration);
@@ -85,9 +96,10 @@
       return {
         streak: safeCount(value.streak), hits: safeCount(value.hits),
         best: safeCount(value.best),
+        pattern: PATTERNS[value?.pattern] ? value.pattern : 'libre',
       };
     } catch (_) {
-      return { streak: 0, hits: 0, best: 0 };
+      return { streak: 0, hits: 0, best: 0, pattern: 'libre' };
     }
   }
 
@@ -98,7 +110,7 @@
   function saveProgress() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        streak: state.streak, hits: state.hits, best: state.best,
+        streak: state.streak, hits: state.hits, best: state.best, pattern: state.pattern,
       }));
     } catch (_) {
       // Private browsing or a full storage quota must not interrupt practice.
@@ -361,7 +373,9 @@
     ui.hit.disabled = true;
     ui.hit.innerHTML = 'REMATE GUARDADO <span>✓</span>';
     window.setTimeout(() => { ui.hit.innerHTML = '¡LA EMBOQUÉ! <span>↗</span>'; }, 1100);
-    showToast('Una más para la racha. ¡Buen remate!');
+    showToast(PATTERNS[state.pattern]?.scheme
+      ? `Remate guardado con patrón ${state.pattern.toUpperCase()}. ¡Buen cierre!`
+      : 'Una más para la racha. ¡Buen remate!');
   }
 
   function updateStats() {
@@ -382,6 +396,34 @@
     updateClockExplanation();
     if (state.bpm) ui.tempoCaption.textContent = `Pulso estimado · ${effectiveTempo()} BPM de práctica`;
     restartClockPhase();
+  }
+
+  function setPattern(pattern) {
+    const entry = PATTERNS[pattern] || PATTERNS.libre;
+    state.pattern = entry === PATTERNS.libre ? 'libre' : pattern;
+    ui.patternButtons.forEach((button) => {
+      const active = button.dataset.pattern === state.pattern;
+      button.classList.toggle('selected', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+    renderPattern();
+    saveProgress();
+  }
+
+  function renderPattern() {
+    const entry = PATTERNS[state.pattern] || PATTERNS.libre;
+    const scheme = entry.scheme;
+    ui.patternRule.textContent = entry.rule;
+    ui.patternStrip.hidden = !scheme;
+    if (!scheme) return;
+    ui.patternStrip.querySelectorAll('[data-bar]').forEach((bar, index) => {
+      const letter = scheme[index] || '';
+      const badge = bar.querySelector('[data-letter]');
+      if (badge) badge.textContent = letter;
+      const shared = Boolean(letter) && scheme.filter((item) => item === letter).length > 1;
+      bar.classList.toggle('shared', shared);
+      bar.setAttribute('aria-label', `Barra ${index + 1}: rima ${letter}`);
+    });
   }
 
   function restartClockPhase() {

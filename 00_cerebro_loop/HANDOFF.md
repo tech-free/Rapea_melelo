@@ -1,34 +1,24 @@
 # HANDOFF (Estado Actual)
 
 ## Última acción completada
-Revisados los checkpoints 9 y 10 sin merge: el 9 propone una variante acotada de R7; el 10 la revierte y cambia reglas operativas. No se rescata R7 en esta tarea de fundación ni se adoptan cambios que borrarían bloqueos humanos vigentes.
+R7 completada: patrón de remate opcional (LIBRE/AABB/ABAB/ABBA) con regla visible, tira de cuatro barras y preferencia guardada en `localStorage`. No evalúa voz ni completa fonética pendiente de R4.
 
 ## Estado del build/navegador
-🟢 Verificación actual: validador del vocabulario, cinco pruebas `unittest`, `node --check app.js` y `git diff --check` pasaron. Playwright cargó el juego completo, se probó Doble tempo, subdivisión ×2 y taps manuales (121 BPM); luego se restauraron los controles iniciales. Consola: 0 errores y 0 avisos. Captura visual inspeccionada: `screenshots/foundation-audit.png`.
+🟢 `node --check app.js` OK. Playwright en `http://localhost:3002`: 9 taps manuales (≈118 BPM) iniciaron el reloj, se revelaron rimas y el remate se registró con el patrón ABBA; `localStorage` guardó `{"pattern":"abba"}`. Viewport móvil 390×844 sin overflow horizontal. Consola: 0 errores y 0 avisos. Capturas: `screenshots/r7-desktop.jpg`, `screenshots/r7-mobile.jpg`.
 
 ## Decisiones de diseño tomadas
-- Preservar el juego y las memorias existentes; no reemplazar ROADMAP/TODO/CEMETERY por plantillas vacías.
-- R4 espera revisión humana; no inferir sílabas, acentos ni familias fonéticas.
-- El protocolo del usuario se conserva como texto solicitado; las instrucciones de AGENTS.md siguen disponibles como referencia técnica de entorno.
-- No incorporar ahora la variante R7 de `origin/opencode-checkpoints/9`; R7 permanece pendiente en ROADMAP. No se decide aquí su rescate o descarte futuro.
-- No adoptar los cambios operativos de `origin/opencode-checkpoints/10` que eliminan bloqueos humanos. La comparación del checkpoint 9 también reportó un espacio en blanco final en `todo.md`; no se incorpora ese archivo.
+- El patrón es una guía estructural de 4 barras; no promete validez fonética ni puntúa la barra.
+- R4 sigue bloqueada por revisión humana; R7 no agrega datos de sílabas, acentos ni rimas.
+- Se conserva el flujo previo: ronda/estímulo/rimas/hit y Tap Tempo independiente del audio externo.
+- La publicación se reconstruyó sobre `origin/main` en una rama temporal para lograr un fast-forward limpio, sin merge ciego ni force push.
 
 ## PRÓXIMO PASO INMEDIATO
-Completar la revisión final del diff y repetir los gates documentales/app; crear un commit atómico y publicar a `main` solo si todo sigue verde y el avance es fast-forward.
+R8: reducir repetición de estímulos dentro de la sesión y comprobar el comportamiento con conjuntos pequeños de vocabulario.
 
 ## Contexto importante
-- El repositorio es una app estática de freestyle argentino; el juego ya existe y es jugable.
-- El censo remoto de issues continúa bloqueado por falta de autenticación `gh`; no ejecutar `gh` según la solicitud de fundación.
-- No hay pipeline de build y no existen artefactos `dist/` que deban sincronizarse.
-
-## Plan de esta tarea
-1. Anteponer la regla suprema a `AGENTS.md` sin borrar sus instrucciones técnicas.
-2. Alinear las plantillas del cerebro con el estado real y conservar el historial útil.
-3. Revisar los checkpoints 9 y 10 sin merge, y registrar la decisión sobre R7 y los bloqueos humanos.
-4. Verificar documentación, sintaxis/dataset/pruebas y el juego visible en Playwright.
-5. Revisar el diff completo y crear commit atómico; publicar solo tras confirmar avance fast-forward.
-
----
+- App estática de freestyle argentino, sin pipeline de build ni artefactos `dist/`.
+- Censo remoto de issues sigue bloqueado por falta de autenticación `gh`; no usar `gh`.
+- El cerebro vive en `/00_cerebro_loop/`; este archivo es la fuente de estado.
 
 ## Registro previo de estado
 - Última revisión: Se actualizó `00_cerebro_loop/ROADMAP.md` al formato de funcionalidades, mantenimiento y bugs; se adaptaron `TODO.md` y este handoff para reflejar bloqueos y próximos pasos.

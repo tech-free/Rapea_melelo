@@ -52,6 +52,22 @@
               <button type="button" class="mode-button active" data-mode="esdrujulas" aria-pressed="true"><span class="mode-icon">Á</span><span><strong>Esdrújulas</strong><small>Acento al frente</small></span></button>
               <button type="button" class="mode-button" data-mode="doble" aria-pressed="false"><span class="mode-icon">×2</span><span><strong>Doble tempo</strong><small>El doble de rebote</small></span></button>
             </div>
+            <div class="pattern-block">
+              <div class="pattern-heading"><span>PATRÓN DE REMATE</span><span class="optional-tag">OPCIONAL</span></div>
+              <div class="segmented pattern-switch" id="pattern-switch" role="group" aria-label="Patrón de rima en cuatro barras">
+                <button type="button" data-pattern="libre" class="selected" aria-pressed="true">LIBRE</button>
+                <button type="button" data-pattern="aabb" aria-pressed="false">AABB</button>
+                <button type="button" data-pattern="abab" aria-pressed="false">ABAB</button>
+                <button type="button" data-pattern="abba" aria-pressed="false">ABBA</button>
+              </div>
+              <div class="pattern-strip" id="pattern-strip" hidden>
+                <div class="pattern-bar" data-bar="0"><span class="pattern-bar-label">BARRA 1</span><span class="pattern-letter" data-letter>A</span></div>
+                <div class="pattern-bar" data-bar="1"><span class="pattern-bar-label">BARRA 2</span><span class="pattern-letter" data-letter>A</span></div>
+                <div class="pattern-bar" data-bar="2"><span class="pattern-bar-label">BARRA 3</span><span class="pattern-letter" data-letter>B</span></div>
+                <div class="pattern-bar" data-bar="3"><span class="pattern-bar-label">BARRA 4</span><span class="pattern-letter" data-letter>B</span></div>
+              </div>
+              <p class="pattern-rule" id="pattern-rule" role="status" aria-live="polite">Sin patrón: rematá como te salga. Elegí AABB, ABAB o ABBA para ver qué barras comparten rima.</p>
+            </div>
             <div class="prompt-panel" aria-live="polite" aria-atomic="true">
               <div class="prompt-topline"><span id="prompt-label">TU CONCEPTO</span><span class="prompt-index" id="prompt-index">#01</span></div>
               <div class="prompt-word" id="prompt-word">LISTA</div>
