@@ -62,6 +62,10 @@ Leyenda: **base** = ya hay una versión inicial; **cola** = posible mejora incre
 - [ ] R9. Revisar métricas locales útiles (p. ej., BPM habituales y rondas confirmadas voluntariamente); no guardar audio ni enviar telemetría.
 - [ ] R10. Verificar los cambios acumulados en navegador, teclado/táctil y viewport móvil; actualizar README y evidencia del roadmap.
 
+### Fase 4 — foco en palabras y REA de apps (2026)
+- [x] R11. Compactar el control de tempo: de tarjeta lateral dominante a barra superior de ~46 px útil, con TAP de 46 px y BPM de 26 px. El desafío y la palabra pasan a ser el bloque principal. Verificado en escritorio 1280×900 y móvil 390×844, consola sin errores/avisos.
+- [ ] R12+. Backlog de mejoras elegido por el usuario desde `00_cerebro_loop/REA_APPS.md` (lista numerada 1–25, basada en 10 apps de la categoría). Cada número elegido se convierte en una tarea atómica antes de implementarse.
+
 El orden es una sugerencia, no una promesa de calendario. Al cerrar cada tarea, marcarla, actualizar documentación de alcance si cambia el comportamiento y checkpoint antes de tomar la siguiente.
 
 ## Ideas recibidas que requieren cautela

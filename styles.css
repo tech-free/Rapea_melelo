@@ -13,3 +13,58 @@
 .pattern-bar.shared{border-color:#d2f36b45}
 .pattern-rule{margin:9px 0 0;color:#9d9ea6;font-size:10px;line-height:1.5}
 @media(max-width:370px){.pattern-rule{font-size:9px}.pattern-bar-label{font-size:6px}}
+
+/* R11 — Tempo compacto: el protagonismo es la palabra y el flow */
+.tempo-strip{display:flex;flex-direction:column;gap:5px;margin:0 0 16px;padding:10px 14px;border:1px solid #ffffff10;border-radius:12px;background:linear-gradient(145deg,#1b1c21,#17181d)}
+.tempo-main{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.tap-compact{width:52px;height:52px;min-width:52px;aspect-ratio:auto;border-radius:50%;box-shadow:0 0 0 5px #d2f36b09;flex:none}
+.tap-compact .tap-label{font-size:12px;letter-spacing:1px}
+.tap-compact .tap-rings{display:none}
+.tap-compact:active,.tap-compact.pulse{transform:scale(.94);box-shadow:0 0 0 8px #d2f36b13}
+.tempo-readout{display:flex;flex-direction:column;gap:2px;min-width:82px}
+.bpm-line{display:flex;align-items:baseline;gap:5px}
+.tempo-strip .bpm-value{font-size:30px;letter-spacing:-1px;line-height:1}
+.tempo-strip .bpm-unit{font-size:8px}
+.tempo-strip .tempo-status{font-size:7px}
+.tempo-strip .beat-track{display:flex;gap:5px;margin:0}
+.tempo-strip .beat{width:27px;height:27px;flex:none;font-size:9px;border-radius:6px}
+.tempo-strip .beat.active{transform:none;box-shadow:none}
+.tempo-strip .tempo-controls{margin:0;display:flex;align-items:center;gap:8px}
+.tempo-strip .tempo-controls>label{font-size:7px}
+.tempo-strip .segmented button{padding:4px 8px;font-size:8px}
+.tempo-strip .session-stats{margin:0;border-top:0;padding:0;display:flex;gap:12px;text-align:left}
+.tempo-strip .session-stats div+div{border-left:1px solid #ffffff10;padding-left:12px}
+.tempo-strip .session-stats strong{font-size:14px}
+.tempo-strip .session-stats div span{font-size:6px;margin-top:1px}
+.reset-compact{margin:0 0 0 auto;font-size:15px;line-height:1;padding:6px 8px;border:1px solid #ffffff12;border-radius:7px;align-self:center}
+.tempo-meta{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid #ffffff0a;padding-top:5px}
+.tempo-meta .tempo-caption{margin:0;text-align:left;font-size:9px;min-height:0}
+.tempo-details{font-size:9px;color:#8e8f96}
+.tempo-details summary{cursor:pointer;font-family:var(--mono);font-size:8px;letter-spacing:.5px;color:#9d9ea6}
+.tempo-details summary:hover{color:var(--text)}
+.tempo-details .clock-explanation{text-align:left;font-size:9px;margin:6px 0 0}
+.tempo-strip .clock-note{margin:4px 0 0;text-align:left;font-size:8px;color:#8e8f96}
+.studio-grid{grid-template-columns:minmax(0,1.9fr) minmax(280px,.8fr);align-items:start}
+.challenge-card{min-height:0}
+.challenge-card .prompt-panel{padding:24px 24px 20px;min-height:150px}
+.challenge-card .prompt-word{font-size:clamp(44px,6vw,66px);letter-spacing:1px;margin-top:14px}
+.challenge-card .prompt-hint{font-size:12px}
+.challenge-card .rhyme-chip{min-height:40px;font-size:12px}
+.challenge-card .hit-button{padding:11px 14px;font-size:9px}
+@media(max-width:900px){.studio-grid{grid-template-columns:1fr}.challenge-card .prompt-word{font-size:clamp(40px,9vw,58px)}}
+@media(max-width:590px){.tempo-strip{padding:9px 11px}.tempo-main{gap:10px}.tempo-strip .tempo-controls{order:5;width:100%;justify-content:space-between}.tempo-strip .beat-track{order:6;width:100%}.tempo-strip .beat{flex:1}.tempo-strip .session-stats{order:7;width:100%;justify-content:space-between}.reset-compact{order:8;margin-left:auto}.challenge-card .prompt-panel{padding:18px 16px 15px;min-height:132px}.challenge-card .prompt-word{font-size:42px}.challenge-card .rhyme-chip{min-height:36px;font-size:10px}.intro{padding:24px 0 18px}}
+
+/* R11.1 — Densidad: más palabras, menos chrome */
+.intro{padding:24px 0 16px}
+.intro h1{font-size:clamp(30px,4vw,40px);letter-spacing:-1.6px}
+.intro-copy{margin-top:8px}
+.tempo-strip{padding:8px 12px;gap:4px}
+.tap-compact{width:46px;height:46px;min-width:46px}
+.tempo-strip .bpm-value{font-size:26px}
+.mode-switch{margin:10px 0}
+.pattern-block{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:6px 12px;padding:9px 12px;margin-bottom:12px}
+.pattern-heading{margin-bottom:0}
+.pattern-switch{grid-column:2;justify-self:end;width:auto}
+.pattern-strip{grid-column:1/-1;margin-top:3px}
+.pattern-rule{grid-column:1/-1;margin:0;font-size:9px}
+@media(max-width:590px){.pattern-block{grid-template-columns:1fr}.pattern-switch{grid-column:1;justify-self:stretch;width:100%}.pattern-heading{margin-bottom:2px}}
