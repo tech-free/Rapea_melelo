@@ -58,7 +58,7 @@ Leyenda: **base** = ya hay una versión inicial; **cola** = posible mejora incre
 - [x] R7. Patrones de remate opcionales: selector LIBRE/AABB/ABAB/ABBA con regla visible y tira de cuatro barras que indica qué barras comparten rima. La elección se guarda localmente; no evalúa voz ni completa datos fonéticos pendientes de R4. Verificado en Playwright (escritorio y móvil 390×844, consola sin errores ni avisos).
 
 ### Fase 3 — progresión local
-- [ ] R8. Reducir repetición en la sesión y comprobar el comportamiento con conjuntos de vocabulario pequeños.
+- [x] R8. Reducir repetición en la sesión y comprobar el comportamiento con conjuntos pequeños de vocabulario. Implementado con un mazo mezclado por modo: cada estímulo aparece una vez por vuelta, el rebarajado excluye el estímulo actual y el reinicio de sesión vuelve a mezclar. Verificado en 22 rondas continuas: sin repeticiones inmediatas y cobertura completa de los 8 estímulos por ciclo.
 - [ ] R9. Revisar métricas locales útiles (p. ej., BPM habituales y rondas confirmadas voluntariamente); no guardar audio ni enviar telemetría.
 - [ ] R10. Verificar los cambios acumulados en navegador, teclado/táctil y viewport móvil; actualizar README y evidencia del roadmap.
 

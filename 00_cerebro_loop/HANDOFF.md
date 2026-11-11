@@ -1,10 +1,10 @@
 # HANDOFF (Estado Actual)
 
 ## Última acción completada
-R7 completada: patrón de remate opcional (LIBRE/AABB/ABAB/ABBA) con regla visible, tira de cuatro barras y preferencia guardada en `localStorage`. No evalúa voz ni completa fonética pendiente de R4.
+R8 completada: mazo mezclado por modo que evita repetir estímulos hasta completar la vuelta; el rebarajado excluye el estímulo actual y el reinicio vuelve a mezclar. Antes se había cerrado R7 (patrones de remate LIBRE/AABB/ABAB/ABBA con regla visible y preferencia local).
 
 ## Estado del build/navegador
-🟢 `node --check app.js` OK. Playwright en `http://localhost:3002`: 9 taps manuales (≈118 BPM) iniciaron el reloj, se revelaron rimas y el remate se registró con el patrón ABBA; `localStorage` guardó `{"pattern":"abba"}`. Viewport móvil 390×844 sin overflow horizontal. Consola: 0 errores y 0 avisos. Capturas: `screenshots/r7-desktop.jpg`, `screenshots/r7-mobile.jpg`.
+🟢 `node --check app.js` OK. Playwright en `http://localhost:3002`: 22 rondas continuas sin repeticiones inmediatas y con cobertura completa de los 8 estímulos por ciclo; taps manuales, revelado de rimas y registro de remate funcionando. Viewport móvil 390×844 sin overflow horizontal. Consola: 0 errores y 0 avisos. Capturas R7: `screenshots/r7-desktop.jpg`, `screenshots/r7-mobile.jpg`.
 
 ## Decisiones de diseño tomadas
 - El patrón es una guía estructural de 4 barras; no promete validez fonética ni puntúa la barra.
@@ -13,7 +13,7 @@ R7 completada: patrón de remate opcional (LIBRE/AABB/ABAB/ABBA) con regla visib
 - La publicación se reconstruyó sobre `origin/main` en una rama temporal para lograr un fast-forward limpio, sin merge ciego ni force push.
 
 ## PRÓXIMO PASO INMEDIATO
-R8: reducir repetición de estímulos dentro de la sesión y comprobar el comportamiento con conjuntos pequeños de vocabulario.
+R9/R10: decidir si se guardan métricas locales útiles (sin audio ni telemetría) y verificar el conjunto acumulado en navegador, teclado y móvil.
 
 ## Contexto importante
 - App estática de freestyle argentino, sin pipeline de build ni artefactos `dist/`.

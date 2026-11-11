@@ -57,6 +57,7 @@
     running: false, timer: 0, tickTimerIds: new Set(), generation: 0,
     nextTickAt: 0, tickNumber: 0, lastTickNumber: -1, lastTickAt: null, clockStepMs: 0,
     roundNumber: 0, currentPrompt: null,
+    decks: { esdrujulas: [], doble: [] },
     rhymeRevealed: false, hitThisRound: false, streak: saved.streak,
     hits: saved.hits, best: saved.best, soundOn: false, vibrationOn: false, audio: null,
     player: null, pendingMedia: null, apiState: 'idle', toastTimer: 0,
@@ -323,8 +324,23 @@
   }
 
   function choosePrompt(mode) {
-    const choices = PROMPTS[mode].filter((item) => item !== state.currentPrompt);
-    return choices[Math.floor(Math.random() * choices.length)] || PROMPTS[mode][0];
+    const pool = PROMPTS[mode] || PROMPTS.esdrujulas;
+    if (!Array.isArray(state.decks[mode])) state.decks[mode] = [];
+    const deck = state.decks[mode];
+    if (!deck.length) {
+      const fresh = pool.filter((item) => item !== state.currentPrompt);
+      deck.push(...shuffle(fresh.length ? fresh : pool));
+    }
+    return deck.shift() || pool[0];
+  }
+
+  function shuffle(items) {
+    const copy = [...items];
+    for (let index = copy.length - 1; index > 0; index -= 1) {
+      const swapWith = Math.floor(Math.random() * (index + 1));
+      [copy[index], copy[swapWith]] = [copy[swapWith], copy[index]];
+    }
+    return copy;
   }
 
   function showEmptyRhymes() {
@@ -454,6 +470,7 @@
     state.bpm = null;
     state.roundNumber = 0;
     state.currentPrompt = null;
+    state.decks = { esdrujulas: [], doble: [] };
     state.rhymeRevealed = false;
     state.hitThisRound = false;
     state.streak = 0;
