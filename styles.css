@@ -68,3 +68,49 @@
 .pattern-strip{grid-column:1/-1;margin-top:3px}
 .pattern-rule{grid-column:1/-1;margin:0;font-size:9px}
 @media(max-width:590px){.pattern-block{grid-template-columns:1fr}.pattern-switch{grid-column:1;justify-self:stretch;width:100%}.pattern-heading{margin-bottom:2px}}
+
+/* R11.2 — TAP del tamaño de un título: control mínimo, palabra protagonista */
+.tempo-strip{padding:6px 10px;gap:3px;border-radius:10px;margin-bottom:12px}
+.tempo-main{gap:10px}
+.tap-compact{width:auto;height:22px;min-width:0;padding:0 9px;border-radius:6px;box-shadow:none;background:#2a2d22;border:1px solid #d2f36b66;aspect-ratio:auto}
+.tap-compact .tap-label{font-size:8px;letter-spacing:1px}
+.tap-compact:active,.tap-compact.pulse{transform:scale(.95);box-shadow:0 0 0 3px #d2f36b14}
+.tempo-strip .bpm-value{font-size:20px;letter-spacing:-.5px}
+.tempo-strip .bpm-unit{font-size:7px}
+.tempo-strip .tempo-status{font-size:6px;gap:4px}
+.tempo-strip .status-dot{width:5px;height:5px}
+.tempo-strip .beat{width:20px;height:20px;font-size:8px;border-radius:5px}
+.tempo-strip .tempo-controls{gap:6px}
+.tempo-strip .tempo-controls>label{font-size:6px}
+.tempo-strip .segmented{padding:2px}
+.tempo-strip .segmented button{padding:3px 6px;font-size:7px}
+.tempo-strip .session-stats{gap:10px}
+.tempo-strip .session-stats div+div{padding-left:10px}
+.tempo-strip .session-stats strong{font-size:12px}
+.tempo-strip .session-stats div span{font-size:5px;margin-top:0}
+.reset-compact{font-size:12px;padding:3px 6px;border-radius:6px}
+.tempo-meta{padding-top:3px}
+.tempo-meta .tempo-caption{font-size:8px}
+.tempo-details summary{font-size:7px}
+@media(max-width:590px){.tempo-strip{padding:6px 9px}.tap-compact{height:22px}.tempo-strip .beat{height:18px}.tempo-strip .session-stats{width:100%}}
+.tap-compact::before{content:'';position:absolute;inset:-8px;border-radius:10px}
+
+/* R11.3 — Barra de tempo en una línea, del alto del título */
+.tempo-strip{flex-direction:row;align-items:center;flex-wrap:wrap;gap:6px 12px;padding:5px 10px}
+.tempo-main{flex:1 1 auto;flex-wrap:nowrap;gap:8px;min-width:0}
+.tempo-meta{flex:0 1 auto;border-top:0;padding-top:0;align-items:center;flex-wrap:nowrap;gap:8px}
+.tempo-meta .tempo-caption{font-size:8px;white-space:nowrap;min-height:0}
+.tempo-details summary{white-space:nowrap}
+@media(max-width:1180px){.tempo-meta .tempo-caption{display:none}}
+@media(max-width:900px){.tempo-main{flex-wrap:wrap}}
+@media(max-width:590px){
+  .tempo-strip{padding:5px 9px;gap:5px 8px}
+  .tempo-strip .tempo-controls{order:3;width:auto;justify-content:flex-start;gap:5px}
+  .tempo-strip .beat-track{order:4;width:auto;flex:0 0 auto;gap:4px}
+  .tempo-strip .beat{flex:0 0 auto;width:18px;height:18px}
+  .tempo-strip .session-stats{order:5;width:auto;flex:1 1 auto;justify-content:flex-end;gap:8px}
+  .tempo-strip .session-stats div+div{padding-left:8px}
+  .reset-compact{order:6}
+  .tempo-meta{order:7;width:auto;flex:0 0 auto;justify-content:flex-end;margin-left:auto}
+  .tempo-meta .tempo-caption{display:none}
+}

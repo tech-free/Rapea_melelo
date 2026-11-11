@@ -1,19 +1,19 @@
 # HANDOFF (Estado Actual)
 
 ## Última acción completada
-R11 completada: el control de tempo pasó de tarjeta lateral dominante a una barra compacta (~46 px útil, TAP de 46 px, BPM de 26 px). El desafío y la palabra son ahora el bloque principal. Además se creó `REA_APPS.md` con el análisis de 10 apps de la categoría y una lista numerada 1–25 de mejoras candidatas.
+R11.2–R11.3 completadas: el TAP quedó en 38×22 px y la barra de tempo en 42 px de alto, prácticamente del alto del título (40 px). En móvil se acomoda en dos filas. Además, el REA de 10 apps se convirtió en un plan por etapas en `PLAN_ETAPAS.md`: Etapas 1–2 activas (palabra y flow), Etapa 3 lista pero esperando R4, Etapas 4–5 después y parking para grabación, beats y micrófono.
 
 ## Estado del build/navegador
-🟢 `node --check app.js` y parseo HTML OK. Playwright en `http://localhost:3002`: 9 taps → 120 BPM, estado EN MARCHA, beat activo, detalles del compás, subdivisión ×2 y Doble tempo actualizando la cuenta; 0 overflow horizontal. Móvil 390×844 verificado. Consola: 0 errores y 0 avisos. Capturas: `screenshots/r11-desktop-v2.jpg`, `screenshots/r11-mobile.jpg`.
+🟢 `node --check app.js` y parseo HTML OK. Playwright en `http://localhost:3002`: barra de tempo de 42 px, TAP de 38×22 px, sin overflow en 1280×900; móvil 390×844 en 87 px de alto y sin overflow. Taps, BPM, beat activo, subdivisión y Doble tempo siguen funcionando. Consola: 0 errores y 0 avisos. Capturas: `screenshots/r11-tap-line.jpg`, `screenshots/r11-tap-mobile.jpg`.
 
 ## Decisiones de diseño tomadas
-- El foco visual es la palabra y el remate; el tempo queda como barra de control, no como protagonista.
-- La lista REA es de funciones públicas, sin copiar código ni afirmar cómo funcionan por dentro las apps analizadas.
-- R4 sigue bloqueada por revisión humana; las mejoras que dependen de fonética quedan condicionadas.
+- El foco visual es la palabra y el remate; el tempo es una barra de control del alto del título, no un protagonista.
+- El plan separa “ahora” (palabra, flow, vocabulario) de “después” (hábito, juego local) y “parking” (grabación, beats, micrófono).
+- R4 sigue bloqueada por revisión humana; la Etapa 3 no arranca sin ese lote revisado.
 - R7/R8 se mantienen: patrones de remate y mazo sin repeticiones.
 
 ## PRÓXIMO PASO INMEDIATO
-Esperar que el usuario elija números de la lista 1–25 de `REA_APPS.md`. Cada elegido se agrega a `ROADMAP.md` como tarea [B] y se implementa de a uno, con verificación en navegador.
+Arrancar la Etapa 1 con R12 (modo 5 palabras): cinco palabras distintas por ronda, usadas en cuatro barras, integradas al mazo y a los patrones existentes. Después R13, R14, R15 y R16, una por commit con verificación en navegador.
 
 ## Contexto importante
 - App estática de freestyle argentino, sin pipeline de build ni artefactos `dist/`.
