@@ -59,9 +59,12 @@
           <div class="card-heading"><div><p class="eyebrow">01 / EL DESAFÍO</p><h2>Elegí tu dinámica</h2></div><span class="round-count" id="round-count">RONDA 01</span></div>
           <div class="format-block">
             <span class="format-heading">FORMATO DE RONDA</span>
-            <div class="segmented format-switch" id="format-switch" role="group" aria-label="Formato de ronda">
-              <button type="button" data-format="una" class="selected" aria-pressed="true">1 PALABRA</button>
-              <button type="button" data-format="cinco" aria-pressed="false">5 PALABRAS</button>
+            <div class="format-actions">
+              <div class="segmented format-switch" id="format-switch" role="group" aria-label="Formato de ronda">
+                <button type="button" data-format="una" class="selected" aria-pressed="true">1 PALABRA</button>
+                <button type="button" data-format="cinco" aria-pressed="false">5 PALABRAS</button>
+              </div>
+              <button id="termination-toggle" type="button" class="termination-toggle" aria-pressed="false" title="Agregar una terminación obligatoria para cerrar la barra; no se valida tu voz">TERMINACIÓN <span id="termination-state">OFF</span></button>
             </div>
           </div>
           <div class="mode-switch" role="group" aria-label="Dinámica de entrenamiento">
@@ -88,6 +91,7 @@
             <div class="prompt-topline"><span id="prompt-label">TU CONCEPTO</span><span class="prompt-index" id="prompt-index">#01</span></div>
             <div class="prompt-word" id="prompt-word">LISTA</div>
             <div class="prompt-words" id="prompt-words" hidden></div>
+            <div class="prompt-termination" id="prompt-termination" hidden><span>CIERRE OBLIGATORIO</span><strong id="termination-value">-ÓN</strong></div>
             <p class="prompt-hint" id="prompt-hint">Marcá cuatro pulsos para empezar</p>
           </div>
           <div class="rhyme-area" id="rhyme-area">

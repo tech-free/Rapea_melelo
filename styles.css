@@ -133,3 +133,22 @@
   .prompt-word-chip{min-height:42px;font-size:13px}
   .prompt-words .prompt-word-chip:last-child:nth-child(odd){grid-column:1/-1}
 }
+
+/* R13 — Terminación obligatoria opcional */
+.format-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.termination-toggle{border:1px solid #ffffff14;background:#23242a;color:#a6a6ad;border-radius:6px;padding:5px 8px;font:8px var(--mono);letter-spacing:.5px;cursor:pointer;white-space:nowrap}
+.termination-toggle span{color:#777881;margin-left:3px}
+.termination-toggle:hover{border-color:#ffffff32;color:var(--text)}
+.termination-toggle.active{border-color:#d2f36b55;background:#2a2d22;color:var(--lime)}
+.termination-toggle.active span{color:var(--lime)}
+body.mode-double .termination-toggle.active{border-color:#fb718555;background:#2c2024;color:#fb7185}
+body.mode-double .termination-toggle.active span{color:#fb7185}
+.prompt-termination{display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:4px 8px;border:1px solid #d2f36b45;border-radius:6px;background:#2a2d22;font-family:var(--mono);font-size:8px;letter-spacing:.5px;color:#b8c98f}
+.prompt-termination[hidden]{display:none}
+.prompt-termination strong{font-size:13px;color:var(--lime);letter-spacing:1px}
+body.mode-double .prompt-termination{border-color:#fb718545;background:#2c2024;color:#d9a3ab}
+body.mode-double .prompt-termination strong{color:#fb7185}
+@media(max-width:590px){
+  .format-block{flex-wrap:wrap}
+  .format-actions{width:100%;justify-content:space-between}
+}

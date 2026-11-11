@@ -12,8 +12,9 @@
     patternButtons: [...document.querySelectorAll('[data-pattern]')],
     patternStrip: $('#pattern-strip'), patternRule: $('#pattern-rule'), round: $('#round-count'),
     promptLabel: $('#prompt-label'), promptIndex: $('#prompt-index'), promptWord: $('#prompt-word'),
-    promptWords: $('#prompt-words'), promptHint: $('#prompt-hint'), rhymeArea: $('#rhyme-area'),
-    rhymeList: $('#rhyme-list'), revealNote: $('#reveal-note'),
+    promptWords: $('#prompt-words'), promptTermination: $('#prompt-termination'), terminationValue: $('#termination-value'),
+    terminationToggle: $('#termination-toggle'), terminationState: $('#termination-state'),
+    promptHint: $('#prompt-hint'), rhymeArea: $('#rhyme-area'), rhymeList: $('#rhyme-list'), revealNote: $('#reveal-note'),
     instruction: $('#instruction'), hit: $('#hit-button'), streak: $('#streak-value'),
     hits: $('#hits-value'), best: $('#best-value'), reset: $('#reset-button'),
     sound: $('#sound-toggle'), vibration: $('#vibration-toggle'), form: $('#youtube-form'), url: $('#youtube-url'),
@@ -53,6 +54,8 @@
     'BANDERA', 'TAMBOR', 'MICRÓFONO', 'BATALLA', 'FLOW', 'RIMA', 'ORGULLO', 'MEMORIA',
   ];
 
+  const TERMINATIONS = ['-ÓN', '-ERO', '-AR', '-ADA', '-INGO', '-UELA', '-ISMO', '-AJE'];
+
   const PATTERNS = {
     libre: { scheme: null, rule: 'Sin patrón: rematá como te salga. Elegí AABB, ABAB o ABBA para ver qué barras comparten rima.' },
     aabb: { scheme: ['A', 'A', 'B', 'B'], rule: 'AABB · las barras 1 y 2 comparten rima; las barras 3 y 4 cierran con otra.' },
@@ -62,11 +65,11 @@
 
   const saved = readProgress();
   const state = {
-    mode: 'esdrujulas', format: saved.format, subdivision: 1, pattern: saved.pattern, lastTapAt: null, intervals: [], pendingIntervals: [], bpm: null,
+    mode: 'esdrujulas', format: saved.format, terminationOn: saved.terminationOn, subdivision: 1, pattern: saved.pattern, lastTapAt: null, intervals: [], pendingIntervals: [], bpm: null,
     running: false, timer: 0, tickTimerIds: new Set(), generation: 0,
     nextTickAt: 0, tickNumber: 0, lastTickNumber: -1, lastTickAt: null, clockStepMs: 0,
     roundNumber: 0, currentPrompt: null,
-    decks: { esdrujulas: [], doble: [] }, fiveDeck: [],
+    decks: { esdrujulas: [], doble: [] }, fiveDeck: [], terminationDeck: [], currentTermination: null,
     rhymeRevealed: false, hitThisRound: false, streak: saved.streak,
     hits: saved.hits, best: saved.best, soundOn: false, vibrationOn: false, audio: null,
     player: null, pendingMedia: null, apiState: 'idle', toastTimer: 0,
@@ -75,6 +78,7 @@
   updateStats();
   setMode('esdrujulas');
   setFormat(state.format);
+  setTermination(state.terminationOn);
   setPattern(state.pattern);
   renderEmptyPrompt();
   setTempoReady(false);
@@ -84,6 +88,7 @@
   ui.tap.addEventListener('click', handleTap);
   ui.modeButtons.forEach((button) => button.addEventListener('click', () => setMode(button.dataset.mode)));
   ui.formatButtons.forEach((button) => button.addEventListener('click', () => setFormat(button.dataset.format)));
+  ui.terminationToggle.addEventListener('click', toggleTermination);
   ui.subdivisionButtons.forEach((button) => button.addEventListener('click', () => {
     state.subdivision = Number(button.dataset.subdivision);
     ui.subdivisionButtons.forEach((item) => {
@@ -110,9 +115,10 @@
         best: safeCount(value.best),
         pattern: PATTERNS[value?.pattern] ? value.pattern : 'libre',
         format: value?.format === 'cinco' ? 'cinco' : 'una',
+        terminationOn: Boolean(value?.terminationOn),
       };
     } catch (_) {
-      return { streak: 0, hits: 0, best: 0, pattern: 'libre', format: 'una' };
+      return { streak: 0, hits: 0, best: 0, pattern: 'libre', format: 'una', terminationOn: false };
     }
   }
 
@@ -124,6 +130,7 @@
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
         streak: state.streak, hits: state.hits, best: state.best, pattern: state.pattern, format: state.format,
+        terminationOn: state.terminationOn,
       }));
     } catch (_) {
       // Private browsing or a full storage quota must not interrupt practice.
@@ -318,11 +325,13 @@
     if (beat === 0) {
       state.roundNumber += 1;
       state.currentPrompt = choosePromptForRound();
+      if (state.terminationOn) state.currentTermination = drawTermination();
       state.rhymeRevealed = false;
       state.hitThisRound = false;
       ui.hit.disabled = true;
       ui.round.textContent = `RONDA ${String(state.roundNumber).padStart(2, '0')}`;
       renderPrompt();
+      updateTerminationUI();
       showEmptyRhymes();
     }
     if (beat === 2 && state.currentPrompt && !state.rhymeRevealed) revealRhymes();
@@ -502,6 +511,41 @@
     saveProgress();
   }
 
+  function setTermination(enabled) {
+    state.terminationOn = Boolean(enabled);
+    if (!state.terminationOn) state.currentTermination = null;
+    updateTerminationUI();
+    saveProgress();
+  }
+
+  function toggleTermination() {
+    state.terminationOn = !state.terminationOn;
+    if (!state.terminationOn) state.currentTermination = null;
+    updateTerminationUI();
+    saveProgress();
+    showToast(state.terminationOn
+      ? 'Terminación obligatoria activada. Aparece al empezar la ronda.'
+      : 'Terminación desactivada.');
+  }
+
+  function drawTermination() {
+    if (!state.terminationDeck.length) {
+      const fresh = TERMINATIONS.filter((item) => item !== state.currentTermination);
+      state.terminationDeck = shuffle(fresh.length ? fresh : TERMINATIONS);
+    }
+    return state.terminationDeck.shift() || TERMINATIONS[0];
+  }
+
+  function updateTerminationUI() {
+    const on = state.terminationOn;
+    ui.terminationToggle.classList.toggle('active', on);
+    ui.terminationToggle.setAttribute('aria-pressed', String(on));
+    ui.terminationState.textContent = on ? 'ON' : 'OFF';
+    const visible = on && Boolean(state.currentTermination);
+    ui.promptTermination.hidden = !visible;
+    if (visible) ui.terminationValue.textContent = state.currentTermination;
+  }
+
   function setPattern(pattern) {
     const entry = PATTERNS[pattern] || PATTERNS.libre;
     state.pattern = entry === PATTERNS.libre ? 'libre' : pattern;
@@ -560,6 +604,8 @@
     state.currentPrompt = null;
     state.decks = { esdrujulas: [], doble: [] };
     state.fiveDeck = [];
+    state.terminationDeck = [];
+    state.currentTermination = null;
     state.rhymeRevealed = false;
     state.hitThisRound = false;
     state.streak = 0;
@@ -568,6 +614,7 @@
     ui.tempoCaption.textContent = 'Tocá al ritmo de tu base';
     ui.hit.innerHTML = '¡LA EMBOQUÉ! <span>↗</span>';
     renderEmptyPrompt();
+    updateTerminationUI();
     updateStats();
     saveProgress();
     showToast('Sesión reiniciada. El récord queda guardado.');

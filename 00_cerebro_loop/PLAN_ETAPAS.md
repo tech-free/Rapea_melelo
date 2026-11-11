@@ -35,9 +35,9 @@ Sin backend, sin cuentas, sin telemetría, sin audio subido y sin beats con copy
 | R15 | 12 | **Contador de barras 4/8/16** | Barra actual y total, con progreso visual. | M | El contador avanza con el reloj, se reinicia con la ronda y el patrón se repite bien en 8/16. |
 | R16 | 7 | **Modo personaje** | Un personaje (vecino, porteño, pibe del barrio) condiciona la ronda. | S | El personaje aparece junto a la palabra, cambia por ronda y se puede desactivar. |
 
-**Estado:** R12 ✅ completada (formato 1/5 persistido, cinco palabras distintas, remate en el tiempo 3). Próxima: R13.
+**Estado:** R12 ✅ completada (formato 1/5 persistido, cinco palabras distintas, remate en el tiempo 3). R13 ✅ completada (terminación opcional visible antes del remate). Próxima: R14.
 
-**Orden de ejecución:** R12 ✅ → R13 → R14 → R15 → R16.
+**Orden de ejecución:** R12 ✅ → R13 ✅ → R14 → R15 → R16.
 
 **Detalle mínimo por tarea:**
 

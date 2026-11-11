@@ -7,3 +7,4 @@
 - [x] Tap tempo ~90% más chico: barra compacta y foco en la palabra/remate (R11); luego TAP de 38×22 px y barra de 42 px, del alto del título (R11.2–R11.3).
 - [x] Convertir las 25 mejoras en un plan alcanzable por etapas en `00_cerebro_loop/PLAN_ETAPAS.md`: ahora solo rimas y freestyle; grabación local, producción de beats y micrófono en parking.
 - [x] R12 modo 5 palabras: formato de ronda 1/5, cinco palabras distintas por ronda y remate en el tiempo 3.
+- [x] R13 terminación obligatoria opcional: cierre por ronda visible antes del remate, sin validación de voz.

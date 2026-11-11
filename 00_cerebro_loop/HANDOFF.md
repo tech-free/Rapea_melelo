@@ -1,19 +1,19 @@
 # HANDOFF (Estado Actual)
 
 ## Última acción completada
-R12 completada: formato de ronda **1 palabra / 5 palabras** independiente de la dinámica. En 5 palabras se muestran cinco palabras distintas por ronda, se usan en cuatro barras, el remate se habilita en el tiempo 3 y la preferencia queda guardada localmente. El mazo de cinco palabras evita repetir dentro de la ronda y no repite la tanda anterior.
+R13 completada: **Terminación** opcional que agrega un cierre obligatorio por ronda (`-ÓN`, `-ERO`, `-AR`, `-ADA`, `-INGO`, `-UELA`, `-ISMO`, `-AJE`). El chip aparece antes del remate, cambia por ronda, se guarda la preferencia y no valida la voz. Funciona con 1 o 5 palabras y con Esdrújulas o Doble tempo.
 
 ## Estado del build/navegador
-🟢 `node --check app.js` y parseo HTML OK. Playwright en `http://localhost:3002`: formato 1/5 cambia sin recargar, cinco palabras distintas (RISA, RIMA, SUEÑO, SUBTE, ORGULLO), remate registrado (racha 1), cambio a Doble tempo y vuelta a 1 palabra. Sin overflow en 1280×900 ni 390×844; consola con 0 errores y 0 avisos. Capturas: `screenshots/r12-cinco-desktop.jpg`, `screenshots/r12-cinco-mobile.jpg`.
+🟢 `node --check app.js` y parseo HTML OK. Playwright en `http://localhost:3002`: terminación ON → `-ÓN` en la primera ronda, `-AR` en la siguiente; preferencia persistida tras recargar; OFF oculta el chip. Probado con 5 palabras en escritorio 1280×900 y móvil 390×844, sin overflow; consola con 0 errores y 0 avisos. Capturas: `screenshots/r13-desktop.jpg`, `screenshots/r13-mobile.jpg`.
 
 ## Decisiones de diseño tomadas
-- El formato de ronda se separó de la dinámica: 5 palabras funciona con Esdrújulas o Doble tempo.
-- En 5 palabras se oculta la familia de rimas porque no hay una sola palabra objetivo; el remate se marca con el cambio de hint en el tiempo 3.
-- La preferencia 1/5 se guarda junto con el patrón y las estadísticas locales.
+- La terminación es una guía de estructura, no una regla fonética ni una validación automática.
+- El chip se muestra solo cuando hay ronda activa; al reiniciar o desactivar desaparece.
+- La preferencia se guarda junto con formato, patrón y estadísticas locales.
 - R4 sigue bloqueada por revisión humana; la Etapa 3 no arranca sin ese lote revisado.
 
 ## PRÓXIMO PASO INMEDIATO
-R13 (terminaciones forzadas): una terminación o palabra obligatoria para cerrar la barra, visible antes del remate y sin prometer validación fonética. Después R14, R15 y R16, una por commit con verificación en navegador.
+R14 (ayuda progresiva): niveles todas las rimas → solo la primera → solo la última → ninguna, con preferencia persistida y navegación por teclado. Después R15 y R16, una por commit con verificación en navegador.
 
 ## Contexto importante
 - App estática de freestyle argentino, sin pipeline de build ni artefactos `dist/`.

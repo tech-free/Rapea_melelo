@@ -124,4 +124,4 @@ Con eso Rapea queda enfocada en palabras/flow, sin volverse una red social ni pr
 
 - **R11 (aplicada):** el control de tempo pasó de una tarjeta lateral dominante a una barra compacta. El desafío y la palabra son el bloque principal.
 - **R11.2–R11.3 (aplicadas):** TAP de 38×22 px y barra de tempo de 42 px de alto, prácticamente del alto del título. En móvil la barra se acomoda en dos filas. Ver `screenshots/r11-tap-line.jpg` y `screenshots/r11-tap-mobile.jpg`.
-- Las 25 mejoras están **planificadas por etapas** en `PLAN_ETAPAS.md`. **R12 (modo 5 palabras)** está completada; la próxima tarea activa es **R13 (terminaciones forzadas)**.
+- Las 25 mejoras están **planificadas por etapas** en `PLAN_ETAPAS.md`. **R12 (modo 5 palabras)** y **R13 (terminaciones forzadas)** están completadas; la próxima tarea activa es **R14 (ayuda progresiva)**.
