@@ -72,6 +72,22 @@
             <button type="button" class="mode-button" data-mode="doble" aria-pressed="false"><span class="mode-icon">×2</span><span><strong>Doble tempo</strong><small>El doble de rebote</small></span></button>
           </div>
           <div class="pattern-block">
+            <div class="bar-row">
+              <div class="bar-counter" id="bar-counter" role="status" aria-live="polite" aria-atomic="true" aria-label="Ronda de 4 barras; sin iniciar">
+                <span class="bar-counter-label">BARRA</span>
+                <strong id="bar-current">—</strong>
+                <span class="bar-counter-total">/ <span id="bar-total">04</span></span>
+                <span class="bar-progress" aria-hidden="true"><i id="bar-progress-fill"></i></span>
+              </div>
+              <div class="bar-switch-wrap">
+                <span>BARRAS / RONDA</span>
+                <div class="segmented bar-switch" id="bar-switch" role="group" aria-label="Barras por ronda">
+                  <button type="button" data-bars="4" class="selected" aria-pressed="true" title="Ronda de 4 barras">4</button>
+                  <button type="button" data-bars="8" aria-pressed="false" title="Ronda de 8 barras">8</button>
+                  <button type="button" data-bars="16" aria-pressed="false" title="Ronda de 16 barras">16</button>
+                </div>
+              </div>
+            </div>
             <div class="pattern-heading"><span>PATRÓN DE REMATE</span><span class="optional-tag">OPCIONAL</span></div>
             <div class="segmented pattern-switch" id="pattern-switch" role="group" aria-label="Patrón de rima en cuatro barras">
               <button type="button" data-pattern="libre" class="selected" aria-pressed="true">LIBRE</button>
@@ -95,7 +111,18 @@
             <p class="prompt-hint" id="prompt-hint">Marcá cuatro pulsos para empezar</p>
           </div>
           <div class="rhyme-area" id="rhyme-area">
-            <div class="rhyme-heading"><span>FAMILIA PARA EL REMATE</span><span class="reveal-note" id="reveal-note">APARECE EN EL TIEMPO 3</span></div>
+            <div class="rhyme-heading">
+              <span>FAMILIA PARA EL REMATE</span>
+              <div class="rhyme-tools">
+                <span class="reveal-note" id="reveal-note">APARECE EN EL 3 FINAL</span>
+                <div class="segmented help-switch" id="help-switch" role="group" aria-label="Nivel de ayuda de rimas">
+                  <button type="button" data-help="todas" class="selected" aria-pressed="true" aria-label="Mostrar todas las rimas" title="Mostrar todas las rimas">TODAS</button>
+                  <button type="button" data-help="primera" aria-pressed="false" aria-label="Mostrar solo la primera rima" title="Mostrar solo la primera rima">1ª</button>
+                  <button type="button" data-help="ultima" aria-pressed="false" aria-label="Mostrar solo la última rima" title="Mostrar solo la última rima">ÚLTIMA</button>
+                  <button type="button" data-help="ninguna" aria-pressed="false" aria-label="No mostrar rimas" title="No mostrar rimas">NINGUNA</button>
+                </div>
+              </div>
+            </div>
             <div class="rhyme-list" id="rhyme-list"><span class="rhyme-chip empty-chip">—</span><span class="rhyme-chip empty-chip">—</span><span class="rhyme-chip empty-chip">—</span><span class="rhyme-chip empty-chip">—</span></div>
           </div>
           <div class="round-footer"><span id="instruction">En el 1, agarrá el concepto. En el 3, buscá el remate.</span><button id="hit-button" type="button" class="hit-button" disabled>¡LA EMBOQUÉ! <span>↗</span></button></div>

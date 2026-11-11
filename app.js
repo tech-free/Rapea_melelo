@@ -9,11 +9,15 @@
     subdivisionButtons: [...document.querySelectorAll('[data-subdivision]')],
     modeButtons: [...document.querySelectorAll('[data-mode]')],
     formatButtons: [...document.querySelectorAll('[data-format]')],
+    barButtons: [...document.querySelectorAll('[data-bars]')],
+    barCounter: $('#bar-counter'), barCurrent: $('#bar-current'), barTotal: $('#bar-total'),
+    barProgressFill: $('#bar-progress-fill'),
     patternButtons: [...document.querySelectorAll('[data-pattern]')],
     patternStrip: $('#pattern-strip'), patternRule: $('#pattern-rule'), round: $('#round-count'),
     promptLabel: $('#prompt-label'), promptIndex: $('#prompt-index'), promptWord: $('#prompt-word'),
     promptWords: $('#prompt-words'), promptTermination: $('#prompt-termination'), terminationValue: $('#termination-value'),
     terminationToggle: $('#termination-toggle'), terminationState: $('#termination-state'),
+    helpButtons: [...document.querySelectorAll('[data-help]')],
     promptHint: $('#prompt-hint'), rhymeArea: $('#rhyme-area'), rhymeList: $('#rhyme-list'), revealNote: $('#reveal-note'),
     instruction: $('#instruction'), hit: $('#hit-button'), streak: $('#streak-value'),
     hits: $('#hits-value'), best: $('#best-value'), reset: $('#reset-button'),
@@ -55,6 +59,8 @@
   ];
 
   const TERMINATIONS = ['-ÓN', '-ERO', '-AR', '-ADA', '-INGO', '-UELA', '-ISMO', '-AJE'];
+  const HELP_LEVELS = ['todas', 'primera', 'ultima', 'ninguna'];
+  const BAR_OPTIONS = [4, 8, 16];
 
   const PATTERNS = {
     libre: { scheme: null, rule: 'Sin patrón: rematá como te salga. Elegí AABB, ABAB o ABBA para ver qué barras comparten rima.' },
@@ -65,10 +71,10 @@
 
   const saved = readProgress();
   const state = {
-    mode: 'esdrujulas', format: saved.format, terminationOn: saved.terminationOn, subdivision: 1, pattern: saved.pattern, lastTapAt: null, intervals: [], pendingIntervals: [], bpm: null,
+    mode: 'esdrujulas', format: saved.format, terminationOn: saved.terminationOn, help: saved.help, barsPerRound: saved.barsPerRound, subdivision: 1, pattern: saved.pattern, lastTapAt: null, intervals: [], pendingIntervals: [], bpm: null,
     running: false, timer: 0, tickTimerIds: new Set(), generation: 0,
     nextTickAt: 0, tickNumber: 0, lastTickNumber: -1, lastTickAt: null, clockStepMs: 0,
-    roundNumber: 0, currentPrompt: null,
+    roundNumber: 0, barNumber: 0, currentPrompt: null,
     decks: { esdrujulas: [], doble: [] }, fiveDeck: [], terminationDeck: [], currentTermination: null,
     rhymeRevealed: false, hitThisRound: false, streak: saved.streak,
     hits: saved.hits, best: saved.best, soundOn: false, vibrationOn: false, audio: null,
@@ -78,7 +84,9 @@
   updateStats();
   setMode('esdrujulas');
   setFormat(state.format);
+  setBarsPerRound(state.barsPerRound);
   setTermination(state.terminationOn);
+  setHelp(state.help);
   setPattern(state.pattern);
   renderEmptyPrompt();
   setTempoReady(false);
@@ -88,7 +96,12 @@
   ui.tap.addEventListener('click', handleTap);
   ui.modeButtons.forEach((button) => button.addEventListener('click', () => setMode(button.dataset.mode)));
   ui.formatButtons.forEach((button) => button.addEventListener('click', () => setFormat(button.dataset.format)));
+  ui.barButtons.forEach((button) => button.addEventListener('click', () => {
+    setBarsPerRound(button.dataset.bars);
+    showToast(`Ronda de ${state.barsPerRound} barras. El patrón de 4 se repite en cada ciclo.`);
+  }));
   ui.terminationToggle.addEventListener('click', toggleTermination);
+  ui.helpButtons.forEach((button) => button.addEventListener('click', () => setHelp(button.dataset.help)));
   ui.subdivisionButtons.forEach((button) => button.addEventListener('click', () => {
     state.subdivision = Number(button.dataset.subdivision);
     ui.subdivisionButtons.forEach((item) => {
@@ -116,9 +129,11 @@
         pattern: PATTERNS[value?.pattern] ? value.pattern : 'libre',
         format: value?.format === 'cinco' ? 'cinco' : 'una',
         terminationOn: Boolean(value?.terminationOn),
+        help: HELP_LEVELS.includes(value?.help) ? value.help : 'todas',
+        barsPerRound: BAR_OPTIONS.includes(Number(value?.barsPerRound)) ? Number(value.barsPerRound) : 4,
       };
     } catch (_) {
-      return { streak: 0, hits: 0, best: 0, pattern: 'libre', format: 'una', terminationOn: false };
+      return { streak: 0, hits: 0, best: 0, pattern: 'libre', format: 'una', terminationOn: false, help: 'todas', barsPerRound: 4 };
     }
   }
 
@@ -130,7 +145,7 @@
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
         streak: state.streak, hits: state.hits, best: state.best, pattern: state.pattern, format: state.format,
-        terminationOn: state.terminationOn,
+        terminationOn: state.terminationOn, help: state.help, barsPerRound: state.barsPerRound,
       }));
     } catch (_) {
       // Private browsing or a full storage quota must not interrupt practice.
@@ -224,7 +239,7 @@
     const modeFactor = state.mode === 'doble' ? 2 : 1;
     const hitsPerBeat = state.subdivision * modeFactor;
     const hitLabel = hitsPerBeat === 1 ? 'golpe' : 'golpes';
-    ui.clockExplanation.textContent = `Cuenta: subdivisión ×${state.subdivision} × dinámica ×${modeFactor} = ${hitsPerBeat} ${hitLabel} por pulso base; ${hitsPerBeat * 4} por compás 4/4.`;
+    ui.clockExplanation.textContent = `Cuenta: subdivisión ×${state.subdivision} × dinámica ×${modeFactor} = ${hitsPerBeat} ${hitLabel} por pulso base; ${hitsPerBeat * 4} por compás 4/4. Ronda de ${state.barsPerRound} compases.`;
   }
 
   function clockGrid(tick) {
@@ -323,18 +338,43 @@
 
   function onMainBeat(beat) {
     if (beat === 0) {
-      state.roundNumber += 1;
-      state.currentPrompt = choosePromptForRound();
-      if (state.terminationOn) state.currentTermination = drawTermination();
-      state.rhymeRevealed = false;
-      state.hitThisRound = false;
-      ui.hit.disabled = true;
-      ui.round.textContent = `RONDA ${String(state.roundNumber).padStart(2, '0')}`;
-      renderPrompt();
-      updateTerminationUI();
-      showEmptyRhymes();
+      state.barNumber = state.barNumber >= state.barsPerRound ? 1 : state.barNumber + 1;
+      if (state.barNumber === 1) startNewRound();
+      updateBarUI();
     }
-    if (beat === 2 && state.currentPrompt && !state.rhymeRevealed) revealRhymes();
+    if (beat === 2 && state.currentPrompt && !state.rhymeRevealed && state.barNumber === state.barsPerRound) revealRhymes();
+  }
+
+  function startNewRound() {
+    state.roundNumber += 1;
+    state.currentPrompt = choosePromptForRound();
+    if (state.terminationOn) state.currentTermination = drawTermination();
+    state.rhymeRevealed = false;
+    state.hitThisRound = false;
+    ui.hit.disabled = true;
+    ui.round.textContent = `RONDA ${String(state.roundNumber).padStart(2, '0')}`;
+    renderPrompt();
+    updateTerminationUI();
+    showEmptyRhymes();
+  }
+
+  function updateBarUI() {
+    const active = state.running && state.barNumber > 0;
+    ui.barCurrent.textContent = active ? String(state.barNumber).padStart(2, '0') : '—';
+    ui.barProgressFill.style.width = active ? `${Math.round((state.barNumber / state.barsPerRound) * 100)}%` : '0%';
+    ui.barCounter.setAttribute('aria-label', active
+      ? `Barra ${state.barNumber} de ${state.barsPerRound}, ronda ${state.roundNumber}`
+      : `Ronda de ${state.barsPerRound} barras; sin iniciar`);
+    updatePatternCurrent();
+  }
+
+  function updatePatternCurrent() {
+    const entry = PATTERNS[state.pattern] || PATTERNS.libre;
+    if (!entry.scheme) return;
+    const active = state.running && state.barNumber > 0 ? (state.barNumber - 1) % 4 : -1;
+    ui.patternStrip.querySelectorAll('[data-bar]').forEach((bar, index) => {
+      bar.classList.toggle('current', index === active);
+    });
   }
 
   function renderPrompt() {
@@ -346,7 +386,7 @@
     ui.promptWords.hidden = !five;
     ui.rhymeArea.hidden = five;
     if (five) {
-      ui.promptLabel.textContent = 'CINCO PALABRAS · USALAS EN 4 BARRAS';
+      ui.promptLabel.textContent = 'CINCO PALABRAS · USALAS EN LA RONDA';
       ui.promptWords.replaceChildren(...prompt.words.map((word, index) => {
         const chip = document.createElement('span');
         chip.className = 'prompt-word-chip';
@@ -356,7 +396,7 @@
         return chip;
       }));
       ui.promptHint.textContent = prompt.hint;
-      ui.instruction.textContent = 'En el 1, agarrá las cinco. En el 3, cerrá el remate.';
+      ui.instruction.textContent = 'En la barra 1, agarrá las cinco. En la última, cerrá el remate.';
     } else {
       ui.promptLabel.textContent = state.mode === 'esdrujulas' ? 'CONCEPTO · ACENTO EN LA ANTEPENÚLTIMA' : 'CONCEPTO · DOBLE TEMPO';
       ui.promptWord.textContent = prompt.word;
@@ -364,13 +404,13 @@
       void ui.promptWord.offsetWidth;
       ui.promptWord.classList.add('pop');
       ui.promptHint.textContent = prompt.hint;
-      ui.instruction.textContent = state.mode === 'doble' ? 'Doblá las sílabas; el remate llega en el pulso 3.' : 'En el 1, agarrá el concepto. En el 3, buscá el remate.';
+      ui.instruction.textContent = state.mode === 'doble' ? 'Doblá las sílabas; el remate llega en la última barra.' : 'En la barra 1, agarrá el concepto. En la última, buscá el remate.';
     }
   }
 
   function choosePromptForRound() {
     if (state.format === 'cinco') {
-      return { words: drawFiveWords(), hint: 'Usalas todas en cuatro barras; el remate cierra la última.', rhymes: [] };
+      return { words: drawFiveWords(), hint: 'Usalas todas en la ronda; el remate cierra la última barra.', rhymes: [] };
     }
     return choosePrompt(state.mode);
   }
@@ -414,26 +454,47 @@
       chip.textContent = '—';
       return chip;
     }));
-    ui.revealNote.textContent = 'APARECE EN EL TIEMPO 3';
+    ui.revealNote.textContent = 'APARECE EN EL 3 FINAL';
   }
 
   function revealRhymes() {
     state.rhymeRevealed = true;
     if (state.format === 'cinco') {
-      ui.promptHint.textContent = '¡Tiempo 3! Cerrá con una de las cinco.';
+      ui.promptHint.textContent = '¡Última barra! Cerrá con una de las cinco.';
       ui.hit.disabled = false;
       return;
     }
-    ui.rhymeList.replaceChildren(...state.currentPrompt.rhymes.map((word, index) => {
+    renderRhymes();
+    ui.hit.disabled = false;
+  }
+
+  function renderRhymes() {
+    const rhymes = state.currentPrompt?.rhymes || [];
+    const slots = [null, null, null, null];
+    if (state.help === 'todas') {
+      rhymes.slice(0, 4).forEach((word, index) => { slots[index] = word; });
+    } else if (state.help === 'primera') {
+      slots[0] = rhymes[0] || null;
+    } else if (state.help === 'ultima') {
+      slots[3] = rhymes[rhymes.length - 1] || null;
+    }
+    ui.rhymeList.replaceChildren(...slots.map((word, index) => {
       const chip = document.createElement('span');
-      chip.className = 'rhyme-chip';
-      chip.textContent = word;
-      chip.style.transitionDelay = `${index * 45}ms`;
-      requestAnimationFrame(() => chip.classList.add('visible'));
+      chip.className = word ? 'rhyme-chip' : 'rhyme-chip empty-chip';
+      chip.textContent = word || '—';
+      if (word) {
+        chip.style.transitionDelay = `${index * 45}ms`;
+        requestAnimationFrame(() => chip.classList.add('visible'));
+      }
       return chip;
     }));
-    ui.revealNote.textContent = '¡REMATE A TU MANERA!';
-    ui.hit.disabled = false;
+    const notes = {
+      todas: '¡REMATE A TU MANERA!',
+      primera: 'AYUDA: PRIMERA RIMA',
+      ultima: 'AYUDA: ÚLTIMA RIMA',
+      ninguna: 'SIN AYUDA · A TU MANERA',
+    };
+    ui.revealNote.textContent = notes[state.help] || notes.todas;
   }
 
   function renderEmptyPrompt() {
@@ -445,7 +506,7 @@
     ui.rhymeArea.hidden = five;
     ui.hit.disabled = true;
     if (five) {
-      ui.promptLabel.textContent = 'CINCO PALABRAS · USALAS EN 4 BARRAS';
+      ui.promptLabel.textContent = 'CINCO PALABRAS · USALAS EN LA RONDA';
       ui.promptWords.replaceChildren(...Array.from({ length: 5 }, () => {
         const chip = document.createElement('span');
         chip.className = 'prompt-word-chip visible';
@@ -453,12 +514,12 @@
         return chip;
       }));
       ui.promptHint.textContent = 'Marcá cuatro pulsos para empezar';
-      ui.instruction.textContent = 'En el 1, agarrá las cinco. En el 3, cerrá el remate.';
+      ui.instruction.textContent = 'En la barra 1, agarrá las cinco. En la última, cerrá el remate.';
     } else {
       ui.promptLabel.textContent = 'TU CONCEPTO';
       ui.promptWord.textContent = 'LISTA';
       ui.promptHint.textContent = 'Marcá cuatro pulsos para empezar';
-      ui.instruction.textContent = 'En el 1, agarrá el concepto. En el 3, buscá el remate.';
+      ui.instruction.textContent = 'En la barra 1, agarrá el concepto. En la última, buscá el remate.';
     }
     showEmptyRhymes();
   }
@@ -511,6 +572,28 @@
     saveProgress();
   }
 
+  function setBarsPerRound(bars) {
+    const value = BAR_OPTIONS.includes(Number(bars)) ? Number(bars) : 4;
+    state.barsPerRound = value;
+    ui.barButtons.forEach((button) => {
+      const active = Number(button.dataset.bars) === value;
+      button.classList.toggle('selected', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+    ui.barTotal.textContent = String(value).padStart(2, '0');
+    state.barNumber = 0;
+    if (state.running) {
+      restartClockPhase();
+    } else {
+      state.roundNumber = 0;
+      state.currentPrompt = null;
+      renderEmptyPrompt();
+    }
+    updateBarUI();
+    updateClockExplanation();
+    saveProgress();
+  }
+
   function setTermination(enabled) {
     state.terminationOn = Boolean(enabled);
     if (!state.terminationOn) state.currentTermination = null;
@@ -546,6 +629,17 @@
     if (visible) ui.terminationValue.textContent = state.currentTermination;
   }
 
+  function setHelp(level) {
+    state.help = HELP_LEVELS.includes(level) ? level : 'todas';
+    ui.helpButtons.forEach((button) => {
+      const active = button.dataset.help === state.help;
+      button.classList.toggle('selected', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+    if (state.rhymeRevealed && state.currentPrompt && state.format !== 'cinco') renderRhymes();
+    saveProgress();
+  }
+
   function setPattern(pattern) {
     const entry = PATTERNS[pattern] || PATTERNS.libre;
     state.pattern = entry === PATTERNS.libre ? 'libre' : pattern;
@@ -561,7 +655,7 @@
   function renderPattern() {
     const entry = PATTERNS[state.pattern] || PATTERNS.libre;
     const scheme = entry.scheme;
-    ui.patternRule.textContent = entry.rule;
+    ui.patternRule.textContent = scheme ? `${entry.rule} El ciclo se repite cada 4 barras.` : entry.rule;
     ui.patternStrip.hidden = !scheme;
     if (!scheme) return;
     ui.patternStrip.querySelectorAll('[data-bar]').forEach((bar, index) => {
@@ -572,6 +666,7 @@
       bar.classList.toggle('shared', shared);
       bar.setAttribute('aria-label', `Barra ${index + 1}: rima ${letter}`);
     });
+    updatePatternCurrent();
   }
 
   function restartClockPhase() {
@@ -583,6 +678,8 @@
     state.lastTickAt = null;
     state.clockStepMs = clockGrid(0).stepMs;
     state.nextTickAt = performance.now() + 70;
+    state.barNumber = 0;
+    updateBarUI();
     scheduleLoop(state.generation);
   }
 
@@ -592,6 +689,7 @@
     clearClockTimers();
     ui.beatBoxes.forEach((box) => box.classList.remove('active', 'sub-beat'));
     setTempoReady(Boolean(state.bpm));
+    updateBarUI();
   }
 
   function resetSession() {
@@ -601,6 +699,7 @@
     state.pendingIntervals = [];
     state.bpm = null;
     state.roundNumber = 0;
+    state.barNumber = 0;
     state.currentPrompt = null;
     state.decks = { esdrujulas: [], doble: [] };
     state.fiveDeck = [];
@@ -615,6 +714,7 @@
     ui.hit.innerHTML = '¡LA EMBOQUÉ! <span>↗</span>';
     renderEmptyPrompt();
     updateTerminationUI();
+    updateBarUI();
     updateStats();
     saveProgress();
     showToast('Sesión reiniciada. El récord queda guardado.');

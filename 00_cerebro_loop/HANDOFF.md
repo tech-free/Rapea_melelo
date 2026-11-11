@@ -1,19 +1,20 @@
 # HANDOFF (Estado Actual)
 
 ## Última acción completada
-R13 completada: **Terminación** opcional que agrega un cierre obligatorio por ronda (`-ÓN`, `-ERO`, `-AR`, `-ADA`, `-INGO`, `-UELA`, `-ISMO`, `-AJE`). El chip aparece antes del remate, cambia por ronda, se guarda la preferencia y no valida la voz. Funciona con 1 o 5 palabras y con Esdrújulas o Doble tempo.
+R15 completada: **contador de barras 4/8/16** con barra actual, total y progreso visual. La ronda ahora dura las barras elegidas; el patrón de cuatro barras se repite en cada ciclo y el remate (rimas, terminación y botón) se revela en el tiempo 3 de la última barra. La preferencia de barras se guarda localmente. R14 (ayuda progresiva de rimas) también quedó cerrada en este mismo checkpoint.
 
 ## Estado del build/navegador
-🟢 `node --check app.js` y parseo HTML OK. Playwright en `http://localhost:3002`: terminación ON → `-ÓN` en la primera ronda, `-AR` en la siguiente; preferencia persistida tras recargar; OFF oculta el chip. Probado con 5 palabras en escritorio 1280×900 y móvil 390×844, sin overflow; consola con 0 errores y 0 avisos. Capturas: `screenshots/r13-desktop.jpg`, `screenshots/r13-mobile.jpg`.
+🟢 `node --check app.js` y parseo HTML OK. Playwright en `http://localhost:3002`: con 8 barras el contador pasó 02 → 05 sin cambiar de ronda, el patrón AABB volvió a la barra 1 en la barra 5 y la ronda cambió a RONDA 02 al completar 8. Con 4 barras, el remate siguió deshabilitado hasta el tiempo 3 de la barra 4 y luego reveló rimas y habilitó el botón. En 5 palabras se mantuvieron las cinco durante la ronda, con terminación propia y recambio al empezar la ronda siguiente. Persistencia de 16 barras y cambio por teclado verificados. Sin overflow en 1280×900 ni 390×844; consola con 0 errores y 0 avisos. Capturas: `screenshots/r15-bars-desktop.jpg`, `screenshots/r15-bars-mobile.jpg`; R14: `screenshots/r14-desktop.jpg`, `screenshots/r14-mobile.jpg`.
 
 ## Decisiones de diseño tomadas
-- La terminación es una guía de estructura, no una regla fonética ni una validación automática.
-- El chip se muestra solo cuando hay ronda activa; al reiniciar o desactivar desaparece.
-- La preferencia se guarda junto con formato, patrón y estadísticas locales.
+- Una ronda es un bloque de 4, 8 o 16 compases; el estímulo se mantiene durante toda la ronda y el remate se busca al final.
+- El contador se alimenta del mismo tick del reloj; no hay un segundo temporizador. El patrón de 4 barras se repite con `(barra - 1) % 4`.
+- Cambiar modo, formato, subdivisión o cantidad de barras reinicia el ciclo y empieza una ronda nueva para que el estímulo coincida con la configuración.
+- La ayuda se elige antes o después del revelado; NINGUNA no bloquea el remate, solo retira las pistas.
 - R4 sigue bloqueada por revisión humana; la Etapa 3 no arranca sin ese lote revisado.
 
 ## PRÓXIMO PASO INMEDIATO
-R14 (ayuda progresiva): niveles todas las rimas → solo la primera → solo la última → ninguna, con preferencia persistida y navegación por teclado. Después R15 y R16, una por commit con verificación en navegador.
+R16 (modo personaje): un personaje breve (vecino, porteño, pibe del barrio) condiciona la ronda, aparece junto a la palabra, cambia por ronda y se puede desactivar sin alterar el mazo. Después, Etapa 2 (R17–R21), una por commit con verificación en navegador.
 
 ## Contexto importante
 - App estática de freestyle argentino, sin pipeline de build ni artefactos `dist/`.

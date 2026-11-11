@@ -67,7 +67,9 @@ Leyenda: **base** = ya hay una versión inicial; **cola** = posible mejora incre
 - [x] R11.2–R11.3. TAP de 38×22 px y barra de tempo de 42 px, del alto del título; en móvil se acomoda en dos filas. Capturas: `screenshots/r11-tap-line.jpg`, `screenshots/r11-tap-mobile.jpg`.
 - [x] R12. Modo 5 palabras: formato de ronda independiente de la dinámica, cinco palabras distintas por ronda, sin repetición dentro de la ronda, remate en el tiempo 3 y preferencia 1/5 persistida localmente. Verificado en escritorio 1280×900 y móvil 390×844, consola sin errores/avisos.
 - [x] R13. Terminación obligatoria opcional: cierre por ronda (`-ÓN`, `-ERO`, `-AR`, `-ADA`, `-INGO`, `-UELA`, `-ISMO`, `-AJE`), visible antes del remate, con preferencia persistida y sin validación de voz. Verificado en escritorio y móvil, consola sin errores/avisos.
-- [ ] R14+. Plan por etapas aprobado en `00_cerebro_loop/PLAN_ETAPAS.md`, basado en las 25 mejoras del REA. Ahora: Etapa 1 (R14–R16) y Etapa 2. Después: Etapas 4–5. Parking: grabación local, importar MP3/BPM y micrófono.
+- [x] R14. Ayuda progresiva de rimas: todas, primera, última o ninguna; preferencia persistida y navegación por teclado. Verificado en escritorio y móvil, consola sin errores/avisos.
+- [x] R15. Contador de barras 4/8/16: barra actual, total y progreso; ronda de 4/8/16 compases, ciclo del patrón cada 4 barras y remate revelado en la última barra. Verificado en escritorio y móvil, consola sin errores/avisos.
+- [ ] R16+. Plan por etapas aprobado en `00_cerebro_loop/PLAN_ETAPAS.md`, basado en las 25 mejoras del REA. Ahora: Etapa 1 (R16) y Etapa 2. Después: Etapas 4–5. Parking: grabación local, importar MP3/BPM y micrófono.
 
 El orden es una sugerencia, no una promesa de calendario. Al cerrar cada tarea, marcarla, actualizar documentación de alcance si cambia el comportamiento y checkpoint antes de tomar la siguiente.
 

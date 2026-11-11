@@ -152,3 +152,37 @@ body.mode-double .prompt-termination strong{color:#fb7185}
   .format-block{flex-wrap:wrap}
   .format-actions{width:100%;justify-content:space-between}
 }
+
+/* R14 — Ayuda progresiva de rimas */
+.rhyme-heading{flex-wrap:wrap;gap:6px;align-items:center}
+.rhyme-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.help-switch{padding:2px}
+.help-switch button{padding:3px 6px;font-size:7px;letter-spacing:.3px}
+@media(max-width:590px){
+  .rhyme-tools{width:100%;justify-content:space-between}
+  .help-switch button{padding:4px 6px;font-size:7px}
+}
+
+/* R15 — Contador de barras 4/8/16 */
+.bar-row{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-bottom:7px;border-bottom:1px solid #ffffff0a}
+.bar-counter{display:flex;align-items:baseline;gap:4px;font-family:var(--mono);font-size:8px;letter-spacing:.7px;color:#a6a6ad}
+.bar-counter-label{font-size:7px}
+.bar-counter strong{font-size:15px;line-height:1;color:var(--lime);letter-spacing:0}
+.bar-counter-total{font-size:9px;color:#8e8f96}
+.bar-progress{width:58px;height:4px;border-radius:2px;background:#ffffff12;overflow:hidden;align-self:center;margin-left:5px}
+.bar-progress i{display:block;height:100%;width:0;background:var(--lime);border-radius:2px;transition:width .16s linear}
+body.mode-double .bar-counter strong{color:var(--pink)}
+body.mode-double .bar-progress i{background:var(--pink)}
+.bar-switch-wrap{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:7px;letter-spacing:.5px;color:#8e8f96}
+.bar-switch{padding:2px}
+.bar-switch button{padding:3px 7px;font-size:7px}
+.pattern-bar.current{border-color:var(--lime);box-shadow:inset 0 0 0 1px #d2f36b40}
+.pattern-bar.current .pattern-bar-label{color:var(--lime)}
+body.mode-double .pattern-bar.current{border-color:var(--pink);box-shadow:inset 0 0 0 1px #fb718540}
+body.mode-double .pattern-bar.current .pattern-bar-label{color:var(--pink)}
+@media(max-width:590px){
+  .bar-row{gap:7px}
+  .bar-counter strong{font-size:13px}
+  .bar-progress{width:46px}
+  .bar-switch-wrap>span{font-size:6px}
+}
