@@ -6,3 +6,9 @@
 - [x] REA de las 10 mejores apps de freestyle y lista numerada 1–25 de mejoras candidatas en `00_cerebro_loop/REA_APPS.md`.
 - [x] Tap tempo ~90% más chico: barra compacta y foco en la palabra/remate (R11); luego TAP de 38×22 px y barra de 42 px, del alto del título (R11.2–R11.3).
 - [x] Convertir las 25 mejoras en un plan alcanzable por etapas en `00_cerebro_loop/PLAN_ETAPAS.md`: ahora solo rimas y freestyle; grabación local, producción de beats y micrófono en parking.
+- [x] R12 modo 5 palabras: formato de ronda 1/5, cinco palabras distintas por ronda y remate en el tiempo 3.
+- [x] R13 terminación obligatoria opcional: cierre por ronda visible antes del remate, sin validación de voz.
+- [x] R14 ayuda progresiva: todas, primera, última o ninguna rima, con preferencia persistida.
+- [x] R15 contador de barras 4/8/16: barra actual, total y progreso, con ronda de 4/8/16 compases y patrón repetido cada 4.
+- [x] R16 modo personaje: rol breve por ronda, desactivable, persistido y sin alterar el mazo de palabras.
+- [x] R17 count-in y final limpio: entrada de 4 pulsos 1→2→3→4 y remate único por ronda.

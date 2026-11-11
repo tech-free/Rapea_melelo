@@ -114,3 +114,91 @@
   .tempo-meta{order:7;width:auto;flex:0 0 auto;justify-content:flex-end;margin-left:auto}
   .tempo-meta .tempo-caption{display:none}
 }
+
+/* R12 — Formato de ronda: 1 palabra o 5 palabras */
+.format-block{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px;padding:8px 12px;border:1px solid #ffffff10;border-radius:9px;background:#1c1d22}
+.format-heading{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:#a6a6ad}
+.format-switch{width:auto}
+.format-switch button{padding:5px 9px;font-size:8px}
+.prompt-word[hidden]{display:none}
+.prompt-words{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:14px}
+.prompt-words[hidden]{display:none}
+.prompt-word-chip{min-height:52px;display:grid;place-items:center;text-align:center;padding:8px 4px;border:1px solid #d2f36b38;border-radius:8px;background:#2a2d22;color:var(--lime);font-weight:700;font-size:clamp(12px,1.3vw,17px);letter-spacing:.4px;line-height:1.1;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s}
+.prompt-word-chip.visible{opacity:1;transform:translateY(0)}
+@media(max-width:590px){
+  .format-block{padding:7px 10px}
+  .format-heading{font-size:8px}
+  .format-switch button{padding:4px 7px;font-size:7px}
+  .prompt-words{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+  .prompt-word-chip{min-height:42px;font-size:13px}
+  .prompt-words .prompt-word-chip:last-child:nth-child(odd){grid-column:1/-1}
+}
+
+/* R13 — Terminación obligatoria opcional */
+.format-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.termination-toggle{border:1px solid #ffffff14;background:#23242a;color:#a6a6ad;border-radius:6px;padding:5px 8px;font:8px var(--mono);letter-spacing:.5px;cursor:pointer;white-space:nowrap}
+.termination-toggle span{color:#777881;margin-left:3px}
+.termination-toggle:hover{border-color:#ffffff32;color:var(--text)}
+.termination-toggle.active{border-color:#d2f36b55;background:#2a2d22;color:var(--lime)}
+.termination-toggle.active span{color:var(--lime)}
+body.mode-double .termination-toggle.active{border-color:#fb718555;background:#2c2024;color:#fb7185}
+body.mode-double .termination-toggle.active span{color:#fb7185}
+.prompt-termination{display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:4px 8px;border:1px solid #d2f36b45;border-radius:6px;background:#2a2d22;font-family:var(--mono);font-size:8px;letter-spacing:.5px;color:#b8c98f}
+.prompt-termination[hidden]{display:none}
+.prompt-termination strong{font-size:13px;color:var(--lime);letter-spacing:1px}
+body.mode-double .prompt-termination{border-color:#fb718545;background:#2c2024;color:#d9a3ab}
+body.mode-double .prompt-termination strong{color:#fb7185}
+@media(max-width:590px){
+  .format-block{flex-wrap:wrap}
+  .format-actions{width:100%;justify-content:space-between}
+}
+
+/* R14 — Ayuda progresiva de rimas */
+.rhyme-heading{flex-wrap:wrap;gap:6px;align-items:center}
+.rhyme-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.help-switch{padding:2px}
+.help-switch button{padding:3px 6px;font-size:7px;letter-spacing:.3px}
+@media(max-width:590px){
+  .rhyme-tools{width:100%;justify-content:space-between}
+  .help-switch button{padding:4px 6px;font-size:7px}
+}
+
+/* R15 — Contador de barras 4/8/16 */
+.bar-row{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-bottom:7px;border-bottom:1px solid #ffffff0a}
+.bar-counter{display:flex;align-items:baseline;gap:4px;font-family:var(--mono);font-size:8px;letter-spacing:.7px;color:#a6a6ad}
+.bar-counter-label{font-size:7px}
+.bar-counter strong{font-size:15px;line-height:1;color:var(--lime);letter-spacing:0}
+.bar-counter-total{font-size:9px;color:#8e8f96}
+.bar-progress{width:58px;height:4px;border-radius:2px;background:#ffffff12;overflow:hidden;align-self:center;margin-left:5px}
+.bar-progress i{display:block;height:100%;width:0;background:var(--lime);border-radius:2px;transition:width .16s linear}
+body.mode-double .bar-counter strong{color:var(--pink)}
+body.mode-double .bar-progress i{background:var(--pink)}
+.bar-switch-wrap{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:7px;letter-spacing:.5px;color:#8e8f96}
+.bar-switch{padding:2px}
+.bar-switch button{padding:3px 7px;font-size:7px}
+.pattern-bar.current{border-color:var(--lime);box-shadow:inset 0 0 0 1px #d2f36b40}
+.pattern-bar.current .pattern-bar-label{color:var(--lime)}
+body.mode-double .pattern-bar.current{border-color:var(--pink);box-shadow:inset 0 0 0 1px #fb718540}
+body.mode-double .pattern-bar.current .pattern-bar-label{color:var(--pink)}
+@media(max-width:590px){
+  .bar-row{gap:7px}
+  .bar-counter strong{font-size:13px}
+  .bar-progress{width:46px}
+  .bar-switch-wrap>span{font-size:6px}
+}
+
+/* R16 — Modo personaje */
+.character-chip{display:inline-flex;align-items:center;gap:7px;flex-wrap:wrap;max-width:100%;margin-top:9px;padding:4px 8px;border:1px solid #d2f36b3d;border-radius:6px;background:#2a2d22;font-family:var(--mono);font-size:8px;letter-spacing:.4px;color:#b8c98f}
+.character-chip[hidden]{display:none}
+.character-badge{font-size:7px;color:#8e9a6d;letter-spacing:.6px}
+.character-chip strong{font-size:9px;color:var(--lime);letter-spacing:.5px}
+.character-rule{color:#a9b58a}
+body.mode-double .character-chip{border-color:#fb71853d;background:#2c2024;color:#d9a3ab}
+body.mode-double .character-badge{color:#b57f88}
+body.mode-double .character-chip strong{color:var(--pink)}
+body.mode-double .character-rule{color:#c99aa2}
+@media(max-width:590px){
+  .character-chip{font-size:7px;gap:5px;padding:4px 6px}
+  .character-chip strong{font-size:8px}
+}
+.format-toggles{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
