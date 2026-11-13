@@ -10,6 +10,7 @@
     modeButtons: [...document.querySelectorAll('[data-mode]')],
     formatButtons: [...document.querySelectorAll('[data-format]')],
     barButtons: [...document.querySelectorAll('[data-bars]')],
+    stimulusButtons: [...document.querySelectorAll('[data-stimulus-pulses]')],
     barCounter: $('#bar-counter'), barCurrent: $('#bar-current'), barTotal: $('#bar-total'),
     barProgressFill: $('#bar-progress-fill'),
     patternButtons: [...document.querySelectorAll('[data-pattern]')],
@@ -71,6 +72,7 @@
   ];
   const HELP_LEVELS = ['todas', 'primera', 'ultima', 'ninguna'];
   const BAR_OPTIONS = [4, 8, 16];
+  const STIMULUS_INTERVALS = [2, 4, 8];
 
   const PATTERNS = {
     libre: { scheme: null, rule: 'Sin patrón: rematá como te salga. Elegí AABB, ABAB o ABBA para ver qué barras comparten rima.' },
@@ -85,6 +87,7 @@
     running: false, timer: 0, tickTimerIds: new Set(), generation: 0,
     nextTickAt: 0, tickNumber: 0, lastTickNumber: -1, lastTickAt: null, clockStepMs: 0,
     roundNumber: 0, barNumber: 0, countInRemaining: 0, currentPrompt: null,
+    stimulusInterval: saved.stimulusInterval, stimulusPulseCount: 0,
     decks: { esdrujulas: [], doble: [] }, fiveDeck: [], terminationDeck: [], currentTermination: null,
     characterDeck: [], currentCharacter: null,
     rhymeRevealed: false, hitThisRound: false, streak: saved.streak,
@@ -96,6 +99,7 @@
   setMode('esdrujulas');
   setFormat(state.format);
   setBarsPerRound(state.barsPerRound);
+  setStimulusInterval(state.stimulusInterval);
   setTermination(state.terminationOn);
   setCharacter(state.characterOn);
   setHelp(state.help);
@@ -111,6 +115,10 @@
   ui.barButtons.forEach((button) => button.addEventListener('click', () => {
     setBarsPerRound(button.dataset.bars);
     showToast(`Ronda de ${state.barsPerRound} barras. El patrón de 4 se repite en cada ciclo.`);
+  }));
+  ui.stimulusButtons.forEach((button) => button.addEventListener('click', () => {
+    setStimulusInterval(button.dataset.stimulusPulses);
+    showToast(`El estímulo cambia cada ${state.stimulusInterval} pulsos.`);
   }));
   ui.terminationToggle.addEventListener('click', toggleTermination);
   ui.characterToggle.addEventListener('click', toggleCharacter);
@@ -145,9 +153,10 @@
         characterOn: Boolean(value?.characterOn),
         help: HELP_LEVELS.includes(value?.help) ? value.help : 'todas',
         barsPerRound: BAR_OPTIONS.includes(Number(value?.barsPerRound)) ? Number(value.barsPerRound) : 4,
+        stimulusInterval: STIMULUS_INTERVALS.includes(Number(value?.stimulusInterval)) ? Number(value.stimulusInterval) : 4,
       };
     } catch (_) {
-      return { streak: 0, hits: 0, best: 0, pattern: 'libre', format: 'una', terminationOn: false, characterOn: false, help: 'todas', barsPerRound: 4 };
+      return { streak: 0, hits: 0, best: 0, pattern: 'libre', format: 'una', terminationOn: false, characterOn: false, help: 'todas', barsPerRound: 4, stimulusInterval: 4 };
     }
   }
 
@@ -160,6 +169,7 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
         streak: state.streak, hits: state.hits, best: state.best, pattern: state.pattern, format: state.format,
         terminationOn: state.terminationOn, characterOn: state.characterOn, help: state.help, barsPerRound: state.barsPerRound,
+        stimulusInterval: state.stimulusInterval,
       }));
     } catch (_) {
       // Private browsing or a full storage quota must not interrupt practice.
