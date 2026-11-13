@@ -2,7 +2,7 @@
 
 ## Qué es este documento
 
-Investigación de producto (reverse engineering de **funciones públicas**, no de código) sobre las apps más relevantes de entrenamiento de freestyle/rap improvisado. La lista numerada 1–25 se convirtió en un plan por etapas en **`PLAN_ETAPAS.md`**, aprobado por el usuario el 11 nov 2026. Ahora se implementan solo rimas y freestyle; grabación y beats quedan en parking.
+Investigación de producto (reverse engineering de **funciones públicas**, no de código) sobre las apps más relevantes de entrenamiento de freestyle/rap improvisado. La lista numerada 1–25 se convirtió en un plan por etapas en **`PLAN_ETAPAS.md`**. El alcance aprobado incluye práctica y aprendizaje de freestyle, con propuestas educativas en una etapa posterior; aprobación no significa implementación inmediata. Grabación/detección por micrófono e importación de beats/MP3 están explícitamente excluidas, no en parking.
 
 **Límites y honestidad:**
 - Fuentes: fichas de App Store/Google Play y sitios oficiales, consultadas en noviembre de 2026. No se copió código, assets ni textos de esas apps.
@@ -32,14 +32,14 @@ Investigación de producto (reverse engineering de **funciones públicas**, no d
 1. **El loop es siempre el mismo:** estímulo → rapeás → siguiente estímulo. Cuanto menos fricción, mejor.
 2. **La ayuda se retira de a poco.** Todas las palabras → primera → última → ninguna. Es la progresión más clara.
 3. **Estructura > palabras sueltas.** Esquemas AABB/ABAB/ABBA, 4/8 barras, setup y punchline.
-4. **El beat manda.** BPM visible, count-in, beats etiquetados, importar tu propio MP3.
-5. **El micrófono es opcional.** Las mejores apps de entrenamiento no graban ni puntúan por defecto.
+4. **El pulso orienta la práctica.** BPM visible, count-in y subdivisiones pueden ayudar; importar beats/MP3 queda fuera del alcance de Rapea.
+5. **Las apps difieren en el uso del micrófono.** Es una función observada en algunos productos, no un requisito para Rapea: aquí no se graba ni detecta voz.
 6. **Sesiones cortas + racha diaria.** El hábito se construye con 5–10 minutos.
 7. **La comunidad es otro producto.** Requiere cuentas, moderación y backend; no es requisito para entrenar.
 
 ## Catálogo de features derivadas del RAE
 
-> Estas son features candidatas derivadas de la investigación pública de las 10 apps, no funcionalidades que ya estén implementadas. Cada ítem propone una tarea verificable; las que dependen de fonética curada quedan bloqueadas hasta R4 (revisión humana). El plan de implementación está en [`PLAN_ETAPAS.md`](PLAN_ETAPAS.md).
+> El usuario aprobó incorporar al plan todas las ideas compatibles con una app para practicar y aprender freestyle. Esto no significa que ya estén implementadas: el estado de cada una se indica abajo y el trabajo seguirá por etapas. Las ideas de grabación, importación de beats y detección por micrófono quedan explícitamente fuera de alcance. Las tareas que dependen de fonética curada esperan R4 (revisión humana). El plan está en [`PLAN_ETAPAS.md`](PLAN_ETAPAS.md).
 
 ### A. Palabras y estímulos (el corazón de la app)
 
@@ -72,7 +72,7 @@ Investigación de producto (reverse engineering de **funciones públicas**, no d
 
 | # | Mejora | Qué hace | Inspiración | Esfuerzo | Impacto |
 |---|--------|----------|-------------|----------|---------|
-| 18 | **Grabación local de takes** | Grabás con el micrófono, escuchás y borrás; nada se sube. | Rap Fame / RappFlow / Red Bull | M | ★★★ |
+| 18 | **Grabación local de takes** | Función observada en apps analizadas: grabar con el micrófono, escuchar y borrar. | Rap Fame / RappFlow / Red Bull | M | ★★★ |
 | 19 | **Autoevaluación + resumen** | Al cerrar la ronda te puntuás flow/rima/letra y ves un resumen de la sesión. | RapApp / RappFlow | S | ★★☆ |
 | 20 | **Mic opcional con detección de palabras** | Verifica si dijiste las palabras objetivo; aclara que no mide calidad. | RapDrill | L | ★★☆ |
 | 21 | **Historial local + exportar JSON** | Sesiones, BPM y remates guardados en el dispositivo, con export. | RappFlow | S | ★★☆ |
@@ -88,24 +88,21 @@ Investigación de producto (reverse engineering de **funciones públicas**, no d
 
 ## Plan aprobado
 
-El usuario aprobó el conjunto de las 25 mejoras. El orden, las dependencias y los criterios de aceptación están en **`PLAN_ETAPAS.md`**:
+El usuario aprobó incorporar al plan todas las ideas compatibles con una app para freestylear, practicar y aprender a rapear bien. **Aprobado no significa implementado**: el estado y orden están en [`PLAN_ETAPAS.md`](PLAN_ETAPAS.md).
 
-- **Etapa 1 (ahora):** 1, 4, 2, 12, 7 — la palabra y el remate.
-- **Etapa 2 (ahora):** 13, 17, 16, 14, 3 — flow y tempo.
-- **Etapa 3 (después de R4):** 5, 9, 10, 6, 8 — vocabulario y variedad.
-- **Etapa 4 (después):** 11, 19, 21, 22 — hábito y progreso local.
-- **Etapa 5 (después):** 23, 24, 25 — juego local y compartir.
-- **Parking (no ahora):** 18 (grabación), 15 (importar beats), 20 (micrófono).
+- Las ideas REA 1–14, 16–17 y 19–25 entran al plan, respetando dependencias y etapas.
+- Se agregan propuestas educativas: teoría literaria aplicada al rap, ejercicios de técnicas y análisis guiado de rimas famosas con fuentes y contexto verificables.
+- Se excluyen del producto 15 (importar MP3/beats), 18 (grabar con micrófono) y 20 (detección mediante micrófono). No se construirá un DAW.
 
-Con eso Rapea queda enfocada en palabras/flow, sin volverse una red social ni prometer IA que no podemos verificar.
+La prioridad del producto es aprender y practicar freestyle: palabra, flow, recursos literarios, rimas y análisis. Seguirá local-first y sin evaluación automática de la calidad artística.
 
 ## Lo que NO vamos a copiar
 
 - **Evaluación “objetiva” por IA** de la calidad de tu rap: no hay evidencia pública de que funcione; sería marketing engañoso.
 - **Red social, cuentas, rankings globales, torneos online**: requieren backend, moderación y datos personales; contradicen el local-first.
 - **Suscripciones, anuncios y beat stores**: el juego debe seguir siendo gratis y sin fricción.
-- **Beats con copyright**: usamos YouTube oficial o el beat del usuario.
-- **Puntuar la voz como “talento”**: como mucho detectamos palabras, y lo decimos claro.
+- **Beats con copyright**: el reproductor oficial de YouTube sigue sujeto a las reglas de la plataforma; no se importan beats/MP3.
+- **Grabar o detectar la voz**, así como puntuarla como “talento”: el usuario practica y se autoevalúa voluntariamente; la app no captura ni analiza su voz.
 
 ## Fuentes consultadas (nov 2026)
 
@@ -124,4 +121,5 @@ Con eso Rapea queda enfocada en palabras/flow, sin volverse una red social ni pr
 
 - **R11 (aplicada):** el control de tempo pasó de una tarjeta lateral dominante a una barra compacta. El desafío y la palabra son el bloque principal.
 - **R11.2–R11.3 (aplicadas):** TAP de 38×22 px y barra de tempo de 42 px de alto, prácticamente del alto del título. En móvil la barra se acomoda en dos filas. Ver `screenshots/r11-tap-line.jpg` y `screenshots/r11-tap-mobile.jpg`.
-- Las 25 mejoras están **planificadas por etapas** en `PLAN_ETAPAS.md`. **R12 (modo 5 palabras)**, **R13 (terminaciones forzadas)**, **R14 (ayuda progresiva)**, **R15 (contador de barras 4/8/16)**, **R16 (modo personaje)** y **R17 (count-in y final limpio)** están completadas. La Etapa 1 cerró y la Etapa 2 arrancó; la próxima tarea activa es **R19 (velocidad de estímulos)**.
+- Del catálogo, **R12 (modo 5 palabras)**, **R13 (terminaciones forzadas)**, **R14 (ayuda progresiva)**, **R15 (contador de barras 4/8/16)**, **R16 (modo personaje)** y **R17 (count-in y final limpio)** están completadas. Las otras propuestas compatibles siguen pendientes según `PLAN_ETAPAS.md`; la próxima tarea activa es **R19 (velocidad de estímulos)**.
+- Fuera de alcance por decisión del usuario: **R18 del catálogo (grabación local)**, **R15 (importar MP3/beats)** y **R20 (detección mediante micrófono)**. Los números R del plan son identificadores internos distintos de la numeración del catálogo REA.

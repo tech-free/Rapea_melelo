@@ -2,6 +2,7 @@
 
 ## Estado
 
+- Alcance educativo REA alineado: `roadmap/REA.md`, `00_cerebro_loop/REA_APPS.md`, `00_cerebro_loop/PLAN_ETAPAS.md` y `README.md` distinguen lo planificado de lo implementado. Teoría literaria aplicada, ejercicios por técnica y análisis educativo de rimas famosas quedan como propuestas de una etapa futura. Grabación/detección por micrófono e importación de beats/MP3 están explícitamente excluidas.
 - R17 count-in y final limpio: entrada visual de 4 pulsos (1→2→3→4) al arrancar el reloj, sin repetirse al cambiar de modo; el remate se dispara una sola vez por ronda y un clic temprano no altera las estadísticas. Verificado en escritorio y móvil, consola sin errores/avisos. Capturas: `screenshots/r17-countin-desktop.jpg`, `screenshots/r17-countin-mobile.jpg`.
 - R16 modo personaje: rol breve por ronda que condiciona el enfoque, cambia sin repetir de inmediato, se puede desactivar y no altera el mazo de palabras. Verificado con 1 y 5 palabras, escritorio y móvil, consola sin errores/avisos. Capturas: `screenshots/r16-character-desktop.jpg`, `screenshots/r16-character-mobile.jpg`.
 - R15 contador de barras 4/8/16: barra actual, total y progreso; ronda de 4/8/16 compases, ciclo del patrón cada 4 barras y remate revelado en la última barra. Verificado en escritorio y móvil, consola sin errores/avisos. Capturas: `screenshots/r15-bars-desktop.jpg`, `screenshots/r15-bars-mobile.jpg`.
@@ -9,7 +10,7 @@
 - R13 terminación obligatoria opcional: cierre por ronda (`-ÓN`, `-ERO`, `-AR`, `-ADA`, `-INGO`, `-UELA`, `-ISMO`, `-AJE`), visible antes del remate, con preferencia persistida y sin validación de voz. Verificado en escritorio y móvil, consola sin errores/avisos. Capturas: `screenshots/r13-desktop.jpg`, `screenshots/r13-mobile.jpg`.
 - R12 modo 5 palabras: formato de ronda 1/5 independiente de la dinámica, cinco palabras distintas por ronda, remate en el tiempo 3 y preferencia persistida. Verificado en escritorio y móvil, consola sin errores/avisos. Capturas: `screenshots/r12-cinco-desktop.jpg`, `screenshots/r12-cinco-mobile.jpg`.
 - R11.2–R11.3: TAP de 38×22 px y barra de tempo de 42 px de alto, prácticamente del alto del título; en móvil se acomoda en dos filas.
-- REA de 10 apps convertido en plan por etapas en `00_cerebro_loop/PLAN_ETAPAS.md`: Etapa 1 completa (palabra), Etapa 2 en curso (flow y tempo), Etapa 3 esperando R4, Etapas 4–5 después y parking para grabación, beats y micrófono. Próxima tarea: R19 (velocidad de estímulos).
+- REA de apps y propuesta educativa organizados por etapas en `00_cerebro_loop/PLAN_ETAPAS.md`: Etapa 1 completa, Etapa 2 en curso, Etapa 3 esperando R4 y las etapas posteriores planificadas. La siguiente tarea sigue siendo R19 (velocidad de estímulos); grabación/detección por micrófono e importación de beats/MP3 están fuera de alcance.
 - R8 mazo de estímulos sin repetición inmediata terminado: cada estímulo aparece una vez por vuelta, el rebarajado excluye el actual y el reinicio mezcla de nuevo; verificado en 22 rondas continuas. Consola sin errores/avisos.
 - R7 patrón de remate opcional terminado: selector LIBRE/AABB/ABAB/ABBA con regla visible, tira de cuatro barras y preferencia guardada en `localStorage`; no evalúa voz. Verificado en Playwright (≈118 BPM, remate registrado, móvil 390×844 sin overflow) con consola sin errores/avisos. Capturas: `screenshots/r7-desktop.jpg`, `screenshots/r7-mobile.jpg`.
 - R3 esquema de vocabulario local terminado: Draft 2020-12, 16 estímulos iniciales, metadatos fonéticos pendientes (`null`) y validador para estructura/IDs/índice de acento. Pasaron `python3 scripts/validate-vocabulary.py`, cinco pruebas `unittest`, `node --check app.js`, parseo JSON y `git diff --check`. Preview Playwright en `http://localhost:3002` cargó con cero errores/avisos; captura inspeccionada: `screenshots/r3-vocabulary.png` (ignorada por Git). La app no incorpora dependencia; `jsonschema` solo se necesita para validar.
@@ -37,6 +38,7 @@
 
 ## Próximo
 
+- Solicitud de alcance REA completada en documentación; las propuestas educativas siguen planificadas, no implementadas. Siguiente tarea de implementación: R19 (velocidad de estímulos), según `00_cerebro_loop/PLAN_ETAPAS.md`.
 - Censo de issues y forensis siguen bloqueados hasta autenticar `gh`; no se cerraron issues.
 - R3 queda completado y checkpointed. R4 requiere revisión humana de ejemplos rioplatenses antes de completar fonética o ampliar datos; mantener los campos revisados como `null` mientras no haya esa revisión.
 - `jsonschema` se usa solo para validar datos, no para ejecutar la app. Comandos y alcance en `README.md`.
