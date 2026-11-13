@@ -1,6 +1,6 @@
 # Rapea — Gimnasio de freestyle
 
-Entrená freestyle argentino con un metrónomo manual, desafíos de esdrújulas y doble tempo, y disparadores de rima rioplatenses. Es una app estática: no necesita cuenta ni servidor propio. El control de tempo es una barra de una línea, con un TAP de 22 px; el protagonismo lo tienen la palabra, el remate y tu flow. El plan de mejoras está en `00_cerebro_loop/PLAN_ETAPAS.md`.
+Entrená freestyle argentino con desafíos de palabras, rimas y flow. Rapea busca ayudarte a practicar y aprender a rapear bien: el plan incluye teoría literaria aplicada, ejercicios por técnica y análisis educativo de rimas famosas. Estas mejoras están planificadas, no todas implementadas todavía; consultá `00_cerebro_loop/PLAN_ETAPAS.md`. Es una app estática, sin cuentas ni servidor propio, centrada en la palabra y el flow; no graba ni analiza el micrófono, ni importa o produce beats: no es un DAW.
 
 ## Usar
 
