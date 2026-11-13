@@ -1,5 +1,11 @@
 # HANDOFF (Estado Actual)
 
+## En progreso — R19 velocidad de estímulos
+- Agregar selector persistido de 2/4/8 pulsos base (predeterminado: 4) sin modificar la estimación de BPM ni los mazos.
+- Contar únicamente acentos de `onMainBeat(beat)` después del count-in; reemplazar el estímulo al intervalo seleccionado y mantener intactos el contador de barras y el estado de acierto de la ronda.
+- Verificar persistencia, límites temporales, teclado/táctil, layouts escritorio/móvil y consola en `http://localhost:3002`; guardar e inspeccionar solo la captura JPEG más reciente.
+- Actualizar roadmap/README, correr verificaciones y crear commit atómico; publicar únicamente si el push fast-forward está permitido.
+
 ## Última acción completada
 R17 completada: **count-in y final limpio**. Al arrancar el reloj suena/ve una entrada de cuatro pulsos (1→2→3→4) antes de la primera ronda; la entrada no se repite al cambiar de modo o subdivisión y el botón de remate permanece deshabilitado durante ella. El remate se revela y habilita una sola vez por ronda: un segundo clic o un clic temprano en la ronda siguiente no altera las estadísticas.
 
