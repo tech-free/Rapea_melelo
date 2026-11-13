@@ -37,9 +37,9 @@ Investigación de producto (reverse engineering de **funciones públicas**, no d
 6. **Sesiones cortas + racha diaria.** El hábito se construye con 5–10 minutos.
 7. **La comunidad es otro producto.** Requiere cuentas, moderación y backend; no es requisito para entrenar.
 
-## Lista numerada de mejoras candidatas
+## Catálogo de features derivadas del RAE
 
-> Elegí los números que te gusten. Cada ítem es una tarea chica y verificable. Los que dependen de fonética curada quedan bloqueados hasta R4 (revisión humana).
+> Estas son features candidatas derivadas de la investigación pública de las 10 apps, no funcionalidades que ya estén implementadas. Cada ítem propone una tarea verificable; las que dependen de fonética curada quedan bloqueadas hasta R4 (revisión humana). El plan de implementación está en [`PLAN_ETAPAS.md`](PLAN_ETAPAS.md).
 
 ### A. Palabras y estímulos (el corazón de la app)
 

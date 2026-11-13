@@ -16,6 +16,9 @@ R17 completada: **count-in y final limpio**. Al arrancar el reloj suena/ve una e
 ## PRÓXIMO PASO INMEDIATO
 Esperar la decisión del usuario sobre la candidata H1 del inventario [`RECUPERADAS_PENDIENTE_APROBACION.md`](RECUPERADAS_PENDIENTE_APROBACION.md); no agregarla a `USER_REQUESTS.md` sin aprobación. Luego retomar R19 (velocidad de estímulos): selector cada 2/4/8 pulsos, independiente del BPM, que no altere el mazo y cambie el estímulo en la barra correcta. Después R18, R21 y R20, una por commit con verificación en navegador.
 
+## Catálogo de features del RAE
+A pedido del usuario, el índice [`README.md`](README.md) enlaza el catálogo de 25 features candidatas derivadas del RAE público de las 10 apps, documentado en [`REA_APPS.md`](REA_APPS.md). Se aclara que son propuestas, no funcionalidades implementadas; el plan y sus dependencias están en `PLAN_ETAPAS.md`.
+
 ## Recuperación de solicitudes históricas
 Se revisaron 17 historiales remotos (75 mensajes de usuario, 28 mensajes únicos). La única candidata de producto no resuelta de forma concreta quedó en el inventario pendiente de aprobación; los pedidos ya cubiertos y las instrucciones operativas se clasificaron allí sin duplicarlos. `USER_REQUESTS.md` no se modificó.
 
