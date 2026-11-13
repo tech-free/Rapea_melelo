@@ -4,7 +4,9 @@
 
 Registrar la propuesta de ingeniería inversa y convertirla en una cola incremental para el juego existente. No es autorización para reescribir el MVP ni para implementar todo de una vez. Mantener el producto browser-first, estático, local-first y enfocado en freestyle argentino; cada casilla se toma como una tarea separada, con prueba y checkpoint.
 
-**Prioridad inicial sugerida:** primero robustecer Tap Tempo y el reloj/subdivisiones; después enriquecer el diccionario fonético curado y sus dinámicas; luego sumar desafíos progresivos. La grabación/puntuación de voz, IA, paquetes regionales, telemetría remota y publicación móvil quedan fuera de alcance hasta una solicitud explícita.
+**Alcance aprobado:** Rapea es para freestyle, práctica y aprendizaje; no es un DAW. Se incorporan por etapas las ideas compatibles del catálogo y una etapa educativa de teoría literaria aplicada, ejercicios por técnica y análisis contextualizado de rimas famosas. Aprobación significa que pueden planificarse, no que ya estén implementadas. No se grabará ni detectará voz con micrófono ni se importarán beats/MP3; tampoco habrá evaluación automática de calidad artística.
+
+**Prioridad de implementación vigente:** R19 (velocidad de estímulos), luego R18, R21 y R20 según `00_cerebro_loop/PLAN_ETAPAS.md`. Las mejoras de vocabulario esperan la revisión humana R4. Las funciones educativas son una etapa posterior.
 
 ## Estado del MVP que ya existe
 
@@ -71,9 +73,19 @@ Leyenda: **base** = ya hay una versión inicial; **cola** = posible mejora incre
 - [x] R15. Contador de barras 4/8/16: barra actual, total y progreso; ronda de 4/8/16 compases, ciclo del patrón cada 4 barras y remate revelado en la última barra. Verificado en escritorio y móvil, consola sin errores/avisos.
 - [x] R16. Modo personaje opcional: rol breve por ronda que condiciona el enfoque, cambia sin repetir de inmediato, se puede desactivar y no altera el mazo de palabras. Verificado con 1 y 5 palabras, escritorio y móvil, consola sin errores/avisos.
 - [x] R17. Count-in y final limpio: entrada visual de 4 pulsos (1→2→3→4) al arrancar el reloj, sin repetirse al cambiar de modo; el remate se dispara una sola vez por ronda y un clic temprano no altera las estadísticas. Verificado en escritorio y móvil, consola sin errores/avisos.
-- [ ] R19+. Plan por etapas aprobado en `00_cerebro_loop/PLAN_ETAPAS.md`, basado en las 25 mejoras del REA. Ahora: Etapa 2 (R19 → R18 → R21 → R20). Después: Etapas 4–5. Parking: grabación local, importar MP3/BPM y micrófono.
+- [ ] R19+. Plan por etapas y alcance ampliado en `00_cerebro_loop/PLAN_ETAPAS.md`. La siguiente tarea activa es R19 (velocidad de estímulos); luego R18, R21 y R20. La teoría literaria, los ejercicios por técnica y el análisis educativo de rimas famosas están planificados para una etapa posterior, no implementados todavía. Grabación/detección por micrófono e importación de beats/MP3 están excluidas del producto, no en parking.
 
 El orden es una sugerencia, no una promesa de calendario. Al cerrar cada tarea, marcarla, actualizar documentación de alcance si cambia el comportamiento y checkpoint antes de tomar la siguiente.
+
+## Etapa educativa aprobada (planificada, aún no implementada)
+
+| ID | Propuesta | Enfoque y límites |
+|----|-----------|-------------------|
+| R34 | Teoría literaria aplicada al rap | Explicar recursos con lenguaje claro, ejemplos propios o autorizados, fuentes verificables y ejercicios opcionales. |
+| R35 | Práctica por técnica | Consignas progresivas para escribir y rapear; autoevaluación voluntaria, sin reconocimiento ni puntuación de voz. |
+| R36 | Análisis de rimas famosas | Leer recursos, estructura y contexto con atribución y fuentes; priorizar dominio público, material autorizado o enlaces oficiales. No reproducir letras protegidas extensas ni clasificar artistas por calidad. |
+
+El detalle y los criterios de aceptación están en `00_cerebro_loop/PLAN_ETAPAS.md`. Estas propuestas educativas no implican grabar/subir audio ni evaluar automáticamente la calidad artística.
 
 ## Ideas recibidas que requieren cautela
 

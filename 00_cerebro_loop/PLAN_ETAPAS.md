@@ -1,6 +1,6 @@
 # Plan por etapas — Rapea
 
-> Estado: aprobado el 11 nov 2026. El usuario aprobó el conjunto de mejoras del REA y pidió dividirlo en etapas. **Ahora solo rimas y freestyle.** Grabación local, producción de beats y micrófono quedan en parking.
+> Estado: ampliado por solicitud del usuario el 13 nov 2026. Se incorporan al plan todas las ideas del REA compatibles con aprender y practicar freestyle, más una etapa de teoría literaria, recursos del rap y análisis de rimas famosas. **No se implementan todas de inmediato:** se avanza por etapas y cada tarea requiere verificación. Grabación de micrófono, importación de beats/MP3 y detección por micrófono quedan fuera de alcance; Rapea no será un DAW.
 
 ## Regla de oro
 
@@ -12,7 +12,7 @@ Cada etapa se termina antes de abrir la siguiente. Cada tarea es un commit atóm
 - Teclado y táctil probados en los controles nuevos.
 - README, roadmap y HANDOFF actualizados en el mismo commit.
 
-Sin backend, sin cuentas, sin telemetría, sin audio subido y sin beats con copyright.
+Sin backend, cuentas ni telemetría. No grabar ni analizar micrófono, ni importar/producir beats: Rapea es para freestyle, práctica y aprendizaje, no un DAW. Sin audio subido ni beats con copyright.
 
 ## Etapa 0 — Base ya construida
 
@@ -106,19 +106,30 @@ Sin backend, sin cuentas, sin telemetría, sin audio subido y sin beats con copy
 | R32 | 24 | **Planilla de jurado** | Puntuar flow, skills, puesta en escena y punchlines. | M | Suma total, funciona con teclado y se resetea con confirmación. |
 | R33 | 25 | **Tarjeta compartible + PWA** | Imagen/texto de la sesión y app instalable offline. | M | La tarjeta se genera local, la app carga offline tras la primera visita y no pide cuentas. |
 
-## Parking — no ahora
+## Etapa 6 — Aprender a rapear (propuesta aprobada)
 
-Estas tres mejoras quedan explícitamente fuera de las etapas activas. No se implementan hasta que el usuario las pida.
+**Objetivo:** que Rapea también enseñe fundamentos y recursos de escritura y freestyle, además de ofrecer práctica guiada. Es una etapa posterior a las mejoras de práctica; no implica implementar todo de inmediato.
 
-| ID | REA | Tarea | Por qué espera |
-|----|-----|-------|----------------|
-| P1 | 18 | **Grabación local de takes** | Necesita micrófono, permisos, `MediaRecorder`, reproducción y borrado; es otro producto y otro riesgo de privacidad. |
-| P2 | 15 | **Importar MP3 + BPM** | Es producción de beats: entrada de archivos, detección de tempo, waveform y persistencia. |
-| P3 | 20 | **Mic opcional con detección de palabras** | Depende de reconocimiento de voz, falsos positivos y permisos; nunca debe puntuar calidad. |
+| ID | Tarea | Qué agrega | Aceptación |
+|----|-------|------------|------------|
+| R34 | **Teoría literaria aplicada al rap** | Lecciones breves y ejemplos sobre rima consonante/asonante, multisilábica, métrica y sílabas, acentos, aliteración, metáfora, símil, imágenes y punchline. | Lenguaje claro, ejemplos propios o debidamente autorizados, fuentes verificables y ejercicios opcionales; no presenta reglas discutibles como verdades absolutas. |
+| R35 | **Práctica por técnica** | Ejercicios progresivos para practicar una técnica (por ejemplo, encadenar rimas, crear multisilábicas, variar acentos o construir imágenes). | Instrucción y consigna visibles, dificultad graduada y autoevaluación voluntaria; no reconoce ni puntúa la voz. |
+| R36 | **Rimas famosas: lectura y análisis** | Guías para analizar recursos, estructura y contexto de versos o batallas conocidas. | Atribución y fuentes; priorizar dominio público, material autorizado o enlaces oficiales. No reproducir letras protegidas extensas ni subir audio. Análisis educativo, no ranking de artistas. |
+
+## Fuera de alcance — decisión explícita del usuario
+
+Estas funciones no forman parte del producto; no quedan en espera para una etapa futura. Rapea no será un DAW ni grabará o analizará audio del usuario.
+
+| ID | REA | Función excluida | Motivo |
+|----|-----|-------------------|--------|
+| X1 | 18 | **Grabación local de takes con micrófono** | El producto se centra en práctica y aprendizaje, no en grabar o producir. |
+| X2 | 15 | **Importar MP3/beats y detectar BPM** | Flujo de producción de audio, fuera del propósito de Rapea. |
+| X3 | 20 | **Micrófono/detección de palabras** | No se capturará ni analizará la voz; la práctica y autoevaluación siguen siendo voluntarias. |
 
 ## Lo que no entra al plan
 
 - Evaluación “objetiva” por IA de la calidad del rap.
+- Grabar, importar, producir o analizar audio/voz: Rapea no será un DAW.
 - Red social, cuentas, rankings globales, torneos online y moderación.
 - Suscripciones, anuncios, beat stores y beats con copyright.
 - Puntuar la voz como “talento”.
