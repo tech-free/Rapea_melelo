@@ -14,12 +14,10 @@ R17 completada: **count-in y final limpio**. Al arrancar el reloj suena/ve una e
 - R4 sigue bloqueada por revisión humana; la Etapa 3 no arranca sin ese lote revisado.
 
 ## PRÓXIMO PASO INMEDIATO
-R19 (velocidad de estímulos), en progreso:
-1. Separar el ciclo de estímulo del contador de barras/rondas; cada N pulsos principales completos cambia la consigna, sin reiniciar metrónomo ni mazo.
-2. Agregar selector accesible 2/4/8, persistido localmente y predeterminado en 4; explicar que los pulsos no dependen del BPM.
-3. Verificar mazo, barras, cambio de consigna y controles con pruebas y Playwright en 1280×900 y 390×844; guardar JPG e inspeccionarlas.
-4. Actualizar README y roadmap, autocriticar el efecto sobre remate/rimas, y crear checkpoint atómico si la verificación pasa.
-Después seguir R18, R21 y R20, una por commit con verificación en navegador.
+Esperar la decisión del usuario sobre la candidata H1 del inventario [`RECUPERADAS_PENDIENTE_APROBACION.md`](RECUPERADAS_PENDIENTE_APROBACION.md); no agregarla a `USER_REQUESTS.md` sin aprobación. Luego retomar R19 (velocidad de estímulos): selector cada 2/4/8 pulsos, independiente del BPM, que no altere el mazo y cambie el estímulo en la barra correcta. Después R18, R21 y R20, una por commit con verificación en navegador.
+
+## Recuperación de solicitudes históricas
+Se revisaron 17 historiales remotos (75 mensajes de usuario, 28 mensajes únicos). La única candidata de producto no resuelta de forma concreta quedó en el inventario pendiente de aprobación; los pedidos ya cubiertos y las instrucciones operativas se clasificaron allí sin duplicarlos. `USER_REQUESTS.md` no se modificó.
 
 ## Contexto importante
 - App estática de freestyle argentino, sin pipeline de build ni artefactos `dist/`.
