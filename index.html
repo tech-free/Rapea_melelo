@@ -90,6 +90,14 @@
                   <button type="button" data-bars="16" aria-pressed="false" title="Ronda de 16 barras">16</button>
                 </div>
               </div>
+              <div class="bar-switch-wrap stimulus-switch-wrap" id="stimulus-wrap">
+                <span>ESTÍMULO CADA</span>
+                <div class="segmented stimulus-switch" id="stimulus-switch" role="group" aria-label="Cada cuántos pulsos cambia la palabra disparadora">
+                  <button type="button" data-stimulus="2" aria-pressed="false" title="Nueva palabra cada 2 pulsos (medio compás)">2</button>
+                  <button type="button" data-stimulus="4" class="selected" aria-pressed="true" title="Nueva palabra cada 4 pulsos (un compás)">4</button>
+                  <button type="button" data-stimulus="8" aria-pressed="false" title="Nueva palabra cada 8 pulsos (dos compases)">8</button>
+                </div>
+              </div>
             </div>
             <div class="pattern-heading"><span>PATRÓN DE REMATE</span><span class="optional-tag">OPCIONAL</span></div>
             <div class="segmented pattern-switch" id="pattern-switch" role="group" aria-label="Patrón de rima en cuatro barras">
@@ -107,7 +115,7 @@
             <p class="pattern-rule" id="pattern-rule" role="status" aria-live="polite">Sin patrón: rematá como te salga. Elegí AABB, ABAB o ABBA para ver qué barras comparten rima.</p>
           </div>
           <div class="prompt-panel" aria-live="polite" aria-atomic="true">
-            <div class="prompt-topline"><span id="prompt-label">TU CONCEPTO</span><span class="prompt-index" id="prompt-index">#01</span></div>
+            <div class="prompt-topline"><span id="prompt-label">TU CONCEPTO</span><span class="prompt-meta"><span id="stimulus-note">ESTÍMULO CADA 4 PULSOS</span><span class="prompt-index" id="prompt-index">#01</span></span></div>
             <div class="character-chip" id="character-chip" hidden>
               <span class="character-badge">PERSONAJE</span>
               <strong id="character-name">EL VECINO</strong>
